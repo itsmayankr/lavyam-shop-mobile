@@ -1,21 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from "react";
+import {
+  Provider as PaperProvider,
+  Headline,
+  Button,
+  useTheme,
+  Appbar,
+  Avatar,
+} from "react-native-paper";
+import { Platform, TouchableOpacity } from "react-native";
+import customTheme from "./src/themes/theme";
 
-export default function App() {
+const MORE_ICON = Platform.OS === "ios" ? "dots-horizontal" : "dots-vertical";
+const App = (props) => {
+  const { colors } = useTheme();
+
+  console.log(colors);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PaperProvider theme={customTheme}>
+      <Appbar.Header
+        theme={{ backgroundColor: colors.primary, color: colors.text }}
+      >
+        <Appbar.Content title="Title" />
+        {/* <Appbar.Action icon="magnify" onPress={() => {}} /> */}
+        {/* <Appbar.Action icon={MORE_ICON} onPress={() => {}} /> */}
+        <TouchableOpacity onPress={() => console.log("pressed")}>
+          <Avatar.Text
+            color="#fff"
+            style={{ backgroundColor: "red", marginRight: 10 }}
+            size={34}
+            label="R"
+          />
+        </TouchableOpacity>
+      </Appbar.Header>
+    </PaperProvider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
