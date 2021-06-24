@@ -21,6 +21,7 @@ const customTheme = {
   dark: false,
   roundness: 4,
   colors: {
+    ...DefaultTheme,
     primary: "#fff",
     accent: "black",
     background: "#F1F7ED",
