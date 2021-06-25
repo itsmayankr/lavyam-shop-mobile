@@ -6,11 +6,11 @@ import {
   StatusBar,
   StyleSheet,
   Platform,
-  TouchableOpacity,
+  Button,
 } from "react-native";
-import CustomHeader from "../CustomHeader";
+import CustomHeader from "../../CustomHeader";
 
-const HomeScreen = ({ navigation }) => {
+const SettingsScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
       <CustomHeader navigation={navigation} />
@@ -21,19 +21,19 @@ const HomeScreen = ({ navigation }) => {
           alignItems: "center",
         }}
       >
-        <Text>Home!</Text>
-        <TouchableOpacity
-          style={{ marginTop: 20 }}
-          onPress={() => navigation.navigate("HomeDetails")}
-        >
-          <Text>Go Home Details</Text>
-        </TouchableOpacity>
+        <Text>Settings!</Text>
+        <View style={{ marginTop: 20 }}>
+          <Button
+            title="Go Setting Details"
+            onPress={() => navigation.navigate("SettingDetails")}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
 };
 
-export default HomeScreen;
+export default SettingsScreen;
 
 const styles = StyleSheet.create({
   AndroidSafeArea: {

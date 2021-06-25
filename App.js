@@ -8,63 +8,17 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import CustomDrawerContent from "./src/CustomDrawerContent";
 
-import HomeScreen from "./src/tabs/HomeScreen";
-import HomeScreenDetails from "./src/tabs/HomeScreenDetails";
-import SettingsScreen from "./src/tabs/SettingsScreen";
-import SettingScreenDetails from "./src/tabs/SettingScreenDetails";
-
 import LoginScreen from "./src/auth/LoginScreen";
 import RegisterScreen from "./src/auth/RegisterScreen";
 
-const StackHome = createStackNavigator();
-const StackSetting = createStackNavigator();
+import HomeStack from "./src/tabs/homeStack";
+import SettingStack from "./src/tabs/settingsStack";
+
+import NotificationScreen from "./src/drawer/NotificationScreen";
 
 const navOptionHandler = () => ({
   headerShown: false,
 });
-
-const HomeStack = () => {
-  console.log(HomeScreen);
-  return (
-    <StackHome.Navigator>
-      <StackHome.Screen
-        name="Home"
-        component={HomeScreen}
-        options={navOptionHandler}
-      />
-      <StackHome.Screen
-        name="HomeDetails"
-        component={HomeScreenDetails}
-        options={navOptionHandler}
-      />
-    </StackHome.Navigator>
-  );
-};
-
-const SettingStack = () => {
-  return (
-    <StackSetting.Navigator>
-      <StackSetting.Screen
-        name="Setting"
-        component={SettingsScreen}
-        options={navOptionHandler}
-      />
-      <StackSetting.Screen
-        name="SettingDetails"
-        component={SettingScreenDetails}
-        options={navOptionHandler}
-      />
-    </StackSetting.Navigator>
-  );
-};
-
-function NotificationsScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Button onPress={() => navigation.goBack()} title="Go back home" />
-    </View>
-  );
-}
 
 const Tab = createBottomTabNavigator();
 
@@ -108,7 +62,7 @@ const DrawerNavigator = () => {
       }}
     >
       <Drawer.Screen name="MenuTab" component={TabNavigator} />
-      <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+      <Drawer.Screen name="Notifications" component={NotificationScreen} />
     </Drawer.Navigator>
   );
 };

@@ -7,12 +7,12 @@ import {
   StyleSheet,
   Platform,
 } from "react-native";
-import CustomHeader from "../CustomHeader";
+import CustomHeader from "../../CustomHeader";
 
-const HomeScreenDetails = () => {
+const SettingScreenDetails = () => {
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
-      <CustomHeader />
+      <CustomHeader isBack={true} />
       <View
         style={{
           flex: 1,
@@ -20,13 +20,13 @@ const HomeScreenDetails = () => {
           alignItems: "center",
         }}
       >
-        <Text>Home Details!</Text>
+        <Text>Setting Details!</Text>
       </View>
     </SafeAreaView>
   );
 };
 
-export default HomeScreenDetails;
+export default SettingScreenDetails;
 
 const styles = StyleSheet.create({
   AndroidSafeArea: {

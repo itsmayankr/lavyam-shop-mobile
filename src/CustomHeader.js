@@ -1,8 +1,12 @@
 import React from "react";
 import Icon from "react-native-vector-icons/Feather";
-import { Text, View, TouchableOpacity } from "react-native";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { Text, View, TouchableOpacity, Button } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-const CustomHeader = ({ navigation }) => {
+const CustomHeader = ({ isBack }) => {
+  const navigation = useNavigation();
+  console.log(navigation);
   return (
     <View
       style={{
@@ -19,27 +23,46 @@ const CustomHeader = ({ navigation }) => {
     >
       <View
         style={{
-          flex: 3,
+          flex: 1,
           justifyContent: "center",
         }}
       >
-        <Text style={{ textAlign: "center" }}>Place</Text>
+        {isBack ? (
+          <TouchableOpacity>
+            <MaterialIcons
+              style={{ textAlign: "left", marginLeft: 25 }}
+              name="arrow-back-ios"
+              size={18}
+              color="black"
+              onPress={() => navigation.goBack()}
+            />
+          </TouchableOpacity>
+        ) : (
+          <Text style={{ textAlign: "center" }}>Place</Text>
+        )}
       </View>
-
+      <View
+        style={{
+          flex: 2,
+          justifyContent: "center",
+        }}
+      />
       <View
         style={{
           flex: 1,
           justifyContent: "center",
         }}
       >
-        <TouchableOpacity onPress={() => navigation.openDrawer()}>
-          <Icon
-            style={{ textAlign: "center" }}
-            name="menu"
-            size={30}
-            color="black"
-          />
-        </TouchableOpacity>
+        {isBack ? null : (
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <Icon
+              style={{ textAlign: "center" }}
+              name="menu"
+              size={30}
+              color="black"
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
