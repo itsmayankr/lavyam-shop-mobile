@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, SafeAreaView, StyleSheet, StatusBar } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  StatusBar,
+  Platform,
+} from "react-native";
 
 const RegisterScreen = () => {
   return (

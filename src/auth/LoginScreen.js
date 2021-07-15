@@ -1,50 +1,26 @@
 import React from "react";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  StyleSheet,
-  StatusBar,
-} from "react-native";
-// import { useNavigation } from "@react-navigation/native";
-// const navigation = useNavigation();
+import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
+
+import { LoginForm } from "./components";
+
+const { height, width } = Dimensions.get("window");
 
 const LoginScreen = ({ navigation }) => {
   return (
-    <SafeAreaView style={styles.AndroidSafeArea}>
-      {/* <CustomHeader navigation={navigation} /> */}
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Text>Login Screen!</Text>
-        <TouchableOpacity
-          style={{ marginTop: 20 }}
-          onPress={() => navigation.navigate("HomeApp")}
-        >
-          <Text>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ marginTop: 20 }}
-          onPress={() => navigation.navigate("Register")}
-        >
-          <Text>Register</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <ImageBackground
+        style={{ flex: 1, position: "absolute", height: "100%", width }}
+        source={require("../assets/Images/flower3.jpg")}
+        blurRadius={10}
+      ></ImageBackground>
+      <LoginForm navigation={navigation} />
+    </View>
   );
 };
 
-export default LoginScreen;
-
 const styles = StyleSheet.create({
-  AndroidSafeArea: {
+  container: {
     flex: 1,
-    backgroundColor: "white",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 });
+export default LoginScreen;

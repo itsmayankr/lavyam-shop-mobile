@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Platform,
 } from "react-native";
-import { CustomHeader } from "../index";
+import CustomHeader from "../CustomHeader";
 
 const NotificationScreen = () => {
   return (

@@ -6,7 +6,6 @@ import { useNavigation } from "@react-navigation/native";
 
 const CustomHeader = ({ isBack }) => {
   const navigation = useNavigation();
-  console.log(navigation);
   return (
     <View
       style={{

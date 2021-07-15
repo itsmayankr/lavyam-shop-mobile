@@ -1,5 +1,11 @@
 import React from "react";
-import { StyleSheet, Text, SafeAreaView, StatusBar } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  StatusBar,
+  Platform,
+} from "react-native";
 
 const CustomDrawerContent = () => {
   return (

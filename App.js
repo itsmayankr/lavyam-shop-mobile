@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { Provider } from "react-redux";
 
 import CustomDrawerContent from "./src/CustomDrawerContent";
 
@@ -15,6 +16,8 @@ import HomeStack from "./src/tabs/homeStack";
 import SettingStack from "./src/tabs/settingsStack";
 
 import NotificationScreen from "./src/drawer/NotificationScreen";
+
+import store from "./src/redux/store/store";
 
 const navOptionHandler = () => ({
   headerShown: false,
@@ -40,7 +43,7 @@ const TabNavigator = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: "tomato",
+        activeTintColor: "#1baa43",
         inactiveTintColor: "gray",
       }}
     >
@@ -69,25 +72,28 @@ const DrawerNavigator = () => {
 
 export default function App() {
   const StackApp = createStackNavigator();
+  console.log("connected");
   return (
-    <NavigationContainer>
-      <StackApp.Navigator initialRouteName="Login">
-        <StackApp.Screen
-          name="HomeApp"
-          component={DrawerNavigator}
-          options={navOptionHandler}
-        />
-        <StackApp.Screen
-          name="Login"
-          component={LoginScreen}
-          options={navOptionHandler}
-        />
-        <StackApp.Screen
-          name="Register"
-          component={RegisterScreen}
-          options={navOptionHandler}
-        />
-      </StackApp.Navigator>
-    </NavigationContainer>
+    <Provider store={store()}>
+      <NavigationContainer>
+        <StackApp.Navigator initialRouteName="Home">
+          <StackApp.Screen
+            name="HomeApp"
+            component={DrawerNavigator}
+            options={navOptionHandler}
+          />
+          <StackApp.Screen
+            name="Login"
+            component={LoginScreen}
+            options={navOptionHandler}
+          />
+          <StackApp.Screen
+            name="Register"
+            component={RegisterScreen}
+            options={navOptionHandler}
+          />
+        </StackApp.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }

@@ -1,33 +1,46 @@
 import React from "react";
 import {
-  Text,
+  FlatList,
   View,
   SafeAreaView,
   StatusBar,
   StyleSheet,
   Platform,
-  Button,
+  // Button,
 } from "react-native";
+import { useSelector } from "react-redux";
 import CustomHeader from "../../CustomHeader";
+import { Button } from "react-native-paper";
+import Card from "../../components/Card";
+import { data } from "../../model/data";
 
 const HomeScreen = ({ navigation }) => {
+  const { theme } = useSelector((state) => state);
+
+  const renderItem = ({ item }) => {
+    return (
+      <Card
+        itemData={item}
+        onPress={() => navigation.navigate("CardDetails", { itemData: item })}
+      />
+    );
+  };
+
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
       <CustomHeader navigation={navigation} />
       <View
         style={{
           flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
+          width: "90%",
+          alignSelf: "center",
         }}
       >
-        <Text>Home!</Text>
-        <View style={{ marginTop: 20 }}>
-          <Button
-            title="Go Home Details"
-            onPress={() => navigation.navigate("HomeDetails")}
-          />
-        </View>
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
       </View>
     </SafeAreaView>
   );
