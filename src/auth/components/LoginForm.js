@@ -97,7 +97,7 @@ const Login = (props) => {
     try {
       console.log(values);
       // await dispatch(LoginAction(values.email, values.password));
-      props.navigation.navigate("HomeApp");
+      props.navigation.navigate("ConfigScreen");
     } catch (err) {
       alert(err);
     }
@@ -106,14 +106,14 @@ const Login = (props) => {
     <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "position" : "height"}
     >
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => {
           props.navigation.goBack();
         }}
         style={{ position: "absolute", top: 50, left: 20 }}
       >
         <Ionicons name="ios-arrow-back" size={35} color={Colors.light_green} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <View style={styles.header}>
         <View>
@@ -155,14 +155,14 @@ const Login = (props) => {
                   props.navigation.navigate("ForgetPwScreen");
                 }}
               >
-                <CustomText
+                {/* <CustomText
                   style={{
                     ...styles.textSignSmall,
-                    fontFamily: "Roboto-Medium",
+                    // fontFamily: "Roboto-Medium",
                   }}
                 >
                   Forget Password ?
-                </CustomText>
+                </CustomText> */}
               </TouchableOpacity>
             </View>
             <TouchableOpacity
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     color: Colors.light_green,
     fontSize: 40,
     letterSpacing: 5,
-    fontFamily: "Roboto-Bold",
+    // fontFamily: "Roboto-Bold",
     textAlign: "center",
   },
   text: {
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
   textSign: {
     fontSize: 15,
     color: "#fff",
-    fontFamily: "Roboto-Medium",
+    // fontFamily: "Roboto-Medium",
   },
   textSignSmall: {
     color: Colors.lighter_green,
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
   },
   loginOpt: {
     color: Colors.lighter_green,
-    fontFamily: "Roboto-Medium",
+    // fontFamily: "Roboto-Medium",
     marginBottom: 10,
   },
 });

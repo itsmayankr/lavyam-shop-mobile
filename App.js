@@ -6,6 +6,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Provider } from "react-redux";
+import { Provider as PaperProvider } from "react-native-paper";
 
 import CustomDrawerContent from "./src/CustomDrawerContent";
 
@@ -18,6 +19,7 @@ import SettingStack from "./src/tabs/settingsStack";
 import NotificationScreen from "./src/drawer/NotificationScreen";
 
 import store from "./src/redux/store/store";
+import ConfigScreen from "./src/tabs/ConfigScreen/ConfigScreen";
 
 const navOptionHandler = () => ({
   headerShown: false,
@@ -34,8 +36,8 @@ const TabNavigator = () => {
 
           if (route.name === "Home") {
             iconName = focused ? "ios-home" : "ios-home-outline";
-          } else if (route.name === "Settings") {
-            iconName = focused ? "ios-list-circle" : "ios-list-circle-outline";
+          } else if (route.name === "Cart") {
+            iconName = focused ? "cart" : "cart";
           }
 
           // You can return any component that you like here!
@@ -48,7 +50,7 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Settings" component={SettingStack} />
+      <Tab.Screen name="Cart" component={SettingStack} />
     </Tab.Navigator>
   );
 };
@@ -72,28 +74,35 @@ const DrawerNavigator = () => {
 
 export default function App() {
   const StackApp = createStackNavigator();
-  console.log("connected");
+
   return (
-    <Provider store={store()}>
-      <NavigationContainer>
-        <StackApp.Navigator initialRouteName="Home">
-          <StackApp.Screen
-            name="HomeApp"
-            component={DrawerNavigator}
-            options={navOptionHandler}
-          />
-          <StackApp.Screen
-            name="Login"
-            component={LoginScreen}
-            options={navOptionHandler}
-          />
-          <StackApp.Screen
-            name="Register"
-            component={RegisterScreen}
-            options={navOptionHandler}
-          />
-        </StackApp.Navigator>
-      </NavigationContainer>
-    </Provider>
+    <PaperProvider>
+      <Provider store={store()}>
+        <NavigationContainer>
+          <StackApp.Navigator initialRouteName="Login">
+            <StackApp.Screen
+              name="HomeApp"
+              component={DrawerNavigator}
+              options={navOptionHandler}
+            />
+            <StackApp.Screen
+              name="Login"
+              component={LoginScreen}
+              options={navOptionHandler}
+            />
+            <StackApp.Screen
+              name="ConfigScreen"
+              component={ConfigScreen}
+              options={navOptionHandler}
+            />
+            <StackApp.Screen
+              name="Register"
+              component={RegisterScreen}
+              options={navOptionHandler}
+            />
+          </StackApp.Navigator>
+        </NavigationContainer>
+      </Provider>
+    </PaperProvider>
   );
 }

@@ -13,7 +13,7 @@ const SettingStack = () => {
   return (
     <StackSetting.Navigator>
       <StackSetting.Screen
-        name="Setting"
+        name="Cart"
         component={SettingsScreen}
         options={navOptionHandler}
       />

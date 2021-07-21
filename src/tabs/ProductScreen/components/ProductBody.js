@@ -57,7 +57,7 @@ const ProductBody = ({ navigation, productsFilter, searchFilterFunction }) => {
           scrollY={scrollY}
         />
       </TouchableWithoutFeedback>
-      {productsFilter?.length === 0 ? (
+      {productsFilter?.totalCount === 0 ? (
         <CustomText style={{ textAlign: "center", marginTop: 110 }}>
           no shop found!
         </CustomText>

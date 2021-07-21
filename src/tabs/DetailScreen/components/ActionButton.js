@@ -1,27 +1,27 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from "react";
 import {
   View,
   StyleSheet,
   TouchableOpacity,
   Alert,
   ActivityIndicator,
-} from 'react-native';
+} from "react-native";
 //import CustomText
-import CustomText from '../../../components/UI/CustomText';
+import CustomText from "../../../components/UI/CustomText";
 //icon
-import { Ionicons } from '@expo/vector-icons';
-import LottieView from 'lottie-react-native';
+import { Ionicons } from "@expo/vector-icons";
+import LottieView from "lottie-react-native";
 //Animatable
-import * as Animatable from 'react-native-animatable';
+import * as Animatable from "react-native-animatable";
 //Redux
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 //Action
-import { addToCart, removeFavorite, addFavorite } from '../../../reducers';
-import Messages from '../../../messages/user';
-import Colors from '../../../utils/Colors';
+// import { addToCart, removeFavorite, addFavorite } from '../../../reducers';
+// import Messages from "../../../messages/user";
+import Colors from "../../../utils/Colors";
 
 //PropTypes check
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export const ActionButton = ({
   user,
@@ -33,7 +33,7 @@ export const ActionButton = ({
   setMessage,
 }) => {
   const dispatch = useDispatch();
-  const cartLoading = useSelector((state) => state.cart.isLoading);
+  const cartLoading = useSelector((state) => false);
   const unmounted = useRef(false);
   useEffect(() => {
     return () => {
@@ -43,11 +43,11 @@ export const ActionButton = ({
   //Set Colors
   const addToCartAct = async () => {
     if (Object.keys(user).length === 0) {
-      setMessage(Messages['user.login.require']);
+      // setMessage(Messages["user.login.require"]);
       setShowSnackbar(true);
     } else {
       try {
-        await dispatch(addToCart(item, user.token));
+        // await dispatch(addToCart(item, user.token));
         setModalVisible(true);
       } catch (err) {
         throw err;
@@ -56,31 +56,31 @@ export const ActionButton = ({
   };
   const toggleFavorite = () => {
     if (Object.keys(user).length === 0) {
-      setMessage(Messages['user.login.require']);
+      // setMessage(Messages["user.login.require"]);
       setShowSnackbar(true);
     } else if (FavoriteProducts) {
       Alert.alert(
-        'Bỏ yêu thích',
-        'Bạn có muốn bỏ sản phẩm ra khỏi mục yêu thích?',
+        "Bỏ yêu thích",
+        "Bạn có muốn bỏ sản phẩm ra khỏi mục yêu thích?",
         [
           {
-            text: 'Hủy',
-            style: 'cancel',
+            text: "Hủy",
+            style: "cancel",
           },
           {
-            text: 'Đồng ý',
-            onPress: () => dispatch(removeFavorite(item._id)),
+            text: "Đồng ý",
+            // onPress: () => dispatch(removeFavorite(item._id)),
           },
-        ],
+        ]
       );
     } else {
-      dispatch(addFavorite(item));
+      // dispatch(addFavorite(item));
     }
   };
   return (
     <Animatable.View
       delay={1500}
-      animation='fadeInUp'
+      animation="fadeInUp"
       style={styles.actionContainer}
     >
       <View style={styles.action}>
@@ -90,12 +90,12 @@ export const ActionButton = ({
         >
           {FavoriteProducts ? (
             <LottieView
-              source={require('../../../components/IconAnimation/heart.json')}
+              source={require("../../../components/IconAnimation/heart.json")}
               autoPlay={FavoriteProducts}
               loop={false}
             />
           ) : (
-            <Ionicons name='ios-heart-empty' size={27} color={color} />
+            <Ionicons name="ios-heart-empty" size={27} color={color} />
           )}
         </TouchableOpacity>
         <TouchableOpacity
@@ -103,7 +103,7 @@ export const ActionButton = ({
           onPress={addToCartAct}
         >
           {cartLoading ? (
-            <ActivityIndicator size='small' color='#fff' />
+            <ActivityIndicator size="small" color="#fff" />
           ) : (
             <CustomText style={styles.actionText}>Thêm vào giỏ hàng</CustomText>
           )}
@@ -125,25 +125,25 @@ ActionButton.propTypes = {
 
 const styles = StyleSheet.create({
   action: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: 60,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   addCart: {
-    width: '80%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "80%",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 5,
     height: 50,
   },
   favorite: {
-    width: '18%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "18%",
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 2,
     paddingTop: 5,
     borderRadius: 5,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
   actionText: {
     fontSize: 15,
-    textAlign: 'center',
-    color: '#fff',
+    textAlign: "center",
+    color: "#fff",
   },
 });

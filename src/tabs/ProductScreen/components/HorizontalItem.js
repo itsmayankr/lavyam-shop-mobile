@@ -15,51 +15,50 @@ import { AntDesign } from "@expo/vector-icons";
 import CustomText from "../../../components/UI/CustomText";
 //NumberFormat
 import NumberFormat from "../../../components/UI/NumberFormat";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 //PropTypes check
 import PropTypes from "prop-types";
 
 const HorizontalItem = ({ item, navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   return (
-    <View style={{ backgroundColor: Colors.white }}>
-      <BlurView tint="dark" intensity={10} style={styles.itemContainer}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Detail", { item: item })}
-          style={{ marginLeft: 5, width: "40%", marginRight: 10 }}
-        >
-          <Image
-            style={{
-              height: 90,
-              width: "100%",
-              resizeMode: "stretch",
-              borderRadius: 15,
-            }}
-            source={{ uri: item.image }}
-            onLoadStart={() => {
-              setIsLoading(true);
-            }}
-            onLoadEnd={() => setIsLoading(false)}
-          />
-          {isLoading && (
-            <ActivityIndicator
-              size="small"
-              color={Colors.grey}
-              style={{ position: "absolute", left: 0, right: 0, top: 40 }}
-            />
-          )}
-        </TouchableOpacity>
-        <View style={styles.info}>
-          <CustomText style={styles.title}>{item.title}</CustomText>
-          <CustomText style={styles.subText}>Type {item.type}</CustomText>
-          <View style={styles.rateContainer}>
-            <View style={styles.rate}>
-              <AntDesign name="star" color="#fed922" size={15} />
-              <CustomText style={styles.score}>4.5</CustomText>
-            </View>
-            <NumberFormat price={item.price} />
-          </View>
+    <View style={styles.container}>
+      <View style={styles.left}>
+        <Image
+          style={{
+            width: "100%",
+            height: 90,
+            resizeMode: "stretch",
+            borderRadius: 5,
+          }}
+          source={{ uri: item.image.Location }}
+        />
+      </View>
+      <View style={styles.right}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <CustomText style={styles.title}>{item.productName}</CustomText>
+          {/* <View>
+            <TouchableOpacity >
+              <MaterialCommunityIcons name="close" size={20} color="#000" />
+            </TouchableOpacity>
+          </View> */}
         </View>
-      </BlurView>
+        {/* <CustomText style={{ color: Colors.grey, fontSize: 12 }}>
+          Cung cấp bởi Cát Tường
+        </CustomText> */}
+        <NumberFormat price={item.price.toString()} />
+        <View style={styles.box}>
+          <TouchableOpacity style={styles.boxMin}>
+            <MaterialCommunityIcons name="minus" size={16} />
+          </TouchableOpacity>
+          <View>
+            <CustomText style={styles.boxText}>{0}</CustomText>
+          </View>
+          <TouchableOpacity style={styles.boxMin}>
+            <MaterialCommunityIcons name="plus" size={16} />
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };
@@ -70,44 +69,52 @@ HorizontalItem.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  itemContainer: {
-    height: 100,
-    flexDirection: "row",
-    // backgroundColor: "rgba(255, 255, 255, 0.8)",
+  container: {
+    flex: 1,
     marginHorizontal: 10,
-    marginBottom: 5,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  info: {
-    height: "100%",
-    flexDirection: "column",
-    justifyContent: "flex-start",
+    height: 110,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.light_grey,
+    flexDirection: "row",
     paddingVertical: 10,
-    width: "60%",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginTop: 5,
+  },
+  left: {
+    width: "35%",
+    height: "100%",
+    alignItems: "center",
+    borderRadius: 5,
+  },
+  right: {
+    width: "65%",
+    paddingLeft: 15,
+    height: 90,
+    // overflow: "hidden",
   },
   title: {
-    fontSize: 15,
+    fontSize: 14,
   },
-  subText: {
-    fontSize: 13,
-    color: Colors.grey,
-    marginVertical: 10,
-  },
-  rateContainer: {
+  box: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "70%",
+    alignItems: "center",
+    height: Platform.OS === "ios" ? 30 : 25,
+    backgroundColor: Colors.light_grey,
+    width: 90,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginTop: 5,
   },
-  rate: {
-    flexDirection: "row",
-    alignItems: "flex-end",
-    paddingBottom: 5,
+  boxMin: {
+    width: "30%",
+    alignItems: "center",
   },
-  score: {
+  boxText: {
     fontSize: 12,
-    marginLeft: 5,
-    color: Colors.grey,
   },
 });
 

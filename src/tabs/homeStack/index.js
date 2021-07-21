@@ -1,8 +1,8 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import HomeScreen from "./HomeScreen";
 import CardItemDetails from "./CardItemDetails";
-import ProductScreen from "../ProductScreen/ProductScreen";
+import HomeScreen from "../HomeScreen/HomeScreen";
+import DetailScreen from "../DetailScreen/DetailScreen";
 
 const StackHome = createStackNavigator();
 
@@ -15,12 +15,12 @@ const HomeStack = () => {
     <StackHome.Navigator>
       <StackHome.Screen
         name="Home"
-        component={ProductScreen}
+        component={HomeScreen}
         options={navOptionHandler}
       />
       <StackHome.Screen
-        name="CardDetails"
-        component={CardItemDetails}
+        name="Detail"
+        component={DetailScreen}
         options={() => ({
           headerShown: true,
           headerBackTitleVisible: false,

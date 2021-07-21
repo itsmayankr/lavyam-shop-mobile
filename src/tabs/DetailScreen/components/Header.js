@@ -19,7 +19,7 @@ import Colors from "../../../utils/Colors";
 
 const { height } = Dimensions.get("window");
 
-const HEADER_MAX_HEIGHT = 320;
+const HEADER_MAX_HEIGHT = 220;
 const HEADER_MIN_HEIGHT =
   Platform.OS === "android" ? 70 : height > 667 ? 80 : 70;
 const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
@@ -42,9 +42,9 @@ export const Header = ({ navigation, scrollY, item }) => {
     extrapolate: "clamp",
   });
   return (
-    <Animatable.View delay={500} animation="fadeInDown">
+    <View delay={500} animation="fadeInDown">
       <View style={styles.topBar}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             navigation.goBack();
           }}
@@ -53,21 +53,25 @@ export const Header = ({ navigation, scrollY, item }) => {
           <View>
             <Ionicons name="ios-arrow-back" size={25} color="#fff" />
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Animated.View style={{ opacity: headerOpacity }}>
-          <CustomText
-            style={{ fontSize: 16, color: "#fff", fontWeight: "500" }}
+          {/* <CustomText
+            style={{
+              fontSize: 16,
+              color: "#fff",
+              fontWeight: "500",
+            }}
           >
-            {item.filename}
-          </CustomText>
+            {item.shopName}
+          </CustomText> */}
         </Animated.View>
-        <View style={styles.shareIcon}>
+        {/* <View style={styles.shareIcon}>
           <ShareItem
             imageURL={item.url}
             title={item.filename}
             message={item.filename}
           />
-        </View>
+        </View> */}
       </View>
       <Animated.View
         style={{
@@ -83,7 +87,9 @@ export const Header = ({ navigation, scrollY, item }) => {
         }}
       ></Animated.View>
       <Animated.Image
-        source={{ uri: item.url }}
+        source={{
+          uri: "https://image.shutterstock.com/image-photo/healthy-food-clean-eating-selection-260nw-722718097.jpg",
+        }}
         style={[
           styles.image,
           {
@@ -97,7 +103,7 @@ export const Header = ({ navigation, scrollY, item }) => {
         onLoadEnd={() => setIsLoading(false)}
       />
       {isLoading && <ActivityIndicator size="small" color={Colors.grey} />}
-    </Animatable.View>
+    </View>
   );
 };
 

@@ -13,7 +13,7 @@ import CustomHeader from "../../CustomHeader";
 const SettingsScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
-      <CustomHeader navigation={navigation} />
+      {/* <CustomHeader navigation={navigation} /> */}
       <View
         style={{
           flex: 1,
@@ -21,13 +21,13 @@ const SettingsScreen = ({ navigation }) => {
           alignItems: "center",
         }}
       >
-        <Text>Settings!</Text>
-        <View style={{ marginTop: 20 }}>
+        <Text>Cart is empty!!</Text>
+        {/* <View style={{ marginTop: 20 }}>
           <Button
             title="Go Setting Details"
             onPress={() => navigation.navigate("SettingDetails")}
           />
-        </View>
+        </View> */}
       </View>
     </SafeAreaView>
   );

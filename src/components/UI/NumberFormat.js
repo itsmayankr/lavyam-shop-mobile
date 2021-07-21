@@ -13,7 +13,7 @@ const Number = ({ price, color }, props) => {
       value={price}
       displayType={"text"}
       thousandSeparator={true}
-      suffix={" $"}
+      prefix={"₹"}
       renderText={(formattedValue) => (
         <View
           style={
@@ -23,7 +23,10 @@ const Number = ({ price, color }, props) => {
           }
         >
           <CustomText
-            style={{ ...props.style, color: color ? "#fff" : Colors.red }}
+            style={{
+              ...props.style,
+              color: color ? "#fff" : Colors.light_green,
+            }}
           >
             {formattedValue}
           </CustomText>

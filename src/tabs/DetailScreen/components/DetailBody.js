@@ -24,7 +24,7 @@ export const DetailBody = ({ item, color }) => {
         style={styles.footer_header}
       >
         <CustomText selectable={true} style={{ ...styles.title, color }}>
-          {item.filename}
+          {item.shopName}
         </CustomText>
         <NumberFormat
           style={{ color: "#fff", fontSize: 13 }}
@@ -32,7 +32,7 @@ export const DetailBody = ({ item, color }) => {
           color={color}
         />
       </Animatable.View>
-      <View style={{ flexDirection: "row", marginTop: 10 }}>
+      {/* <View style={{ flexDirection: "row", marginTop: 10 }}>
         <Animatable.View animation="bounceIn" delay={1600}>
           <AntDesign name="star" size={15} color={color} />
         </Animatable.View>
@@ -48,8 +48,8 @@ export const DetailBody = ({ item, color }) => {
         <Animatable.View animation="bounceIn" delay={2000}>
           <AntDesign name="star" size={15} color={color} />
         </Animatable.View>
-      </View>
-      <Animatable.View
+      </View> */}
+      {/* <Animatable.View
         animation="fadeInUpBig"
         delay={1000}
         style={styles.description}
@@ -90,7 +90,7 @@ export const DetailBody = ({ item, color }) => {
         <CustomText selectable={true} style={styles.detail}>
           {item.description}
         </CustomText>
-      </Animatable.View>
+      </Animatable.View> */}
     </View>
   );
 };

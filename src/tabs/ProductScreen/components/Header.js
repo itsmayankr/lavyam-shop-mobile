@@ -19,29 +19,29 @@ import { BlurView } from "expo-blur";
 //PropTypes check
 import PropTypes from "prop-types";
 
-const { interpolate, Extrapolate } = Animated;
+const { interpolateNode, Extrapolate } = Animated;
 const { width } = Dimensions.get("window");
 const HEADER_HEIGHT = 180;
 const HEADER_MIN = 90;
 const HEADER_DISTANCE = HEADER_HEIGHT - HEADER_MIN;
 
 export const Header = ({ navigation, searchFilterFunction, scrollY }) => {
-  const headerHeight = interpolate(scrollY, {
+  const headerHeight = interpolateNode(scrollY, {
     inputRange: [0, HEADER_DISTANCE],
     outputRange: [0, -HEADER_MIN / 2],
     extrapolate: Extrapolate.CLAMP,
   });
-  const titleOpacity = interpolate(scrollY, {
+  const titleOpacity = interpolateNode(scrollY, {
     inputRange: [0, HEADER_DISTANCE],
     outputRange: [1, 0],
     extrapolate: Extrapolate.CLAMP,
   });
-  const inputTranslate = interpolate(scrollY, {
+  const inputTranslate = interpolateNode(scrollY, {
     inputRange: [0, HEADER_DISTANCE],
     outputRange: [0, -HEADER_MIN + 10],
     extrapolate: Extrapolate.CLAMP,
   });
-  const inputWidth = interpolate(scrollY, {
+  const inputWidth = interpolateNode(scrollY, {
     inputRange: [0, HEADER_DISTANCE],
     outputRange: [width - 20, width - 80],
     extrapolate: Extrapolate.CLAMP,
