@@ -11,7 +11,6 @@ import { getShops } from "../../redux/actions/shopAction";
 
 const ProductScreen = (props) => {
   const shops = useSelector((state) => state.shops.shops);
-  console.log(shops);
 
   useEffect(() => {
     props.getShops();

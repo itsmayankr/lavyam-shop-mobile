@@ -1,26 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Image,
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  Text,
+  Platform,
 } from "react-native";
 //Color
 import Colors from "../../../utils/Colors";
-import { BlurView } from "expo-blur";
-//icon
-import { AntDesign } from "@expo/vector-icons";
-//Text
+
 import CustomText from "../../../components/UI/CustomText";
 //NumberFormat
 import NumberFormat from "../../../components/UI/NumberFormat";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 //PropTypes check
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../../redux/actions/cartScreenAction";
+import { Button } from "react-native-paper";
 
-const HorizontalItem = ({ item, navigation }) => {
-  const [isLoading, setIsLoading] = useState(true);
+const HorizontalItem = ({ item, cartData, navigation }) => {
+  const productInCart = cartData?.items?.find(
+    (ele) => ele?.productId?._id == item._id
+  );
+
+  const dispatch = useDispatch();
+  const handleAddToCart = (productId) => {
+    console.log("pressed");
+    const data = {
+      productId,
+      quantity: 1,
+    };
+    dispatch(addToCart(data));
+  };
+  console.log(item, "itemitemitemitem");
   return (
     <View style={styles.container}>
       <View style={styles.left}>
@@ -31,33 +46,48 @@ const HorizontalItem = ({ item, navigation }) => {
             resizeMode: "stretch",
             borderRadius: 5,
           }}
-          source={{ uri: item.image.Location }}
+          source={{ uri: item?.image?.Location }}
         />
       </View>
       <View style={styles.right}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <CustomText style={styles.title}>{item.productName}</CustomText>
-          {/* <View>
-            <TouchableOpacity >
-              <MaterialCommunityIcons name="close" size={20} color="#000" />
-            </TouchableOpacity>
-          </View> */}
         </View>
-        {/* <CustomText style={{ color: Colors.grey, fontSize: 12 }}>
-          Cung cấp bởi Cát Tường
-        </CustomText> */}
-        <NumberFormat price={item.price.toString()} />
-        <View style={styles.box}>
-          <TouchableOpacity style={styles.boxMin}>
-            <MaterialCommunityIcons name="minus" size={16} />
-          </TouchableOpacity>
-          <View>
-            <CustomText style={styles.boxText}>{0}</CustomText>
+        {item.offerPrice ? (
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <CustomText
+              style={{
+                // style,
+                color: Colors.grey,
+                textDecorationLine: "line-through",
+              }}
+            >
+              {`₹${item.price}`}
+            </CustomText>
+            <Text> - </Text>
+            <NumberFormat price={item.offerPrice.toString()} />
           </View>
-          <TouchableOpacity style={styles.boxMin}>
-            <MaterialCommunityIcons name="plus" size={16} />
-          </TouchableOpacity>
-        </View>
+        ) : (
+          <View>
+            <NumberFormat price={item.price.toString()} />
+          </View>
+        )}
+        {productInCart ? (
+          <View style={styles.box}>
+            <Text>Added in cart</Text>
+          </View>
+        ) : (
+          <View style={styles.box}>
+            <View>
+              <Button
+                style={styles.butonStyle}
+                onPress={() => handleAddToCart(item._id)}
+              >
+                Add to Cart
+              </Button>
+            </View>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -102,9 +132,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    height: Platform.OS === "ios" ? 30 : 25,
+    // height: Platform.OS === "ios" ? 30 : 25,
     backgroundColor: Colors.light_grey,
-    width: 90,
+    alignSelf: "flex-start",
     borderRadius: 5,
     paddingHorizontal: 10,
     marginTop: 5,
@@ -115,6 +145,11 @@ const styles = StyleSheet.create({
   },
   boxText: {
     fontSize: 12,
+  },
+  butonStyle: {
+    fontSize: 12,
+    // width: 50,
+    color: Colors.light_green,
   },
 });
 

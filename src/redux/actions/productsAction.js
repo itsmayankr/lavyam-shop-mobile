@@ -1,13 +1,13 @@
 import * as types from "../constant";
-import axios from "axios";
+import axios from "../../config/axios";
 // import { toast } from "react-toastify";
 
-const getProducts = (page, search) => (dispatch) => {
+const getProducts = (page, search, shopId) => (dispatch) => {
   let p = page ? `page=${page}` : `page=${1}`;
   let s = search ? `&search=${search}` : "";
-
+  let shop = shopId ? `&shopId=${shopId}` : "";
   axios
-    .get(`http://marton-dev.lavyam.com/apis/v1/products?${p}${s}`)
+    .get(`/products?${p}${s}${shop}`)
     .then((response) => {
       dispatch({
         type: types.FETCH_PRODUCTS,

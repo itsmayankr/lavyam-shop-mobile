@@ -10,7 +10,7 @@ import {
 import CustomText from "../../../components/UI/CustomText";
 //icon
 import { Ionicons } from "@expo/vector-icons";
-import LottieView from "lottie-react-native";
+// import LottieView from "lottie-react-native";
 //Animatable
 import * as Animatable from "react-native-animatable";
 //Redux
@@ -88,7 +88,7 @@ export const ActionButton = ({
           onPress={toggleFavorite}
           style={[styles.favorite, { borderColor: color }]}
         >
-          {FavoriteProducts ? (
+          {/* {FavoriteProducts ? (
             <LottieView
               source={require("../../../components/IconAnimation/heart.json")}
               autoPlay={FavoriteProducts}
@@ -96,7 +96,7 @@ export const ActionButton = ({
             />
           ) : (
             <Ionicons name="ios-heart-empty" size={27} color={color} />
-          )}
+          )} */}
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.addCart, { backgroundColor: color }]}

@@ -1,4 +1,5 @@
-import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { useEffect } from "react";
 import {
   Text,
   View,
@@ -7,28 +8,52 @@ import {
   StyleSheet,
   Platform,
   Button,
+  AsyncStorage,
+  ScrollView,
+  Alert,
 } from "react-native";
+import { Portal } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
 import CustomHeader from "../../CustomHeader";
+import { getCart } from "../../redux/actions/cartScreenAction";
+import { orderNow } from "../../redux/actions/orderAction";
+import SnackBar from "../../redux/actions/snackBar";
+import { FloatButton } from "../HomeScreen/components";
+import HorizontalItem from "./HorizontalItem";
 
-const SettingsScreen = ({ navigation }) => {
+const SettingsScreen = () => {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCart());
+  }, []);
+  const cart = useSelector((state) => state.cartScreen.cart.data);
+
+  const handleOrder = () => {
+    const data = {
+      cartId: cart?._id,
+    };
+    dispatch(orderNow(cart?._id, navigation));
+    console.log(cart._id) 
+  };
+
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
-      {/* <CustomHeader navigation={navigation} /> */}
-      <View
+      <CustomHeader isback={true} />
+      <Portal>
+        <FloatButton handleOrder={handleOrder} />
+      </Portal>
+      <ScrollView
         style={{
           flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
+          // justifyContent: "center",
+          // alignItems: "center",
         }}
       >
-        <Text>Cart is empty!!</Text>
-        {/* <View style={{ marginTop: 20 }}>
-          <Button
-            title="Go Setting Details"
-            onPress={() => navigation.navigate("SettingDetails")}
-          />
-        </View> */}
-      </View>
+        {cart?.items?.map((item) => (
+          <HorizontalItem key={item._id} item={item} />
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 };

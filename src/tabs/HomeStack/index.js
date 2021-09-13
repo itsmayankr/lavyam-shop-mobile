@@ -1,6 +1,5 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import CardItemDetails from "./CardItemDetails";
 import HomeScreen from "../HomeScreen/HomeScreen";
 import DetailScreen from "../DetailScreen/DetailScreen";
 

@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "lavyam-shop-mobile",
-    "slug": "lavyam-shop-mobile",
+    "name": "Mart On",
+    "slug": "Mart-On",
     "privacy": "public",
-    "description": "test app",
+    "description": "E-Commerce",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "marton.com"
     },
     "web": {
       "favicon": "./assets/favicon.png"

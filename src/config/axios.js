@@ -3,8 +3,8 @@ import Axios from "axios";
 const axios = Axios.create({
   // baseURL:
   //   process.env.REACT_APP_PRODUCTION_BASE_URL ||
-  // `http://marton-dev.lavyam.com/apis/v1`,
-  baseURL: `http://localhost:9001/apis/v1`,
+  // ``,
+  baseURL: `http://192.168.228.104:9001/apis/v1`,
 });
 
 // axios.interceptors.request.use(function (config) {

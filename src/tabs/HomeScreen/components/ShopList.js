@@ -11,15 +11,13 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 //Colors
 import Colors from "../../../utils/Colors";
-//NumberFormat
-import NumberFormat from "../../../components/UI/NumberFormat";
 //Text
 import CustomText from "../../../components/UI/CustomText";
 import { BlurView } from "expo-blur";
 //PropTypes check
 import PropTypes from "prop-types";
 
-export class ProductItem extends React.PureComponent {
+export class ShopList extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = { loading: true };
@@ -87,7 +85,7 @@ export class ProductItem extends React.PureComponent {
   }
 }
 
-ProductItem.propTypes = {
+ShopList.propTypes = {
   item: PropTypes.object.isRequired,
   navigation: PropTypes.object.isRequired,
 };

@@ -1,6 +1,8 @@
 import * as types from "../constant";
 const initialState = {
-  shops: [],
+  shops: {
+    totalCount: 0,
+  },
   isFirstOpen: false,
   isLoading: false,
 };

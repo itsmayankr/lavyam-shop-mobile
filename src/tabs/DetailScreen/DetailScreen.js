@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
-  Dimensions,
   SectionList,
   Animated,
 } from "react-native";
@@ -10,23 +9,15 @@ import { Value } from "react-native-reanimated";
 //Color
 import Colors from "../../utils/Colors";
 //Redux
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 //Components
 import Snackbar from "../../components/Notification/Snackbar";
-import {
-  Header,
-  DetailBody,
-  ActionButton,
-  ModalComp,
-  Comments,
-} from "./components";
-import ProductScreen from "../ProductScreen/ProductScreen";
-import ProductBody from "../ProductScreen/components/ProductBody";
+import { Header, ModalComp } from "./components";
+
 import HorizontalItem from "../ProductScreen/components/HorizontalItem";
 import { getProducts } from "../../redux/actions/productsAction";
-import { Portal } from "react-native-paper";
-import { FloatButton } from "../HomeScreen/components";
-// import { colorCheck } from "../../utils/Tools";
+
+import { getCart } from "../../redux/actions/cartScreenAction";
 
 const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 
@@ -34,6 +25,7 @@ const DetailScreen = (props) => {
   const scrollY = new Animated.Value(0);
   const user = useSelector((state) => "Rohan");
   const { item } = props.route.params;
+
   const [message, setMessage] = useState("");
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [color, setColor] = useState(Colors.lighter_green);
@@ -45,8 +37,9 @@ const DetailScreen = (props) => {
     state.shops.shops.shop.some((product) => product._id === item._id)
   );
   const products = useSelector((state) => state.products.products.products);
-  console.log(products, "products");
-  console.log(FavoriteProducts, "FavoriteProducts");
+  const cart = useSelector((state) => state.cartScreen.cart);
+
+  const dispatch = useDispatch();
 
   const DATA = [];
 
@@ -58,7 +51,8 @@ const DetailScreen = (props) => {
     //   setColor(getColor);
     // };
     // checkColor();
-    props.getProducts();
+    props.getProducts(null, null, item._id);
+    dispatch(getCart());
   }, [item]);
 
   return (
@@ -69,9 +63,9 @@ const DetailScreen = (props) => {
         <View />
       )}
       <Header navigation={props.navigation} scrollY={scrollY} item={item} />
-      <Portal>
-        <FloatButton />
-      </Portal>
+      {/* <Portal>
+   
+      </Portal> */}
       {/* <Animated.ScrollView
         scrollEventThrottle={1}
         onScroll={Animated.event(
@@ -110,7 +104,11 @@ const DetailScreen = (props) => {
           //   </View>
           // )}
           renderItem={({ item }) => (
-            <HorizontalItem item={item} navigation={props.navigation} />
+            <HorizontalItem
+              item={item}
+              cartData={cart?.data}
+              navigation={props.navigation}
+            />
           )}
           stickySectionHeadersEnabled={false}
           scrollEventThrottle={1}

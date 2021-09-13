@@ -1,11 +1,16 @@
 import React from "react";
 import Icon from "react-native-vector-icons/Feather";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { Text, View, TouchableOpacity, Button } from "react-native";
+import { Text, View, TouchableOpacity, AsyncStorage } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Button } from "react-native-paper";
 
-const CustomHeader = ({ isBack }) => {
+const CustomHeader = ({ isBack, title }) => {
   const navigation = useNavigation();
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("token");
+    navigation.navigate("Login");
+  };
   return (
     <View
       style={{
@@ -37,7 +42,7 @@ const CustomHeader = ({ isBack }) => {
             />
           </TouchableOpacity>
         ) : (
-          <Text style={{ textAlign: "center" }}>Place</Text>
+          <Text style={{ textAlign: "center" }}>{title ? title : "Cart"}</Text>
         )}
       </View>
       <View
@@ -46,7 +51,7 @@ const CustomHeader = ({ isBack }) => {
           justifyContent: "center",
         }}
       />
-      <View
+      {/* <View
         style={{
           flex: 1,
           justifyContent: "center",
@@ -62,7 +67,8 @@ const CustomHeader = ({ isBack }) => {
             />
           </TouchableOpacity>
         )}
-      </View>
+      </View> */}
+      <Button onPress={handleLogout}>Logout</Button>
     </View>
   );
 };

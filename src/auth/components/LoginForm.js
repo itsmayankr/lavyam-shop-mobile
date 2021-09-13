@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Field, reduxForm } from "redux-form";
+// import { Field, reduxForm } from "redux-form";
 import {
   StyleSheet,
   View,
@@ -17,18 +17,22 @@ import {
 //Colors
 import Colors from "../../utils/Colors";
 import CustomText from "../../components/UI/CustomText";
-import { Ionicons } from "@expo/vector-icons";
-//Redux
+import { Formik, Field } from "formik"; //Redux
 import { useDispatch, useSelector } from "react-redux";
 //Action
 // import { Login as LoginAction } from "../../../reducers";
 //PropTypes check
 import PropTypes from "prop-types";
-import renderField from "./RenderField";
+// import renderField from "./RenderField";
 //Authentiation Touch ID Face ID
-import * as LocalAuthentication from "expo-local-authentication";
-import * as SecureStore from "expo-secure-store";
+
 import { secretKey } from "../../utils/Config";
+
+import { TextInput } from "react-native-paper";
+//Colors
+
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { loginUser } from "../../redux/actions/auth";
 
 const { height } = Dimensions.get("window");
 
@@ -48,165 +52,109 @@ const validate = (values) => {
   return errors;
 };
 
-const Login = (props) => {
+const LoginForm = (props) => {
   const dispatch = useDispatch();
   const { handleSubmit } = props;
   const [showPass, setShowPass] = useState(false);
   const auth = useSelector((state) => state.auth);
   const unmounted = useRef(false);
-  const scanFingerprintOrFaceId = async () => {
-    const resData = await SecureStore.getItemAsync(secretKey);
-    if (resData === null) {
-      return alert("You have to enable LOGIN by touch/face ID");
-    }
-    const result = await LocalAuthentication.authenticateAsync({
-      promptMessage: "Authenticating",
-    });
-    if (result.success) {
-      const data = await JSON.parse(resData);
-      // dispatch(LoginAction(data.email, data.password));
-    }
-  };
 
-  const showAndroidAlert = () => {
-    Alert.alert(
-      "Fingerprint Scan",
-      "Place your finger over the touch sensor and press scan.",
-      [
-        {
-          text: "Scan",
-          onPress: () => {
-            scanFingerprintOrFaceId();
-          },
-        },
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel"),
-          style: "cancel",
-        },
-      ]
-    );
-  };
   useEffect(() => {
     return () => {
       unmounted.current = true;
     };
   }, []);
 
-  const submit = async (values) => {
-    try {
-      console.log(values);
-      // await dispatch(LoginAction(values.email, values.password));
-      props.navigation.navigate("ConfigScreen");
-    } catch (err) {
-      alert(err);
-    }
-  };
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS == "ios" ? "position" : "height"}
+    <Formik
+      initialValues={{ email: "rohanuser@gmail.com", password: "rohan25" }}
+      onSubmit={(values) => {
+        console.log(values);
+        dispatch(loginUser(values, props.navigation));
+      }}
     >
-      {/* <TouchableOpacity
-        onPress={() => {
-          props.navigation.goBack();
-        }}
-        style={{ position: "absolute", top: 50, left: 20 }}
-      >
-        <Ionicons name="ios-arrow-back" size={35} color={Colors.light_green} />
-      </TouchableOpacity> */}
-
-      <View style={styles.header}>
-        <View>
-          <CustomText style={styles.title}>LOGIN</CustomText>
-        </View>
-      </View>
-      <ScrollView>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View
-            style={{
-              flexDirection: "column",
-              marginHorizontal: 10,
-              zIndex: -1,
-            }}
-          >
+      {({ handleChange, handleBlur, handleSubmit, values }) => (
+        <KeyboardAvoidingView
+          behavior={Platform.OS == "ios" ? "position" : "height"}
+        >
+          <View style={styles.header}>
             <View>
-              <Field
-                name="email"
-                keyboardType="email-address"
-                label="Email"
-                icon="email"
-                component={renderField}
-              />
-              <Field
-                name="password"
-                keyboardType="default"
-                label="Password"
-                component={renderField}
-                secureTextEntry={showPass ? false : true}
-                passIcon="eye"
-                icon="lock"
-                showPass={showPass}
-                setShowPass={setShowPass}
-              />
+              <CustomText style={styles.title}>Login</CustomText>
             </View>
-            <View style={styles.group}>
-              <TouchableOpacity
-                onPress={() => {
-                  props.navigation.navigate("ForgetPwScreen");
+          </View>
+          <ScrollView>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View
+                style={{
+                  flexDirection: "column",
+                  marginHorizontal: 10,
+                  marginLeft: 20,
+                  marginRight: 20,
+                  zIndex: -1,
                 }}
               >
-                {/* <CustomText
-                  style={{
-                    ...styles.textSignSmall,
-                    // fontFamily: "Roboto-Medium",
-                  }}
+                <View>
+                  <TextInput
+                    onChangeText={handleChange("email")}
+                    onBlur={handleBlur("email")}
+                    value={values.email}
+                    keyboardType="email-address"
+                    label="Email"
+                    icon="email"
+                    style={styles.textInput}
+                    outlineColor={Colors.light_green}
+                    mode="outlined"
+                    theme={{ colors: { primary: Colors.green } }}
+                  />
+
+                  <TextInput
+                    onChangeText={handleChange("password")}
+                    onBlur={handleBlur("password")}
+                    value={values.password}
+                    keyboardType="default"
+                    label="Password"
+                    icon="lock"
+                    passIcon="eye"
+                    secureTextEntry={showPass ? false : true}
+                    style={styles.textInput}
+                    outlineColor={Colors.light_green}
+                    mode="outlined"
+                    theme={{ colors: { primary: Colors.green } }}
+                  />
+                </View>
+                <View style={styles.group}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      props.navigation.navigate("Register");
+                    }}
+                  >
+                    <CustomText
+                      style={{
+                        ...styles.textSignSmall,
+                        // fontFamily: "Roboto-Medium",
+                      }}
+                    >
+                      Register
+                    </CustomText>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                  onPress={handleSubmit}
+                  style={{ marginVertical: 10, alignItems: "center" }}
                 >
-                  Forget Password ?
-                </CustomText> */}
-              </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-              onPress={handleSubmit(submit)}
-              style={{ marginVertical: 10, alignItems: "center" }}
-            >
-              <View style={styles.signIn}>
-                {/* {auth.isLoading ? (
-                  <ActivityIndicator size="small" color="#fff" />
-                ) : ( */}
-                <CustomText style={styles.textSign}>Login</CustomText>
-                {/* )} */}
+                  <View style={styles.signIn}>
+                    <CustomText style={styles.textSign}>Login</CustomText>
+                  </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-          </View>
-        </TouchableWithoutFeedback>
-        {/* <View style={styles.center}>
-          <CustomText style={styles.loginOpt}>
-            Hoặc đăng nhập bằng khuôn mặt/vân tay
-          </CustomText>
-          <View style={styles.circleImage}>
-            <TouchableOpacity
-              onPress={
-                Platform.OS === "android"
-                  ? showAndroidAlert
-                  : scanFingerprintOrFaceId
-              }
-            >
-              <Image
-                source={require("../../assets/Images/faceid.png")}
-                style={styles.faceid}
-              />
-            </TouchableOpacity>
-          </View>
-        </View> */}
-      </ScrollView>
-    </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      )}
+    </Formik>
   );
 };
 
-Login.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
-};
 const styles = StyleSheet.create({
   group: {
     flexDirection: "row",
@@ -268,8 +216,10 @@ const styles = StyleSheet.create({
     // fontFamily: "Roboto-Medium",
     marginBottom: 10,
   },
+  textInput: {
+    backgroundColor: "#fff",
+    marginBottom: 10,
+    height: 44,
+  },
 });
-export const LoginForm = reduxForm({
-  form: "login", // a unique identifier for this form
-  validate, // <--- validation function given to redux-form
-})(Login);
+export default LoginForm;

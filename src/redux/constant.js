@@ -1,3 +1,9 @@
 export const GET_THEME = "GET_THEME";
 export const FETCH_SHOPS = "FETCH_SHOPS";
 export const FETCH_PRODUCTS = "FETCH_PRODUCTS";
+export const FETCH_PINCODES = "FETCH_PINCODES";
+export const FETCH_MARKETS = "FETCH_MARKETS";
+export const FETCH_CART = "FETCH_CART";
+export const FETCH_ORDERS = "FETCH_ORDERS";
+export const FETCH_CATEGORYS = "FETCH_CATEGORYS";
+export const NOTIFICATION = "NOTIFICATION";

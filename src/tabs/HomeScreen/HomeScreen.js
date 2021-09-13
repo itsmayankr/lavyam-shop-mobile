@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -6,30 +6,27 @@ import {
   Platform,
   FlatList,
   AsyncStorage,
+  Text,
+  ImageBackground,
+  Image,
 } from "react-native";
 //Redux
 import { useSelector, useDispatch, connect } from "react-redux";
-// import { fetchProducts } from "../../reducers";
+// import { fetchshops } from "../../reducers";
 //Colors
 import Colors from "../../utils/Colors";
 //Animation
 import Animated from "react-native-reanimated";
 //Components
-import {
-  Carousel,
-  Header,
-  CategorySection,
-  FloatButton,
-  categories,
-} from "./components";
+import { Carousel, Header, ShopSection } from "./components";
 import Skeleton from "../../components/Loaders/SkeletonLoading";
-import Snackbar from "../../components/Notification/Snackbar";
 import { getShops } from "../../redux/actions/shopAction";
 //FloatButton
 import { Portal, Provider } from "react-native-paper";
+import { ScrollView } from "react-native-gesture-handler";
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 //height
-const { height } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 const HomeScreen = (props) => {
   const { navigation } = props;
@@ -37,37 +34,50 @@ const HomeScreen = (props) => {
   //Header Animation
   let scrollY = new Animated.Value(0);
   // const user = useSelector((state) => state.auth.user);
-  // const products = useSelector((state) => state.store.products);
-  const products = useSelector((state) => state.shops.shops.shop);
-  console.log(products, "================");
+  // const shops = useSelector((state) => state.store.products);
+  const shops = useSelector((state) => state.shops.shops);
+  // const [shops, setShop] = useState({
+  //   totalCount: 0,
+  // });
   const isLoading = useSelector((state) => false);
   const notification = useSelector((state) => []);
   //fetch Api
-  useEffect(() => {
-    // AsyncStorage.removeItem("isFirstTime");
-    // const fetching = async () => {
-    //   try {
-    //     await dispatch(fetchProducts());
-    //   } catch (err) {
-    //     alert(err);
-    //   }
-    // };
-    // fetching();
-    props.getShops();
-  }, []);
+  const retrieveData = async () => {
+    try {
+      let pin = await AsyncStorage.getItem("pincode");
+      let mark = await AsyncStorage.getItem("market");
+      let category = await AsyncStorage.getItem("category");
 
+      if (pin !== null) {
+        // We have data!!
+        dispatch(getShops(null, pin, mark, category));
+        setPinCode(pincode);
+      }
+      if (mark !== null) {
+        // We have data!!
+        setMarket(market);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+  //fetch Api
+  useEffect(() => {
+    retrieveData();
+  }, []);
+  console.log(shops, "asd");
   return (
     <Provider>
       {isLoading ? (
         <Skeleton />
       ) : (
-        <View style={styles.container}>
+        // <View style={styles.container}>
+        <ScrollView style={styles.container}>
           <Header
             scrollPoint={scrollY}
             navigation={navigation}
-            products={products}
+            // shops={shops}
           ></Header>
-          <Portal>{/* <FloatButton /> */}</Portal>
           <AnimatedFlatList
             contentContainerStyle={styles.list}
             showsVerticalScrollIndicator={false}
@@ -85,31 +95,16 @@ const HomeScreen = (props) => {
               ],
               { useNativeDriver: true }
             )}
-            data={categories}
-            keyExtractor={(item) => item.name}
-            renderItem={({ item }) => (
-              <CategorySection
-                name={item.name}
-                bg={item.bg}
-                data={products}
-                navigation={navigation}
-              />
-            )}
+            // data={categories}
+            // keyExtractor={(item) => item.name}
+            // renderItem={({ item }) => (
+
+            // )}
           />
-          {Object.keys(notification).length === 0 ? (
-            <View />
-          ) : (
-            <Snackbar
-              checkVisible={true}
-              message={
-                "Rohan"
-                // Object.keys(user).length === 0
-                //   ? notification
-                //   : notification + " " + user.name
-              }
-            />
-          )}
-        </View>
+          <View>
+            <ShopSection data={shops} navigation={navigation} />
+          </View>
+        </ScrollView>
       )}
     </Provider>
   );
@@ -124,7 +119,13 @@ const styles = StyleSheet.create({
   },
   list: {
     width: "100%",
-    marginTop: 50,
+    marginTop: 20,
     paddingBottom: 20,
+  },
+  background: {
+    resizeMode: "stretch",
+    borderRadius: 5,
+    height: 400,
+    width: "100%",
   },
 });

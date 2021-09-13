@@ -1,11 +1,12 @@
-import * as React from "react";
-import { View, Dimensions } from "react-native";
+import React, { useState } from "react";
+import { View, Dimensions, AsyncStorage } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { Provider } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { Provider as PaperProvider } from "react-native-paper";
 
 import CustomDrawerContent from "./src/CustomDrawerContent";
@@ -13,21 +14,54 @@ import CustomDrawerContent from "./src/CustomDrawerContent";
 import LoginScreen from "./src/auth/LoginScreen";
 import RegisterScreen from "./src/auth/RegisterScreen";
 
-import HomeStack from "./src/tabs/homeStack";
+import HomeStack from "./src/tabs/HomeStack";
 import SettingStack from "./src/tabs/settingsStack";
 
-import NotificationScreen from "./src/drawer/NotificationScreen";
+import NotificationScreen from "./src/tabs/NotificationScreen/NotificationScreen";
 
 import store from "./src/redux/store/store";
 import ConfigScreen from "./src/tabs/ConfigScreen/ConfigScreen";
+import OrderStack from "./src/tabs/orderStack";
+// if (!window.location) {
+//   // App is running in simulator
+//   window.navigator.userAgent = "ReactNative";
+// }
+
+// This must be below your `window.navigator` hack above
+import io from "socket.io-client";
+import { getNotifications } from "./src/redux/actions/notificationAction";
+
+let socket = io("http://192.168.228.109:9001", {
+  transports: ["websocket"],
+  jsonp: false,
+});
 
 const navOptionHandler = () => ({
   headerShown: false,
 });
 
 const Tab = createBottomTabNavigator();
+const NotificationStack = createStackNavigator();
 
 const TabNavigator = () => {
+  const dispatch = useDispatch();
+
+  const notificationData = useSelector(
+    (state) => state.notification.notification
+  );
+  const [notification, setNotifications] = useState(notificationData);
+
+  socket.connect();
+
+  socket.on("611a9f504f6430536a310ea1", (data) => {
+    console.log(data.order, "=============================Socket");
+    setNotifications(data.order);
+  });
+
+  React.useEffect(() => {
+    dispatch(getNotifications(notification));
+  }, [notification]);
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -38,6 +72,24 @@ const TabNavigator = () => {
             iconName = focused ? "ios-home" : "ios-home-outline";
           } else if (route.name === "Cart") {
             iconName = focused ? "cart" : "cart";
+          } else if (route.name === "Order") {
+            iconName = focused ? "truck-check" : "truck-check-outline";
+            return (
+              <MaterialCommunityIcons
+                name={iconName}
+                size={size}
+                color={color}
+              />
+            );
+          } else if (route.name === "Notification") {
+            iconName = focused ? "bell" : "bell-outline";
+            return (
+              <MaterialCommunityIcons
+                name={iconName}
+                size={size}
+                color={color}
+              />
+            );
           }
 
           // You can return any component that you like here!
@@ -51,6 +103,8 @@ const TabNavigator = () => {
     >
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Cart" component={SettingStack} />
+      <Tab.Screen name="Order" component={OrderStack} />
+      <Tab.Screen name="Notification" component={NotificationScreen} />
     </Tab.Navigator>
   );
 };
@@ -67,7 +121,6 @@ const DrawerNavigator = () => {
       }}
     >
       <Drawer.Screen name="MenuTab" component={TabNavigator} />
-      <Drawer.Screen name="Notifications" component={NotificationScreen} />
     </Drawer.Navigator>
   );
 };
@@ -79,7 +132,7 @@ export default function App() {
     <PaperProvider>
       <Provider store={store()}>
         <NavigationContainer>
-          <StackApp.Navigator initialRouteName="Login">
+          <StackApp.Navigator initialRouteName={"HomeApp"}>
             <StackApp.Screen
               name="HomeApp"
               component={DrawerNavigator}
@@ -90,6 +143,7 @@ export default function App() {
               component={LoginScreen}
               options={navOptionHandler}
             />
+
             <StackApp.Screen
               name="ConfigScreen"
               component={ConfigScreen}

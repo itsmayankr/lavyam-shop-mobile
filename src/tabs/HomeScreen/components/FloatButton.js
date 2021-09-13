@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { FAB } from "react-native-paper";
+import { useDispatch } from "react-redux";
+import { orderNow } from "../../../redux/actions/orderAction";
 import Colors from "../../../utils/Colors";
 
-export const FloatButton = () => {
+export const FloatButton = ({ handleOrder }) => {
   const [state, setState] = useState({ open: false });
-  const onStateChange = ({ open }) => setState({ open });
-  const { open } = state;
+
   return (
     <FAB
       style={styles.fab}
       small
-      label="Bye Now"
-      onPress={() => console.log("Pressed")}
+      label="Buy Now"
+      onPress={() => handleOrder()}
     />
   );
 };

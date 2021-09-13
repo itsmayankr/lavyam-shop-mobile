@@ -22,8 +22,6 @@ const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 const ProductBody = ({ navigation, productsFilter, searchFilterFunction }) => {
   const DATA = [];
 
-  console.log(productsFilter);
-
   DATA.push({ title: "Shops", data: productsFilter.shop });
   const scrollY = new Value(0);
   const sectionListRef = useRef(null);

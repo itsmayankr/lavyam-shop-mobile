@@ -1,13 +1,14 @@
 import * as types from "../constant";
-import axios from "axios";
+import axios from "../../config/axios";
 // import { toast } from "react-toastify";
 
-const getShops = (page, search) => (dispatch) => {
+const getShops = (page, pinCodeName, marketName, category) => (dispatch) => {
   let p = page ? `page=${page}` : `page=${1}`;
-  let s = search ? `&search=${search}` : "";
-
+  let pin = pinCodeName ? `&pinCodeName=${pinCodeName}` : "";
+  let market = marketName ? `&marketName=${marketName}` : "";
+  let categoryval = category ? `&category=${category}` : "";
   axios
-    .get(`http://marton-dev.lavyam.com/apis/v1/shop?${p}${s}`)
+    .get(`/shopsearch?${p}${pin}${market}${categoryval}`)
     .then((response) => {
       dispatch({
         type: types.FETCH_SHOPS,
