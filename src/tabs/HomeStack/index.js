@@ -20,13 +20,7 @@ const HomeStack = () => {
       <StackHome.Screen
         name="Detail"
         component={DetailScreen}
-        options={() => ({
-          headerShown: true,
-          headerBackTitleVisible: false,
-          headerTitle: true,
-          headerTransparent: true,
-          headerTintColor: "#fff",
-        })}
+        options={navOptionHandler}
       />
     </StackHome.Navigator>
   );

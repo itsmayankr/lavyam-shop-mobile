@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Dimensions, AsyncStorage } from "react-native";
+import { View, Dimensions, AsyncStorage, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -68,11 +68,26 @@ const TabNavigator = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === "Home") {
-            iconName = focused ? "ios-home" : "ios-home-outline";
+          if (route.name === "MartOn") {
+            iconName = focused
+              ? require("./src/assets/Images/Iconicmark-coloured.png")
+              : require("./src/assets/Images/Iconicmark-black.png");
+            return (
+              <Image
+                style={{ width: 32, height: 20, marginRight: 10 }}
+                source={iconName}
+              />
+            );
           } else if (route.name === "Cart") {
-            iconName = focused ? "cart" : "cart";
-          } else if (route.name === "Order") {
+            iconName = focused ? "cart" : "cart-outline";
+            return (
+              <MaterialCommunityIcons
+                name={iconName}
+                size={size}
+                color={color}
+              />
+            );
+          } else if (route.name === "Your Orders") {
             iconName = focused ? "truck-check" : "truck-check-outline";
             return (
               <MaterialCommunityIcons
@@ -101,9 +116,9 @@ const TabNavigator = () => {
         inactiveTintColor: "gray",
       }}
     >
-      <Tab.Screen name="Home" component={HomeStack} />
+      <Tab.Screen name="MartOn" component={HomeStack} />
       <Tab.Screen name="Cart" component={SettingStack} />
-      <Tab.Screen name="Order" component={OrderStack} />
+      <Tab.Screen name="Your Orders" component={OrderStack} />
       <Tab.Screen name="Notification" component={NotificationScreen} />
     </Tab.Navigator>
   );
@@ -132,7 +147,7 @@ export default function App() {
     <PaperProvider>
       <Provider store={store()}>
         <NavigationContainer>
-          <StackApp.Navigator initialRouteName={"HomeApp"}>
+          <StackApp.Navigator initialRouteName={"Cart"}>
             <StackApp.Screen
               name="HomeApp"
               component={DrawerNavigator}

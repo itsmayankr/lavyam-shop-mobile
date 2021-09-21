@@ -13,7 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import Colors from "../../../utils/Colors";
 //Text
 import CustomText from "../../../components/UI/CustomText";
-import { BlurView } from "expo-blur";
+
 //PropTypes check
 import PropTypes from "prop-types";
 
@@ -28,59 +28,46 @@ export class ShopList extends React.PureComponent {
       navigation.navigate("Detail", { item });
     };
     return (
-      <View style={{ width: "48%" }}>
-        <BlurView tint="light" intensity={70} style={styles.container}>
-          <View
-            style={{
-              width: "100%",
-              justifyContent: "center",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <TouchableOpacity onPress={toDetail}>
-              <Image
-                source={{
-                  uri: "https://image.shutterstock.com/image-photo/healthy-food-clean-eating-selection-260nw-722718097.jpg",
-                }}
-                style={styles.image}
-                onLoadStart={() => {
-                  this.setState({ loading: true });
-                }}
-                onLoadEnd={() => this.setState({ loading: false })}
-              />
-            </TouchableOpacity>
-            {this.state.loading && (
-              <View
-                style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <ActivityIndicator size="small" color={Colors.grey} />
-              </View>
-            )}
+      <View style={[styles.container, styles.shadow]}>
+        {/* <View style={styles.container}> */}
+        <View
+          style={{
+            width: "100%",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity onPress={toDetail}>
+            <Image
+              source={{
+                uri: "https://image.shutterstock.com/image-photo/healthy-food-clean-eating-selection-260nw-722718097.jpg",
+              }}
+              style={styles.image}
+              onLoadStart={() => {
+                this.setState({ loading: true });
+              }}
+              onLoadEnd={() => this.setState({ loading: false })}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.center}>
+          <CustomText style={styles.name}>{item.shopName}</CustomText>
+        </View>
+        <View style={styles.info}>
+          <View style={styles.rate}>
+            {/* <AntDesign name="star" color="#fed922" size={15} /> */}
+            <Text style={styles.score}>Category: {item.categoryName}</Text>
           </View>
-          <View style={styles.center}>
-            <CustomText style={styles.name}>{item.shopName}</CustomText>
-          </View>
-          <View style={styles.info}>
-            <View style={styles.rate}>
-              {/* <AntDesign name="star" color="#fed922" size={15} /> */}
-              <Text style={styles.score}>Category: {item.categoryName}</Text>
-            </View>
-            {/* <NumberFormat price={item.price} /> */}
-          </View>
-          <View style={{ marginHorizontal: 5 }}>
-            <TouchableOpacity style={styles.btn} onPress={toDetail}>
-              <CustomText style={styles.detailBtn}>Select Shop</CustomText>
-            </TouchableOpacity>
-          </View>
-        </BlurView>
+          {/* <NumberFormat price={item.price} /> */}
+        </View>
+        <View style={{ marginHorizontal: 5 }}>
+          <TouchableOpacity style={styles.btn} onPress={toDetail}>
+            <CustomText style={styles.detailBtn}>Select Shop</CustomText>
+          </TouchableOpacity>
+        </View>
       </View>
+      // </View>
     );
   }
 }
@@ -92,11 +79,26 @@ ShopList.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    // width: "100%",
     height: 190,
-    // backgroundColor: "rgba(255, 255, 255, 0.9)",
-    marginBottom: 15,
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    // backgroundColor: "yellow",
+    // marginBottom: 15,
     borderRadius: 8,
+    //asd
+    width: "48%",
+
+    marginBottom: 15,
+  },
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.46,
+    shadowRadius: 11.14,
+    elevation: 4,
   },
   image: {
     width: "100%",

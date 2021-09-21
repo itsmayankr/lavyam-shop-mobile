@@ -37,7 +37,7 @@ const CustomHeader = ({ isBack, title }) => {
               style={{ textAlign: "left", marginLeft: 25 }}
               name="arrow-back-ios"
               size={18}
-              color="black"
+              color="#000"
               onPress={() => navigation.goBack()}
             />
           </TouchableOpacity>

@@ -19,7 +19,8 @@ import { getCart } from "../../redux/actions/cartScreenAction";
 import { orderNow } from "../../redux/actions/orderAction";
 import SnackBar from "../../redux/actions/snackBar";
 import { FloatButton } from "../HomeScreen/components";
-import HorizontalItem from "./HorizontalItem";
+import { Header } from "../DetailScreen/components/Header";
+import CartList from "./CartList";
 
 const SettingsScreen = () => {
   const navigation = useNavigation();
@@ -34,36 +35,44 @@ const SettingsScreen = () => {
       cartId: cart?._id,
     };
     dispatch(orderNow(cart?._id, navigation));
-    console.log(cart._id) 
+    console.log(cart._id);
   };
 
   return (
-    <SafeAreaView style={styles.AndroidSafeArea}>
-      <CustomHeader isback={true} />
-      <Portal>
-        <FloatButton handleOrder={handleOrder} />
-      </Portal>
-      <ScrollView
-        style={{
-          flex: 1,
-          // justifyContent: "center",
-          // alignItems: "center",
-        }}
-      >
-        {cart?.items?.map((item) => (
-          <HorizontalItem key={item._id} item={item} />
-        ))}
-      </ScrollView>
-    </SafeAreaView>
+    // <SafeAreaView style={styles.AndroidSafeArea}>
+    //   <CustomHeader isback={true} />
+    //   <Portal>
+    //     <FloatButton handleOrder={handleOrder} />
+    //   </Portal>
+    //   <ScrollView
+    //     style={{
+    //       flex: 1,
+    //     }}
+    //   >
+    //     {cart?.items?.map((item) => (
+    //       <CartList key={item._id} item={item} />
+    //     ))}
+    //   </ScrollView>
+    // </SafeAreaView>
+    <View style={styles.container}>
+      <Header shopName="Cart" />
+      {cart?.items?.map((item) => (
+        <CartList key={item._id} item={item} />
+      ))}
+    </View>
   );
 };
 
 export default SettingsScreen;
 
 const styles = StyleSheet.create({
-  AndroidSafeArea: {
-    flex: 1,
-    backgroundColor: "white",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-  },
+  container: { flex: 1, backgroundColor: "#fff", paddingBottom: 20 },
 });
+
+// const styles = StyleSheet.create({
+//   AndroidSafeArea: {
+//     flex: 1,
+//     backgroundColor: "white",
+//     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+//   },
+// });

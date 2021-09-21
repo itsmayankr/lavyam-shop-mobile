@@ -73,11 +73,7 @@ const HomeScreen = (props) => {
       ) : (
         // <View style={styles.container}>
         <ScrollView style={styles.container}>
-          <Header
-            scrollPoint={scrollY}
-            navigation={navigation}
-            // shops={shops}
-          ></Header>
+          <Header />
           <AnimatedFlatList
             contentContainerStyle={styles.list}
             showsVerticalScrollIndicator={false}

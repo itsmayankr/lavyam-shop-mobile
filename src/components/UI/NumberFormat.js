@@ -14,6 +14,8 @@ const Number = ({ price, color }, props) => {
       displayType={"text"}
       thousandSeparator={true}
       prefix={"₹"}
+      decimalSeparator="."
+      decimalScale={2}
       renderText={(formattedValue) => (
         <View
           style={
@@ -25,7 +27,7 @@ const Number = ({ price, color }, props) => {
           <CustomText
             style={{
               ...props.style,
-              color: color ? "#fff" : Colors.light_green,
+              color: color ? "#fff" : Colors.black,
             }}
           >
             {formattedValue}

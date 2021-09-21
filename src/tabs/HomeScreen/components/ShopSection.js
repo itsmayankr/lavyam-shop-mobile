@@ -83,8 +83,7 @@ const styles = StyleSheet.create({
   shopList: {
     width: "100%",
     marginTop: 10,
-    paddingHorizontal: 10,
-    // position: "absolute",
+    paddingHorizontal: 15,
     top: 20,
   },
   seeMore: {

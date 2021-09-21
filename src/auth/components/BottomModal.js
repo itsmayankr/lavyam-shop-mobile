@@ -1,14 +1,48 @@
-import React, { useCallback, useRef, useState } from "react";
-import { View, Button, Dimensions, Text } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 // import RNSingleSelect, {
 //   ISingleSelectDataType,
 // } from "@freakycoder/react-native-single-select";
 import { Formik, Field } from "formik";
-import SelectDropdown from "react-native-select-dropdown";
+import CustomText from "../../components/UI/CustomText";
+import Colors from "../../utils/Colors";
 
+import { Picker } from "@react-native-picker/picker";
 export default function BottomModal({ pincodeData }) {
-  const countries = ["Egypt", "Canada", "Australia", "Ireland"];
+  const [selectedLanguage, setSelectedLanguage] = useState();
 
+  const data = [
+    { label: "DataCat", value: 1 },
+    { label: "DataDog", value: 2 },
+    { label: "DataSnake", value: 3 },
+    { label: "DataPlatypus", value: 4 },
+    { label: "DataWhale", value: 5 },
+    { label: "DataCat", value: 1 },
+    { label: "DataDog", value: 2 },
+    { label: "DataSnake", value: 3 },
+    { label: "DataPlatypus", value: 4 },
+    { label: "DataWhale", value: 5 },
+    { label: "DataCat", value: 1 },
+    { label: "DataDog", value: 2 },
+    { label: "DataSnake", value: 3 },
+    { label: "DataPlatypus", value: 4 },
+    { label: "DataWhale", value: 5 },
+    { label: "DataCat", value: 1 },
+    { label: "DataDog", value: 2 },
+    { label: "DataSnake", value: 3 },
+    { label: "DataPlatypus", value: 4 },
+    { label: "DataWhale", value: 5 },
+    { label: "DataCat", value: 1 },
+    { label: "DataDog", value: 2 },
+    { label: "DataSnake", value: 3 },
+    { label: "DataPlatypus", value: 4 },
+    { label: "DataWhale", value: 5 },
+    { label: "DataCat", value: 1 },
+    { label: "DataDog", value: 2 },
+    { label: "DataSnake", value: 3 },
+    { label: "DataPlatypus", value: 4 },
+    { label: "DataWhale", value: 5 },
+  ];
   return (
     <View
       style={{
@@ -30,29 +64,97 @@ export default function BottomModal({ pincodeData }) {
         }}
       >
         {({ handleChange, setFieldValue, handleSubmit, values }) => (
-          <View>
-            <View style={{ marginTop: 20 }}>
-              <SelectDropdown
-                data={pincodeData.map((ele) => ele.pinCode)}
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index);
-                }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  // text represented after item is selected
-                  // if data array is an array of objects then return selectedItem.property to render after item is selected
-                  return selectedItem;
-                }}
-                rowTextForSelection={(item, index) => {
-                  // text represented for each item in dropdown
-                  // if data array is an array of objects then return item.property to represent item in dropdown
-                  return item;
-                }}
-              />
+          <View style={{ height: "100%" }}>
+            <View style={styles.card}>
+              <Picker
+                selectedValue={selectedLanguage}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedLanguage(itemValue)
+                }
+                style={{ height: 30 }}
+              >
+                <Picker.Item label={"Select PIN Code"} />
+                {pincodeData?.map((ele, i) => (
+                  <Picker.Item
+                    style={styles.pickerItem}
+                    key={i}
+                    label={ele.pinCode}
+                    value={ele.pinCode}
+                  />
+                ))}
+              </Picker>
             </View>
-            <Button onPress={handleSubmit} title="Submit" />
+            <View style={styles.card}>
+              <Picker
+                selectedValue={selectedLanguage}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedLanguage(itemValue)
+                }
+                style={{ height: 30 }}
+              >
+                <Picker.Item label={"Select Market"} />
+                {data.map((ele, i) => (
+                  <Picker.Item
+                    style={styles.pickerItem}
+                    key={i}
+                    label={ele.label}
+                    value={ele.value}
+                  />
+                ))}
+              </Picker>
+            </View>
+            <View>
+              <TouchableOpacity
+                onPress={() => handleSubmit("123", "123")}
+                style={{
+                  alignItems: "center",
+                  marginTop: 30,
+                  position: "absolute",
+                  top: 120,
+                  width: "100%",
+                }}
+              >
+                <View style={styles.signIn}>
+                  <CustomText style={styles.textSign}>Submit</CustomText>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       </Formik>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  signIn: {
+    width: "100%",
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 5,
+    flexDirection: "row",
+    backgroundColor: Colors.lighter_green,
+  },
+  textSign: {
+    fontSize: 15,
+    color: "#fff",
+    // fontFamily: "Roboto-Medium",
+  },
+  card: {
+    borderWidth: 1,
+    width: 314,
+    borderColor: Colors.green,
+    borderRadius: 5,
+    backgroundColor: "#fff",
+    marginTop: 10,
+    paddingHorizontal: 4,
+    paddingVertical: 6,
+    marginTop: 30,
+  },
+  pickerItem: {
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+    color: "red",
+  },
+});

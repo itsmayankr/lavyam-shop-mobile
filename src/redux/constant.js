@@ -7,3 +7,4 @@ export const FETCH_CART = "FETCH_CART";
 export const FETCH_ORDERS = "FETCH_ORDERS";
 export const FETCH_CATEGORYS = "FETCH_CATEGORYS";
 export const NOTIFICATION = "NOTIFICATION";
+export const CART_ADD_LOADER = "CART_ADD_LOADER";

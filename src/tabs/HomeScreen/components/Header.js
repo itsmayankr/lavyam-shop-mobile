@@ -76,6 +76,7 @@ export const Header = () => {
                 borderTopLeftRadius: 10,
                 borderTopRightRadius: 10,
                 height: "50%",
+                position: "relative",
               },
               draggableIcon: {
                 backgroundColor: Colors.green,
