@@ -39,26 +39,13 @@ const SettingsScreen = () => {
   };
 
   return (
-    // <SafeAreaView style={styles.AndroidSafeArea}>
-    //   <CustomHeader isback={true} />
-    //   <Portal>
-    //     <FloatButton handleOrder={handleOrder} />
-    //   </Portal>
-    //   <ScrollView
-    //     style={{
-    //       flex: 1,
-    //     }}
-    //   >
-    //     {cart?.items?.map((item) => (
-    //       <CartList key={item._id} item={item} />
-    //     ))}
-    //   </ScrollView>
-    // </SafeAreaView>
     <View style={styles.container}>
       <Header shopName="Cart" />
-      {cart?.items?.map((item) => (
-        <CartList key={item._id} item={item} />
-      ))}
+      <ScrollView>
+        {cart?.items?.map((item) => (
+          <CartList key={item._id} item={item} />
+        ))}
+      </ScrollView>
     </View>
   );
 };

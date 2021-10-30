@@ -20,7 +20,7 @@ import SettingStack from "./src/tabs/settingsStack";
 import NotificationScreen from "./src/tabs/NotificationScreen/NotificationScreen";
 
 import store from "./src/redux/store/store";
-import ConfigScreen from "./src/tabs/ConfigScreen/ConfigScreen";
+// import ConfigScreen from "./src/tabs/ConfigScreen/ConfigScreen";
 import OrderStack from "./src/tabs/orderStack";
 // if (!window.location) {
 //   // App is running in simulator
@@ -31,7 +31,7 @@ import OrderStack from "./src/tabs/orderStack";
 import io from "socket.io-client";
 import { getNotifications } from "./src/redux/actions/notificationAction";
 
-let socket = io("http://192.168.228.109:9001", {
+let socket = io("http://192.168.228.105:9001/apis/v1", {
   transports: ["websocket"],
   jsonp: false,
 });
@@ -126,19 +126,19 @@ const TabNavigator = () => {
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigator = () => {
-  return (
-    <Drawer.Navigator
-      initialRouteName="MenuTab"
-      drawerContent={(props) => CustomDrawerContent(props)}
-      drawerStyle={{
-        width: Dimensions.get("window").width,
-      }}
-    >
-      <Drawer.Screen name="MenuTab" component={TabNavigator} />
-    </Drawer.Navigator>
-  );
-};
+// const DrawerNavigator = () => {
+//   return (
+//     <Drawer.Navigator
+//       initialRouteName="MenuTab"
+//       // drawerContent={(props) => CustomDrawerContent(props)}
+//       drawerStyle={{
+//         width: Dimensions.get("window").width,
+//       }}
+//     >
+//       <Drawer.Screen name="MenuTab" component={TabNavigator} />
+//     </Drawer.Navigator>
+//   );
+// };
 
 export default function App() {
   const StackApp = createStackNavigator();
@@ -147,10 +147,10 @@ export default function App() {
     <PaperProvider>
       <Provider store={store()}>
         <NavigationContainer>
-          <StackApp.Navigator initialRouteName={"Cart"}>
+          <StackApp.Navigator initialRouteName={"HomeApp"}>
             <StackApp.Screen
               name="HomeApp"
-              component={DrawerNavigator}
+              component={TabNavigator}
               options={navOptionHandler}
             />
             <StackApp.Screen
@@ -158,17 +158,16 @@ export default function App() {
               component={LoginScreen}
               options={navOptionHandler}
             />
-
-            <StackApp.Screen
-              name="ConfigScreen"
-              component={ConfigScreen}
-              options={navOptionHandler}
-            />
             <StackApp.Screen
               name="Register"
               component={RegisterScreen}
               options={navOptionHandler}
             />
+            {/* <StackApp.Screen
+              name="MenuTab"
+              component={TabNavigator}
+              options={navOptionHandler}
+            /> */}
           </StackApp.Navigator>
         </NavigationContainer>
       </Provider>

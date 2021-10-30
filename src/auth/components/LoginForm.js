@@ -33,6 +33,7 @@ import { TextInput } from "react-native-paper";
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { loginUser } from "../../redux/actions/auth";
+import { useNavigation } from "@react-navigation/native";
 
 const { height } = Dimensions.get("window");
 
@@ -58,7 +59,7 @@ const LoginForm = (props) => {
   const [showPass, setShowPass] = useState(false);
   const auth = useSelector((state) => state.auth);
   const unmounted = useRef(false);
-
+  const navigation = useNavigation();
   useEffect(() => {
     return () => {
       unmounted.current = true;
@@ -70,7 +71,7 @@ const LoginForm = (props) => {
       initialValues={{ email: "rohanuser@gmail.com", password: "rohan25" }}
       onSubmit={(values) => {
         console.log(values);
-        dispatch(loginUser(values, props.navigation));
+        dispatch(loginUser(values, navigation));
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (

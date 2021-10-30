@@ -17,7 +17,6 @@ const getCart = () => async (dispatch) => {
       },
     })
     .then((response) => {
-      console.log(response.data, "action");
       dispatch({
         type: types.FETCH_CART,
         payload: response.data,

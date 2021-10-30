@@ -11,25 +11,73 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Entypo from "react-native-vector-icons/Entypo";
 //Colors
 import Colors from "../../../utils/Colors";
 import BottomModal from "../../../auth/components/BottomModal";
 import { useDispatch, useSelector } from "react-redux";
-import { getPincodes } from "../../../redux/actions/configScreenActions";
+import {
+  getCategorys,
+  getPincodes,
+} from "../../../redux/actions/configScreenActions";
 
 const { width } = Dimensions.get("window");
 export const Header = () => {
   const refRBSheet = useRef();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.configScreen);
+
+  const [pincode, setPinCode] = useState("");
+  const [market, setMarket] = useState("");
+  const [category, setCategory] = useState("");
+  const [closeOnDragDown, setCloseOnDragDown] = useState(false);
+  const [closeOnPressBack, setCloseOnPressBack] = useState(true);
+
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   useEffect(() => {
     dispatch(getPincodes());
+    dispatch(getCategorys());
+    handleBottomModal();
+    localStorageValues();
+    console.log(pincode, "pincodepincodepincodepincode");
+    console.log("useEffect called header");
   }, []);
 
-  const handleSubmit = (pincode, market) => {
-    console.log(pincode, market);
+  const handleBottomModal = async () => {
+    let pin = await AsyncStorage.getItem("pincode");
+    let mark = await AsyncStorage.getItem("market");
+
+    console.log(pin, mark, "::::::::::::::::::::::::::::");
+
+    (pin === null || mark === null) && refRBSheet.current.open();
+
+    !pin && !mark && setCloseOnPressBack(false);
   };
+
+  useEffect(() => {
+    localStorageValues();
+  }, [isSubmitted]);
+
+  const handleSubmitChildren = () => {
+    setIsSubmitted(!isSubmitted);
+  };
+
+  const localStorageValues = async () => {
+    let pin = await AsyncStorage.getItem("pincode");
+    let mark = await AsyncStorage.getItem("market");
+    let category = await AsyncStorage.getItem("category");
+    pin && mark && setCloseOnDragDown(true);
+    console.log(
+      { pin, mark, category },
+      "::::::::::::::::::ASDSAD::::::::::::::::::"
+    );
+    pin && setPinCode(pin);
+    mark && setMarket(mark);
+    category && setCategory(category);
+  };
+
   return (
     <>
       <SafeAreaView style={styles.header_safe_area}>
@@ -48,7 +96,7 @@ export const Header = () => {
                   width: width,
                 }}
               >
-                248007
+                {pincode || "Select PIN Code"}
               </Text>
             </View>
             <View style={{ flexDirection: "row" }}>
@@ -62,21 +110,22 @@ export const Header = () => {
                   color: Colors.light_green,
                 }}
               >
-                select market
+                {market || "Select market"}
               </Text>
             </View>
           </TouchableOpacity>
 
           <RBSheet
             ref={refRBSheet}
-            closeOnDragDown={true}
+            closeOnDragDown={closeOnDragDown}
+            closeOnPressBack={closeOnPressBack}
             closeOnPressMask={false}
             customStyles={{
               container: {
                 borderTopLeftRadius: 10,
                 borderTopRightRadius: 10,
                 height: "50%",
-                position: "relative",
+                // position: "relative",
               },
               draggableIcon: {
                 backgroundColor: Colors.green,
@@ -85,7 +134,10 @@ export const Header = () => {
           >
             <BottomModal
               pincodeData={data?.pincodes?.pinCode}
-              handleSubmit={handleSubmit}
+              marketsData={data?.markets?.markets}
+              categoryData={data?.categorys?.categorys}
+              refRBSheet={refRBSheet}
+              handleSubmitChildren={handleSubmitChildren}
             />
           </RBSheet>
         </View>

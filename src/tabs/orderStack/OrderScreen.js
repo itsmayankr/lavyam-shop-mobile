@@ -19,6 +19,7 @@ import { getCart } from "../../redux/actions/cartScreenAction";
 import { getOrder, orderNow } from "../../redux/actions/orderAction";
 import SnackBar from "../../redux/actions/snackBar";
 import { FloatButton } from "../HomeScreen/components";
+import { Header } from "./Header";
 import HorizontalItem from "./HorizontalItem";
 
 const OrderScreen = () => {
@@ -30,7 +31,7 @@ const OrderScreen = () => {
   }, []);
 
   const orders = useSelector((state) => state.orders.orders);
-  console.log(orders);
+  // console.log(orders);
 
   // const handleOrder = () => {
   //   const data = {
@@ -40,11 +41,9 @@ const OrderScreen = () => {
   // };
 
   return (
-    <SafeAreaView style={styles.AndroidSafeArea}>
-      <CustomHeader isback={true} title="Orders" />
-      {/* <Portal>
-        <FloatButton handleOrder={handleOrder} />
-      </Portal> */}
+    <View style={styles.AndroidSafeArea}>
+      <Header shopName={"Orders"} />
+
       <ScrollView
         style={{
           flex: 1,
@@ -57,7 +56,7 @@ const OrderScreen = () => {
           <HorizontalItem key={order._id} item={order} />
         ))}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -67,6 +66,6 @@ const styles = StyleSheet.create({
   AndroidSafeArea: {
     flex: 1,
     backgroundColor: "white",
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 });

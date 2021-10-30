@@ -4,7 +4,7 @@ const axios = Axios.create({
   // baseURL:
   //   process.env.REACT_APP_PRODUCTION_BASE_URL ||
   // ``,
-  baseURL: `http://192.168.228.104:9001/apis/v1`,
+  baseURL: `http://192.168.228.105:9001/apis/v1`,
 });
 
 // axios.interceptors.request.use(function (config) {

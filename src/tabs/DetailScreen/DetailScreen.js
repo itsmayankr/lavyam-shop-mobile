@@ -21,6 +21,7 @@ import ProductList from "../ProductScreen/components/ProductList";
 import { getProducts } from "../../redux/actions/productsAction";
 
 import { getCart } from "../../redux/actions/cartScreenAction";
+import { ScrollView } from "react-native-gesture-handler";
 
 const DetailScreen = (props) => {
   const { item } = props.route.params;
@@ -38,7 +39,7 @@ const DetailScreen = (props) => {
     props.getProducts(null, null, item._id);
     dispatch(getCart());
   }, [item]);
-  console.log(item.shopName, "asdjsjdlkjslkdjlkasjkldsakldj");
+
   return (
     <View style={styles.container}>
       <Header shopName={item?.shopName} />

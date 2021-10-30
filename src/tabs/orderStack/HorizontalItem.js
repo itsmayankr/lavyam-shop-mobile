@@ -10,7 +10,7 @@ import NumberFormat from "../../components/UI/NumberFormat";
 import PropTypes from "prop-types";
 import { Text } from "react-native-paper";
 
-const HorizontalItem = ({ item, navigation }) => {
+const HorizontalItem = ({ item }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [lastItem] = item?.cart?.items.slice(-1);
@@ -70,7 +70,6 @@ const HorizontalItem = ({ item, navigation }) => {
 
 HorizontalItem.propTypes = {
   item: PropTypes.object.isRequired,
-  navigation: PropTypes.object.isRequired,
 };
 
 const styles = StyleSheet.create({

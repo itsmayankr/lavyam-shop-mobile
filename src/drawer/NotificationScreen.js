@@ -12,7 +12,7 @@ import CustomHeader from "../CustomHeader";
 const NotificationScreen = () => {
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
-      <CustomHeader />
+      {/* <CustomHeader /> */}
       <View
         style={{
           flex: 1,

@@ -16,7 +16,7 @@ import { getNotificationsNew } from "../../redux/actions/notificationAction";
 import io from "socket.io-client";
 // import { getNotifications } from "./src/redux/actions/notificationAction";
 
-let socket = io("http://192.168.228.109:9001", {
+let socket = io("http://192.168.228.255:9001/apis/v1", {
   transports: ["websocket"],
   jsonp: false,
 });

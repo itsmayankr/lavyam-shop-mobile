@@ -47,6 +47,11 @@ const HomeScreen = (props) => {
       let pin = await AsyncStorage.getItem("pincode");
       let mark = await AsyncStorage.getItem("market");
       let category = await AsyncStorage.getItem("category");
+      console.log(
+        { pin, mark, category },
+        ":::::::::::AS::::::::::AS::::::::::"
+      );
+      // await AsyncStorage.clear();
 
       if (pin !== null) {
         // We have data!!
@@ -65,7 +70,6 @@ const HomeScreen = (props) => {
   useEffect(() => {
     retrieveData();
   }, []);
-  console.log(shops, "asd");
   return (
     <Provider>
       {isLoading ? (

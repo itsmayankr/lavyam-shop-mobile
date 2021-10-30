@@ -13,11 +13,11 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 //Colors
-import Colors from "../../../utils/Colors";
+import Colors from "../../utils/Colors";
 import { useDispatch } from "react-redux";
 // import { getPincodes } from "../../redux/actions/configScreenActions";
 import { useNavigation } from "@react-navigation/native";
-import { logout } from "../../../redux/actions/auth";
+import { logout } from "../../redux/actions/auth";
 
 export const Header = ({ shopName }) => {
   const navigation = useNavigation();

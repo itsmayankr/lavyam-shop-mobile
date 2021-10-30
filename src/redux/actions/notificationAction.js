@@ -24,6 +24,7 @@ const getNotificationsNew = () => async (dispatch) => {
       },
     })
     .then((response) => {
+      console.log(response);
       dispatch({
         type: types.NOTIFICATION,
         payload: response.data.notifications,

@@ -14,26 +14,22 @@ import Colors from "../../../utils/Colors";
 import CustomText from "../../../components/UI/CustomText";
 //NumberFormat
 import NumberFormat from "../../../components/UI/NumberFormat";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 //PropTypes check
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../../redux/actions/cartScreenAction";
-import { Button } from "react-native-paper";
-import { Carousel } from "../../HomeScreen/components";
+
 import Slide from "../../HomeScreen/components/Slide";
 import banners from "../../../db/Banners";
 
 import { constant } from "../../../utils/constant";
 
-const ProductList = ({ item, cartData, navigation }) => {
-  console.log(item, "::::dfgdfgfdgfdgdfg::");
+const ProductList = ({ item, cartData }) => {
+  // console.log(item, "::::dfgdfgfdgfdgdfg::");
   const cartIsLoading = useSelector((state) => state.cartScreen);
-  const productInCart = cartData?.items?.find(
-    (ele) => ele?.productId?._id == item.data._id
-  );
-  console.log(cartIsLoading, "cartIsLoading");
+
   const dispatch = useDispatch();
+
   const handleAddToCart = (productId) => {
     const data = {
       productId,
@@ -41,14 +37,18 @@ const ProductList = ({ item, cartData, navigation }) => {
     };
     dispatch(addToCart(data));
   };
-  console.log(constant.defaultImage, "defaultImage");
+
+  const handleCheckCart = (product_id) => {
+    return cartData?.items?.find((cart) => cart.productId._id === product_id);
+  };
+
   return (
     <View>
       <View style={{ marginTop: 20 }}>
         <Slide imageUrl={banners[0].imageUrl} />
       </View>
-      {item.data.map((item) => (
-        <View key={item._id} style={styles.container}>
+      {item.data.map((item, i) => (
+        <View key={item._id + i} style={styles.container}>
           <View style={styles.left}>
             <View style={{ width: "100%" }}>
               {/* <View
@@ -107,7 +107,7 @@ const ProductList = ({ item, cartData, navigation }) => {
                   <NumberFormat price={item?.price?.toString()} />
                 </View>
               )}
-              {productInCart ? (
+              {handleCheckCart(item._id) ? (
                 <View>
                   <TouchableOpacity style={[styles.btn, styles.btnAdded]}>
                     <CustomText style={styles.detailBtnAdded}>Added</CustomText>
