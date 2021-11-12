@@ -19,8 +19,12 @@ import { getCart } from "../../redux/actions/cartScreenAction";
 import { orderNow } from "../../redux/actions/orderAction";
 import SnackBar from "../../redux/actions/snackBar";
 import { FloatButton } from "../HomeScreen/components";
-import { Header } from "../DetailScreen/components/Header";
+import { Header } from "../../components/Header";
 import CartList from "./CartList";
+import Colors from "../../utils/Colors";
+import CustomText from "../../components/UI/CustomText";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const SettingsScreen = () => {
   const navigation = useNavigation();
@@ -31,21 +35,58 @@ const SettingsScreen = () => {
   const cart = useSelector((state) => state.cartScreen.cart.data);
 
   const handleOrder = () => {
-    const data = {
-      cartId: cart?._id,
-    };
     dispatch(orderNow(cart?._id, navigation));
     console.log(cart._id);
   };
 
+  const totalData = () => {
+    const total = {
+      totalCount: 0,
+      totalAmount: 0,
+    };
+    cart?.items.map((ele) => {
+      total.totalCount += ele?.quantity;
+      total.totalAmount += ele?.total * ele?.quantity;
+    });
+    return total;
+  };
+
+  console.log(cart);
   return (
     <View style={styles.container}>
       <Header shopName="Cart" />
-      <ScrollView>
+      <ScrollView style={{ paddingHorizontal: 20 }}>
         {cart?.items?.map((item) => (
           <CartList key={item._id} item={item} />
         ))}
       </ScrollView>
+      {cart?.items?.length > 0 ? (
+        <TouchableOpacity onPress={() => handleOrder()}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              backgroundColor: Colors.green,
+              paddingHorizontal: 20,
+              alignItems: "center",
+              height: 45,
+            }}
+          >
+            <CustomText style={styles.title}>
+              {totalData().totalCount} Items | ₹{totalData().totalAmount}
+            </CustomText>
+            <View style={{ flexDirection: "row" }}>
+              <MaterialCommunityIcons
+                name="shopping-outline"
+                size={15}
+                color={Colors.white}
+                style={{ marginRight: 5 }}
+              />
+              <CustomText style={styles.title}>Buy</CustomText>
+            </View>
+          </View>
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
@@ -53,7 +94,14 @@ const SettingsScreen = () => {
 export default SettingsScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff", paddingBottom: 20 },
+  container: { flex: 1, backgroundColor: "#fff" },
+  title: {
+    color: Colors.white,
+    fontSize: 15,
+
+    // fontFamily: "Roboto-Bold",
+    textAlign: "right",
+  },
 });
 
 // const styles = StyleSheet.create({

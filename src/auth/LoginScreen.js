@@ -1,4 +1,5 @@
-import React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
 
 import LoginForm from "./components/LoginForm";
@@ -6,6 +7,18 @@ import LoginForm from "./components/LoginForm";
 const { height, width } = Dimensions.get("window");
 
 const LoginScreen = ({ navigation }) => {
+  // const [token, setToken] = useState(null);
+
+  // useEffect(() => {
+  //   tokenData();
+  // }, [token]);
+
+  // const tokenData = async () => {
+  //   const tokenData = await AsyncStorage.getItem("token");
+
+  //   setToken(tokenData);
+  // };
+  // console.log(token);
   return (
     <View style={styles.container}>
       <ImageBackground

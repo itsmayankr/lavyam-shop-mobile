@@ -12,7 +12,7 @@ export const Carousel = () => {
       <Animated.ScrollView
         horizontal
         snapToInterval={width}
-        decelerationRate='fast'
+        decelerationRate="fast"
         showsHorizontalScrollIndicator={false}
         bounces={false}
         scrollEventThrottle={1}
@@ -22,7 +22,7 @@ export const Carousel = () => {
         )}
       >
         {banners.map((slide) => {
-          return <Slide key={slide.id} imageUrl={slide.imageUrl} />;
+          return <Slide key={slide.id} localImageMain={slide.imageUrl} />;
         })}
       </Animated.ScrollView>
       <Pagination slides={banners} scrollX={scrollX} />

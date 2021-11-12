@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { View, Dimensions, AsyncStorage, Image } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -8,9 +8,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { Provider as PaperProvider } from "react-native-paper";
-
-import CustomDrawerContent from "./src/CustomDrawerContent";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoginScreen from "./src/auth/LoginScreen";
 import RegisterScreen from "./src/auth/RegisterScreen";
 
@@ -31,11 +29,6 @@ import OrderStack from "./src/tabs/orderStack";
 import io from "socket.io-client";
 import { getNotifications } from "./src/redux/actions/notificationAction";
 
-let socket = io("http://192.168.228.105:9001/apis/v1", {
-  transports: ["websocket"],
-  jsonp: false,
-});
-
 const navOptionHandler = () => ({
   headerShown: false,
 });
@@ -44,24 +37,6 @@ const Tab = createBottomTabNavigator();
 const NotificationStack = createStackNavigator();
 
 const TabNavigator = () => {
-  const dispatch = useDispatch();
-
-  const notificationData = useSelector(
-    (state) => state.notification.notification
-  );
-  const [notification, setNotifications] = useState(notificationData);
-
-  socket.connect();
-
-  socket.on("611a9f504f6430536a310ea1", (data) => {
-    console.log(data.order, "=============================Socket");
-    setNotifications(data.order);
-  });
-
-  React.useEffect(() => {
-    dispatch(getNotifications(notification));
-  }, [notification]);
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -126,51 +101,92 @@ const TabNavigator = () => {
 
 const Drawer = createDrawerNavigator();
 
-// const DrawerNavigator = () => {
-//   return (
-//     <Drawer.Navigator
-//       initialRouteName="MenuTab"
-//       // drawerContent={(props) => CustomDrawerContent(props)}
-//       drawerStyle={{
-//         width: Dimensions.get("window").width,
-//       }}
-//     >
-//       <Drawer.Screen name="MenuTab" component={TabNavigator} />
-//     </Drawer.Navigator>
-//   );
-// };
-
-export default function App() {
+const AppNavigation = () => {
   const StackApp = createStackNavigator();
 
+  const dispatch = useDispatch();
+
+  const notificationData = useSelector(
+    (state) => state.notification.notification
+  );
+  const [notification, setNotifications] = useState(notificationData);
+
+  // socket.connect();
+
+  // socket.on("611a9f504f6430536a310ea1", (data) => {
+  //   console.log(data.order, "=============================Socket");
+  //   setNotifications(data.order);
+  // });
+
+  React.useEffect(() => {
+    dispatch(getNotifications(notification));
+  }, [notification]);
+  return (
+    <NavigationContainer>
+      <StackApp.Navigator initialRouteName={"Loading"}>
+        <StackApp.Screen name="Loading" component={SwitchNavigator} />
+        <StackApp.Screen
+          name="HomeApp"
+          component={TabNavigator}
+          options={navOptionHandler}
+        />
+        <StackApp.Screen
+          name="Login"
+          component={LoginScreen}
+          options={navOptionHandler}
+        />
+        <StackApp.Screen
+          name="Register"
+          component={RegisterScreen}
+          options={navOptionHandler}
+        />
+        {/* <StackApp.Screen
+        name="MenuTab"
+        component={TabNavigator}
+        options={navOptionHandler}
+      /> */}
+      </StackApp.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default function App() {
   return (
     <PaperProvider>
       <Provider store={store()}>
-        <NavigationContainer>
-          <StackApp.Navigator initialRouteName={"HomeApp"}>
-            <StackApp.Screen
-              name="HomeApp"
-              component={TabNavigator}
-              options={navOptionHandler}
-            />
-            <StackApp.Screen
-              name="Login"
-              component={LoginScreen}
-              options={navOptionHandler}
-            />
-            <StackApp.Screen
-              name="Register"
-              component={RegisterScreen}
-              options={navOptionHandler}
-            />
-            {/* <StackApp.Screen
-              name="MenuTab"
-              component={TabNavigator}
-              options={navOptionHandler}
-            /> */}
-          </StackApp.Navigator>
-        </NavigationContainer>
+        <AppNavigation />
       </Provider>
     </PaperProvider>
   );
 }
+
+const SwitchNavigator = ({ navigation }) => {
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    tokenData();
+  }, [token]);
+
+  const tokenData = async () => {
+    const newtoken = await AsyncStorage.getItem("token");
+    setToken(newtoken);
+  };
+  useEffect(() => {
+    console.log({ token });
+    navigation.navigate(token ? "HomeApp" : "Login");
+  }, [token]);
+  console.log(token);
+  return (
+    <View style={styles.container}>
+      <Text>Loading...</Text>
+      <ActivityIndicator size="large" color="#e9446a"></ActivityIndicator>
+    </View>
+  );
+};
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

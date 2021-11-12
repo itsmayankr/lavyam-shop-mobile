@@ -23,7 +23,7 @@ const loginUser = (loginData, navigate) => async (dispatch) => {
     }
 
     // dispatch({ type: types.LOGIN_LOADER, payload: false });
-    navigate.navigate("Home", { replace: true });
+    navigate.navigate("HomeApp", { replace: true });
   } catch (e) {
     console.log(e);
     // dispatch({ type: types.LOGIN_LOADER, payload: false });

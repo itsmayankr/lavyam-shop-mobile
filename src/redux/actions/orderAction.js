@@ -1,6 +1,7 @@
 import * as types from "../constant";
 import axios from "../../config/axios";
-import { Alert, AsyncStorage } from "react-native";
+import { ToastAndroid } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getCart } from "./cartScreenAction";
 // import { toast } from "react-toastify";
 
@@ -49,11 +50,19 @@ const orderNow = (data, navigation) => async (dispatch) => {
       }
     )
     .then((response) => {
-      Alert.alert("Order Placed Successfully", "Order Recived", [
-        { text: "OK", onPress: () => console.log("OK Pressed") },
-      ]);
+      ToastAndroid.showWithGravityAndOffset(
+        "Order Recived",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        150
+      );
+      // Alert.alert("Order Placed Successfully", "Order Recived", [
+      //   { text: "OK", onPress: () => console.log("OK Pressed") },
+      // ]);
       dispatch(getCart());
       dispatch(getOrder());
+      dispatch(navigation.navigate("Your Orders"));
     })
     .catch((err) => {
       console.log(err);

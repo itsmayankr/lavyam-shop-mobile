@@ -6,8 +6,11 @@ import { connect, useSelector } from "react-redux";
 import Colors from "../../utils/Colors";
 //Component
 import ProductBody from "./components/ProductBody";
-import { data } from "../../model/data";
-import { getShops } from "../../redux/actions/shopAction";
+import {
+  getAllSeller,
+  getSellerByShopId,
+  getShops,
+} from "../../redux/actions/shopAction";
 
 const ProductScreen = (props) => {
   const shops = useSelector((state) => state.shops.shops);
@@ -23,14 +26,19 @@ const ProductScreen = (props) => {
       shops.shop.filter((shop) =>
         shop.shopName.toLowerCase().includes(text.toLowerCase())
       );
+
     setproductsFilter(data);
   };
+  console.log(shops, "::::::::::::::::::::::");
+  // props.getSellerByShopId(shops.shop._id);
+  console.log({ productFiltred });
   return (
     <View style={styles.container}>
       <ProductBody
         navigation={props.navigation}
         productsFilter={productsFilter}
         searchFilterFunction={searchFilterFunction}
+        shopId={shops._id}
       />
     </View>
   );
@@ -43,4 +51,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, { getShops })(ProductScreen);
+export default connect(null, { getShops, getSellerByShopId, getAllSeller })(
+  ProductScreen
+);

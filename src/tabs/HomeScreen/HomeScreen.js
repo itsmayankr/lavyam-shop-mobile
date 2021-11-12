@@ -5,7 +5,6 @@ import {
   Dimensions,
   Platform,
   FlatList,
-  AsyncStorage,
   Text,
   ImageBackground,
   Image,
@@ -20,10 +19,13 @@ import Animated from "react-native-reanimated";
 //Components
 import { Carousel, Header, ShopSection } from "./components";
 import Skeleton from "../../components/Loaders/SkeletonLoading";
-import { getShops } from "../../redux/actions/shopAction";
+import { getAllSeller, getShops } from "../../redux/actions/shopAction";
 //FloatButton
 import { Portal, Provider } from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 //height
 const { width, height } = Dimensions.get("window");
@@ -47,10 +49,7 @@ const HomeScreen = (props) => {
       let pin = await AsyncStorage.getItem("pincode");
       let mark = await AsyncStorage.getItem("market");
       let category = await AsyncStorage.getItem("category");
-      console.log(
-        { pin, mark, category },
-        ":::::::::::AS::::::::::AS::::::::::"
-      );
+
       // await AsyncStorage.clear();
 
       if (pin !== null) {
@@ -69,14 +68,16 @@ const HomeScreen = (props) => {
   //fetch Api
   useEffect(() => {
     retrieveData();
+    props.getAllSeller();
   }, []);
+
   return (
     <Provider>
       {isLoading ? (
         <Skeleton />
       ) : (
         // <View style={styles.container}>
-        <ScrollView style={styles.container}>
+        <View style={styles.container}>
           <Header />
           <AnimatedFlatList
             contentContainerStyle={styles.list}
@@ -104,13 +105,13 @@ const HomeScreen = (props) => {
           <View>
             <ShopSection data={shops} navigation={navigation} />
           </View>
-        </ScrollView>
+        </View>
       )}
     </Provider>
   );
 };
 
-export default connect(null, { getShops })(HomeScreen);
+export default connect(null, { getShops, getAllSeller })(HomeScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -121,6 +122,9 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 20,
     paddingBottom: 20,
+  },
+  banner: {
+    height: 150,
   },
   background: {
     resizeMode: "stretch",

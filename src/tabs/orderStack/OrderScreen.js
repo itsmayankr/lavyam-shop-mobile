@@ -1,26 +1,15 @@
-import { useNavigation } from "@react-navigation/native";
 import React, { useEffect } from "react";
-import {
-  Text,
-  View,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Platform,
-  Button,
-  AsyncStorage,
-  ScrollView,
-  Alert,
-} from "react-native";
-import { Portal } from "react-native-paper";
+import { View, StyleSheet, ScrollView, RefreshControl } from "react-native";
+
 import { useDispatch, useSelector } from "react-redux";
-import CustomHeader from "../../CustomHeader";
-import { getCart } from "../../redux/actions/cartScreenAction";
 import { getOrder, orderNow } from "../../redux/actions/orderAction";
-import SnackBar from "../../redux/actions/snackBar";
-import { FloatButton } from "../HomeScreen/components";
+
 import { Header } from "./Header";
 import HorizontalItem from "./HorizontalItem";
+
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 
 const OrderScreen = () => {
   // const navigation = useNavigation();
@@ -40,6 +29,14 @@ const OrderScreen = () => {
   //   dispatch(orderNow(cart?._id, navigation));
   // };
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    dispatch(getOrder());
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+
   return (
     <View style={styles.AndroidSafeArea}>
       <Header shopName={"Orders"} />
@@ -51,6 +48,9 @@ const OrderScreen = () => {
           // alignItems: "center",
           marginBottom: 2,
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
         {orders?.data?.map((order) => (
           <HorizontalItem key={order._id} item={order} />

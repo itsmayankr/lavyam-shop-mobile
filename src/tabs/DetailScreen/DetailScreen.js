@@ -22,12 +22,16 @@ import { getProducts } from "../../redux/actions/productsAction";
 
 import { getCart } from "../../redux/actions/cartScreenAction";
 import { ScrollView } from "react-native-gesture-handler";
+import { getSellerByShopId } from "../../redux/actions/shopAction";
 
 const DetailScreen = (props) => {
   const { item } = props.route.params;
 
   const products = useSelector((state) => state.products.products.products);
+  const seller = useSelector((state) => state.shops.seller);
   const cart = useSelector((state) => state.cartScreen.cart);
+
+  console.log({ seller });
 
   const dispatch = useDispatch();
 
@@ -38,6 +42,7 @@ const DetailScreen = (props) => {
   useEffect(() => {
     props.getProducts(null, null, item._id);
     dispatch(getCart());
+    dispatch(getSellerByShopId(item._id));
   }, [item]);
 
   return (
@@ -51,6 +56,7 @@ const DetailScreen = (props) => {
               item={item}
               cartData={cart?.data}
               navigation={props.navigation}
+              seller={seller}
             />
           )}
           keyExtractor={(item) => item._id}

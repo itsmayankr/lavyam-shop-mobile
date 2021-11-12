@@ -1,6 +1,6 @@
 import * as types from "../constant";
 import axios from "../../config/axios";
-import { AsyncStorage } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { toast } from "react-toastify";
 
 const getNotifications = (data) => async (dispatch) => {
@@ -24,10 +24,9 @@ const getNotificationsNew = () => async (dispatch) => {
       },
     })
     .then((response) => {
-      console.log(response);
       dispatch({
         type: types.NOTIFICATION,
-        payload: response.data.notifications,
+        payload: response.data.data,
       });
     })
     .catch((err) => {

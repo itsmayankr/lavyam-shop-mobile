@@ -49,7 +49,7 @@ export const Header = ({ shopName }) => {
               {shopName}
             </Text>
           </View>
-          <View style={{ justifyContent: "center" }}>
+          <View style={{ justifyContent: "center", marginRight: 10 }}>
             <TouchableOpacity onPress={() => dispatch(logout(navigation))}>
               <Text style={{ color: Colors.green }}>Logout</Text>
             </TouchableOpacity>

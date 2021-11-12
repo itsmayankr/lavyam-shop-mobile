@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Text,
-  ScrollView,
+  Button,
 } from "react-native";
 //Color
 import Colors from "../../utils/Colors";
@@ -117,7 +117,7 @@ const CartList = ({ item }) => {
                   <MaterialCommunityIcons
                     name="minus"
                     size={16}
-                    // color={Colors.red}
+                    color={Colors.green}
                   />
                 </View>
               </TouchableOpacity>
@@ -135,7 +135,7 @@ const CartList = ({ item }) => {
                   <MaterialCommunityIcons
                     name="plus"
                     size={16}
-                    // color={Colors.green}
+                    color={Colors.green}
                   />
                 </View>
               </TouchableOpacity>
@@ -197,7 +197,7 @@ CartList.propTypes = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     minHeight: 110,
     borderBottomWidth: 1,
     borderBottomColor: "#ececec",
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     paddingVertical: 25,
     alignItems: "center",
     backgroundColor: "#fff",
-    paddingHorizontal: 10,
+    // paddingHorizontal: 8,
     borderRadius: 5,
     marginTop: 5,
   },
@@ -236,9 +236,11 @@ const styles = StyleSheet.create({
     // height: Platform.OS === "ios" ? 30 : 25,
     backgroundColor: Colors.light_grey,
     alignSelf: "flex-start",
+    borderColor: Colors.green,
     borderRadius: 5,
+    borderWidth: 1,
     paddingHorizontal: 10,
-    marginTop: 5,
+    marginTop: 15,
   },
   boxMin: {
     width: "40%",
@@ -246,6 +248,7 @@ const styles = StyleSheet.create({
   },
   boxText: {
     fontSize: 12,
+    color: Colors.light_green,
   },
   btn: {
     height: 30,

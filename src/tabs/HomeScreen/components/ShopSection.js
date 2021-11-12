@@ -5,7 +5,9 @@ import CustomText from "../../../components/UI/CustomText";
 import Colors from "../../../utils/Colors";
 //PropTypes check
 import PropTypes from "prop-types";
-import image from "../../../assets/Images/noData.png";
+import NoItemFound from "../../../auth/components/NoItemFound";
+import { constant } from "../../../utils/constant";
+
 export const ShopSection = (props) => {
   const { data, navigation } = props;
   return (
@@ -23,33 +25,26 @@ export const ShopSection = (props) => {
             columnWrapperStyle={styles.list}
             renderItem={({ item }) => {
               return (
-                <ShopList key={item._id} item={item} navigation={navigation} />
+                <ShopList
+                  key={item._id}
+                  item={item}
+                  image={constant.defaultBanner}
+                  navigation={navigation}
+                />
               );
             }}
           />
         ) : (
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Image
-              style={{ width: 150, height: 150 }}
-              source={image}
-              resizeMode={"cover"}
-            />
-            <Text style={{ color: Colors.light_green }}>No shops found!</Text>
-          </View>
+          <NoItemFound name="Shop" />
         )}
       </View>
     </View>
   );
 };
 
-ShopSection.propTypes = {
-  data: PropTypes.array.isRequired,
-  navigation: PropTypes.object.isRequired,
-};
-
 const styles = StyleSheet.create({
   shop: {
-    // height: 518,
+    height: 500,
     marginHorizontal: 5,
     marginVertical: 5,
     paddingVertical: 15,

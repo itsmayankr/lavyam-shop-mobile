@@ -21,7 +21,7 @@ const AnimatedSectionList = Animated.createAnimatedComponent(SectionList);
 
 const ProductBody = ({ navigation, productsFilter, searchFilterFunction }) => {
   const DATA = [];
-
+  // console.log({ productsFilter });
   DATA.push({ title: "Shops", data: productsFilter.shop });
   const scrollY = new Value(0);
   const sectionListRef = useRef(null);
@@ -62,11 +62,6 @@ const ProductBody = ({ navigation, productsFilter, searchFilterFunction }) => {
       )}
     </View>
   );
-};
-
-ProductBody.propTypes = {
-  navigation: PropTypes.object.isRequired,
-  productsFilter: PropTypes.array.isRequired,
 };
 
 export default ProductBody;

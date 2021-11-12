@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Entypo from "react-native-vector-icons/Entypo";
 //Colors
 import Colors from "../../../utils/Colors";
@@ -21,6 +20,10 @@ import {
   getCategorys,
   getPincodes,
 } from "../../../redux/actions/configScreenActions";
+import { Button } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+import { logout } from "../../../redux/actions/auth";
 
 const { width } = Dimensions.get("window");
 export const Header = () => {
@@ -41,18 +44,12 @@ export const Header = () => {
     dispatch(getCategorys());
     handleBottomModal();
     localStorageValues();
-    console.log(pincode, "pincodepincodepincodepincode");
-    console.log("useEffect called header");
   }, []);
 
   const handleBottomModal = async () => {
     let pin = await AsyncStorage.getItem("pincode");
     let mark = await AsyncStorage.getItem("market");
-
-    console.log(pin, mark, "::::::::::::::::::::::::::::");
-
     (pin === null || mark === null) && refRBSheet.current.open();
-
     !pin && !mark && setCloseOnPressBack(false);
   };
 
@@ -69,52 +66,61 @@ export const Header = () => {
     let mark = await AsyncStorage.getItem("market");
     let category = await AsyncStorage.getItem("category");
     pin && mark && setCloseOnDragDown(true);
-    console.log(
-      { pin, mark, category },
-      "::::::::::::::::::ASDSAD::::::::::::::::::"
-    );
     pin && setPinCode(pin);
     mark && setMarket(mark);
     category && setCategory(category);
   };
 
+  const navigation = useNavigation();
+
   return (
     <>
       <SafeAreaView style={styles.header_safe_area}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => refRBSheet.current.open()}>
-            <View style={{ flexDirection: "row" }}>
-              <Entypo
-                name="location-pin"
-                size={24}
-                color={Colors.light_green}
-              />
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  width: width,
-                }}
-              >
-                {pincode || "Select PIN Code"}
-              </Text>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <View style={{ width: "30%" }}>
+              <TouchableOpacity onPress={() => refRBSheet.current.open()}>
+                <View style={{ flexDirection: "row" }}>
+                  <Entypo
+                    name="location-pin"
+                    size={24}
+                    color={Colors.light_green}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "bold",
+                      width: width,
+                    }}
+                  >
+                    {pincode || "Select PIN Code"}
+                  </Text>
+                </View>
+                <View style={{ flexDirection: "row" }}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      fontWeight: "600",
+                      width: width,
+                      marginLeft: 10,
+                      textTransform: "capitalize",
+                      color: Colors.light_green,
+                    }}
+                  >
+                    {market || "Select market"}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
-            <View style={{ flexDirection: "row" }}>
-              <Text
-                style={{
-                  fontSize: 14,
-                  fontWeight: "600",
-                  width: width,
-                  marginLeft: 10,
-                  textTransform: "capitalize",
-                  color: Colors.light_green,
-                }}
-              >
-                {market || "Select market"}
-              </Text>
-            </View>
-          </TouchableOpacity>
 
+            <View style={{ justifyContent: "center", marginRight: 5 }}>
+              <TouchableOpacity onPress={() => dispatch(logout(navigation))}>
+                <Text style={{ color: Colors.green }}>Logout</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
           <RBSheet
             ref={refRBSheet}
             closeOnDragDown={closeOnDragDown}

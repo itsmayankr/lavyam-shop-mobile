@@ -60,18 +60,32 @@ const getShops = (page, pinCodeName, marketName, category) => (dispatch) => {
 //     });
 // };
 
-// const getShopById = (id) => (dispatch) => {
-//   axios
-//     .get(`/shop/${id}`)
-//     .then((response) => {
-//       dispatch({
-//         type: types.GET_SHOP_BY_ID,
-//         payload: response.data,
-//       });
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
+const getSellerByShopId = (id) => (dispatch) => {
+  axios
+    .get(`/seller/${id}`)
+    .then((response) => {
+      dispatch({
+        type: types.GET_SELLER_BY_SHOP_ID,
+        payload: response.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+const getAllSeller = () => (dispatch) => {
+  axios
+    .get(`/all-sellers`)
+    .then((response) => {
+      console.log(response.data, "seller:::::::::::::");
+      dispatch({
+        type: types.GET_ALL_SELLER,
+        payload: response.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
-export { getShops };
+export { getShops, getSellerByShopId, getAllSeller };

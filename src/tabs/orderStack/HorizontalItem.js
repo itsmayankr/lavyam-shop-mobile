@@ -9,62 +9,69 @@ import NumberFormat from "../../components/UI/NumberFormat";
 //PropTypes check
 import PropTypes from "prop-types";
 import { Text } from "react-native-paper";
+import Collapsible from "react-native-collapsible";
 
 const HorizontalItem = ({ item }) => {
-  const [isLoading, setIsLoading] = useState(true);
-
+  const [showText, setShowText] = useState(false);
+  console.log(JSON.stringify(item));
   const [lastItem] = item?.cart?.items.slice(-1);
   console.log(lastItem, "lastItem");
+
+  const handleText = () => {
+    setShowText(!showText);
+  };
+
   return (
-    <TouchableOpacity>
-      <View style={styles.container}>
-        <View style={styles.left}>
-          <View style={{ flexDirection: "row" }}>
-            <View style={{ flex: 1, alignItems: "flex-start" }}>
-              <CustomText style={styles.boxText}>
-                {item?.seller?.shopName}
-              </CustomText>
-            </View>
-            <View style={{ flex: 1, alignItems: "flex-end", padding: 2 }}>
-              {item?.Delivered ? (
-                <CustomText style={styles.boxStatusText}>Delivered</CustomText>
-              ) : (
-                <Text style={styles.boxStatusText}>
-                  {item?.orderStatus[0].toUpperCase() +
-                    item?.orderStatus.substring(1)}
-                </Text>
-              )}
-            </View>
+    <View style={styles.container}>
+      <View style={styles.left}>
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1, alignItems: "flex-start" }}>
+            <CustomText style={styles.boxText}>
+              {item?.seller?.shopName}
+            </CustomText>
           </View>
-          <CustomText style={styles.boxSubText}>
+          <View style={{ flex: 1, alignItems: "flex-end", padding: 2 }}>
+            {item?.Delivered ? (
+              <CustomText style={styles.boxStatusText}>Delivered</CustomText>
+            ) : (
+              <Text style={styles.boxStatusText}>
+                {item?.orderStatus[0].toUpperCase() +
+                  item?.orderStatus.substring(1)}
+              </Text>
+            )}
+          </View>
+        </View>
+        {/* <CustomText style={styles.boxSubText}>
             {item?.seller?.shopAddress?.address[0].toUpperCase() +
               item?.seller?.shopAddress?.address.substring(1)}
+          </CustomText> */}
+        <NumberFormat price={item?.cart.totalCost} />
+        {/* <View style={styles.divider} /> */}
+        <TouchableOpacity onPress={handleText}>
+          <CustomText style={styles.boxDetails}>
+            {!showText ? "More" : "Less"} details
           </CustomText>
-          <NumberFormat price={item?.cart.totalCost} />
-          <View style={styles.divider} />
-          <View
-            style={{
-              flexDirection: "row",
-            }}
-          >
+        </TouchableOpacity>
+        {showText ? (
+          <View>
             {item.cart.items.map((product) => {
               return (
-                // <View style={{ flex: 1 }}>
-                <CustomText style={styles.boxSubText} key={product._id}>
-                  {`${
-                    product?.productId?.productName[0].toUpperCase() +
-                    product?.productId?.productName.substring(1)
-                  } x ${product?.productId?.quantity}${
-                    product._id === lastItem?._id ? "" : ", "
-                  }`}
-                </CustomText>
-                // </View>
+                <View>
+                  {product?.productId.productName && (
+                    <CustomText style={styles.boxSubText} key={product._id}>
+                      {`${
+                        product?.productId?.productName[0]?.toUpperCase() +
+                        product?.productId?.productName?.substring(1)
+                      } x ${product?.quantity}`}
+                    </CustomText>
+                  )}
+                </View>
               );
             })}
           </View>
-        </View>
+        ) : null}
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
@@ -76,7 +83,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 10,
-    height: 110,
+    minHeight: 80,
     borderBottomWidth: 1,
     borderBottomColor: Colors.light_grey,
     flexDirection: "row",
@@ -126,6 +133,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "300",
     color: "#969698",
+  },
+  boxDetails: {
+    fontSize: 12,
+    fontWeight: "500",
+    color: Colors.green,
+    marginTop: 5,
   },
   boxItemText: {
     fontSize: 14,

@@ -23,13 +23,17 @@ import Slide from "../../HomeScreen/components/Slide";
 import banners from "../../../db/Banners";
 
 import { constant } from "../../../utils/constant";
+import NoItemFound from "../../../auth/components/NoItemFound";
+// import { getSellerByShopId } from "../../../redux/actions/shopAction";
 
-const ProductList = ({ item, cartData }) => {
+const ProductList = ({ item, cartData, seller }) => {
   // console.log(item, "::::dfgdfgfdgfdgdfg::");
   const cartIsLoading = useSelector((state) => state.cartScreen);
-
+  // console.log({ item });
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    // dispatch(getSellerByShopId(item.data[0].sellerId));
+  }, []);
   const handleAddToCart = (productId) => {
     const data = {
       productId,
@@ -37,145 +41,152 @@ const ProductList = ({ item, cartData }) => {
     };
     dispatch(addToCart(data));
   };
+  console.log(constant);
 
   const handleCheckCart = (product_id) => {
     return cartData?.items?.find((cart) => cart.productId._id === product_id);
   };
-
+  // console.log(item.data, "ASDASDASDS");
   return (
     <View>
       <View style={{ marginTop: 20 }}>
-        <Slide imageUrl={banners[0].imageUrl} />
+        <Slide
+          imageUrl={seller?.thumbnailImage?.Location}
+          localImage={constant.defaultBanner}
+        />
       </View>
-      {item.data.map((item, i) => (
-        <View key={item._id + i} style={styles.container}>
-          <View style={styles.left}>
-            <View style={{ width: "100%" }}>
-              {/* <View
+      {item.data?.length > 0 ? (
+        item.data.map((item, i) => (
+          <View key={item._id + i} style={styles.container}>
+            <View style={styles.left}>
+              <View style={{ width: "100%" }}>
+                {/* <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
                   marginBottom: 10,
                 }}
               ></View> */}
-              <CustomText style={styles.title}>{item.productName}</CustomText>
-              <View>
+                <CustomText style={styles.title}>{item.productName}</CustomText>
+                <View>
+                  {item.offerPrice ? (
+                    <Text
+                      style={{
+                        fontSize: 10,
+                        color: Colors.green,
+                        marginBottom: 6,
+                      }}
+                    >{`${item.offer}% off`}</Text>
+                  ) : null}
+                </View>
                 {item.offerPrice ? (
-                  <Text
+                  <View
                     style={{
-                      fontSize: 10,
-                      color: Colors.green,
-                      marginBottom: 6,
+                      width: "100%",
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "baseline",
                     }}
-                  >{`${item.offer}% off`}</Text>
-                ) : null}
+                  >
+                    <CustomText
+                      style={{
+                        // style,
+                        color: Colors.grey,
+                        textDecorationLine: "line-through",
+                        marginRight: 5,
+                      }}
+                    >
+                      {`₹${item.price}`}
+                    </CustomText>
+                    <NumberFormat price={item?.offerPrice?.toString()} />
+                    <CustomText
+                      style={{
+                        // style,
+                        color: Colors.black,
+                        fontSize: 8,
+                        paddingBottom: 2,
+                        width: 500,
+                      }}
+                    >
+                      {`/${item.unit}`}
+                    </CustomText>
+                  </View>
+                ) : (
+                  <View>
+                    <NumberFormat price={item?.price?.toString()} />
+                  </View>
+                )}
+                {handleCheckCart(item._id) ? (
+                  <View>
+                    <TouchableOpacity style={[styles.btn, styles.btnAdded]}>
+                      <CustomText style={styles.detailBtnAdded}>
+                        Added
+                      </CustomText>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View>
+                    <TouchableOpacity
+                      onPress={() => handleAddToCart(item._id)}
+                      style={[styles.btn, styles.notAdded]}
+                    >
+                      <CustomText style={styles.detailBtn}>Add</CustomText>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
-              {item.offerPrice ? (
-                <View
+            </View>
+            <View
+              style={
+                item?.image?.Location
+                  ? styles.right
+                  : [styles.right, styles.rightNoImage]
+              }
+            >
+              {item?.image?.Location ? (
+                <Image
                   style={{
                     width: "100%",
-                    flex: 1,
-                    flexDirection: "row",
-                    alignItems: "baseline",
+                    height: "100%",
+                    resizeMode: "stretch",
+                    borderRadius: 20,
+                  }}
+                  source={{
+                    uri: item?.image?.Location,
+                  }}
+                />
+              ) : (
+                <View
+                  style={{
+                    height: "100%",
+                    justifyContent: "center",
+                    alignItems: "center",
                   }}
                 >
-                  <CustomText
+                  <Image
                     style={{
-                      // style,
-                      color: Colors.grey,
-                      textDecorationLine: "line-through",
-                      marginRight: 5,
+                      // width: 50,
+                      height: 45,
+                      opacity: 0.4,
+                      resizeMode: "contain",
                     }}
+                    source={constant.defaultImage}
+                  />
+                  <Text
+                    style={{ color: "#d6d6d6", marginTop: 5, fontSize: 10 }}
                   >
-                    {`₹${item.price}`}
-                  </CustomText>
-                  <NumberFormat price={item?.offerPrice?.toString()} />
-                  <CustomText
-                    style={{
-                      // style,
-                      color: Colors.black,
-                      fontSize: 8,
-                      paddingBottom: 2,
-                      width: 500,
-                    }}
-                  >
-                    {`/${item.unit}`}
-                  </CustomText>
-                </View>
-              ) : (
-                <View>
-                  <NumberFormat price={item?.price?.toString()} />
-                </View>
-              )}
-              {handleCheckCart(item._id) ? (
-                <View>
-                  <TouchableOpacity style={[styles.btn, styles.btnAdded]}>
-                    <CustomText style={styles.detailBtnAdded}>Added</CustomText>
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <View>
-                  <TouchableOpacity
-                    onPress={() => handleAddToCart(item._id)}
-                    style={[styles.btn, styles.notAdded]}
-                  >
-                    <CustomText style={styles.detailBtn}>Add</CustomText>
-                  </TouchableOpacity>
+                    No Image
+                  </Text>
                 </View>
               )}
             </View>
           </View>
-          <View
-            style={
-              item?.image?.Location
-                ? styles.right
-                : [styles.right, styles.rightNoImage]
-            }
-          >
-            {item?.image?.Location ? (
-              <Image
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  resizeMode: "stretch",
-                  borderRadius: 20,
-                }}
-                source={{
-                  uri: item?.image?.Location,
-                }}
-              />
-            ) : (
-              <View
-                style={{
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Image
-                  style={{
-                    // width: 50,
-                    height: 45,
-                    opacity: 0.4,
-                    resizeMode: "contain",
-                  }}
-                  source={constant.defaultImage}
-                />
-                <Text style={{ color: "#d6d6d6", marginTop: 5, fontSize: 10 }}>
-                  No Image
-                </Text>
-              </View>
-            )}
-          </View>
-        </View>
-      ))}
+        ))
+      ) : (
+        <NoItemFound name="Product" />
+      )}
     </View>
   );
-};
-
-ProductList.propTypes = {
-  item: PropTypes.object.isRequired,
-  navigation: PropTypes.object.isRequired,
 };
 
 const styles = StyleSheet.create({

@@ -68,7 +68,7 @@ const LoginForm = (props) => {
 
   return (
     <Formik
-      initialValues={{ email: "rohanuser@gmail.com", password: "rohan25" }}
+      initialValues={{ email: "", password: "" }}
       onSubmit={(values) => {
         console.log(values);
         dispatch(loginUser(values, navigation));
