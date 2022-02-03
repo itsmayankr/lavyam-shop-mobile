@@ -6,6 +6,7 @@ import configScreen from "./configScreenReducer";
 import cartScreen from "./cartReducer";
 import orders from "./orderReducer";
 import notification from "./notificationReducer";
+import otpNumber from "./otpNumberReducer";
 
 const rootReducer = combineReducers({
   theme: theme,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   configScreen,
   cartScreen,
   orders,
+  otpNumber,
   notification,
 });
 export default rootReducer;

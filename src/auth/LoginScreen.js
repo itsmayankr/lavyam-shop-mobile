@@ -4,7 +4,7 @@ import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
 
 import LoginForm from "./components/LoginForm";
 
-const { height, width } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const LoginScreen = ({ navigation }) => {
   // const [token, setToken] = useState(null);

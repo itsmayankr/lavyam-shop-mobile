@@ -10,3 +10,4 @@ export const NOTIFICATION = "NOTIFICATION";
 export const CART_ADD_LOADER = "CART_ADD_LOADER";
 export const GET_SELLER_BY_SHOP_ID = "GET_SELLER_BY_SHOP_ID";
 export const GET_ALL_SELLER = "GET_ALL_SELLER";
+export const GET_NUMBER = "GET_NUMBER";

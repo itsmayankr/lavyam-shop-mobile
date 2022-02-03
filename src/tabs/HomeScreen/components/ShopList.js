@@ -33,12 +33,12 @@ export const ShopList = (props) => {
   const toDetail = () => {
     navigation.navigate("Detail", { item });
   };
-  console.log({ sellersAll });
+
   // console.log(
   //   sellersAll.find((ele) => ele.shopId === item._id),
   //   ":::2"
   // );
-  console.log(item, ":::1");
+
   return (
     <View style={[styles.container, styles.shadow]}>
       {/* <View style={styles.container}> */}

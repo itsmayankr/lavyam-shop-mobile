@@ -6,12 +6,8 @@ import {
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  ScrollView,
   Platform,
-  Image,
-  Alert,
+  KeyboardAvoidingView,
   Dimensions,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -67,6 +63,7 @@ const RegisterForm = (props) => {
       unmounted.current = true;
     };
   }, []);
+  const keyboardVerticalOffset = 1000
 
   return (
     <Formik
@@ -89,168 +86,181 @@ const RegisterForm = (props) => {
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <KeyboardAvoidingView
-          behavior={Platform.OS == "ios" ? "position" : "height"}
+          behavior={"height"}
+          style={{ flex: 1 }}
+          keyboardVerticalOffset={keyboardVerticalOffset}
         >
-          <View style={styles.container}>
-            <View style={styles.header}>
-              <View>
-                <CustomText style={styles.title}>Register</CustomText>
-              </View>
-            </View>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.header}>
             <View>
-              <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <View
-                  style={{
-                    flexDirection: "column",
-                    marginHorizontal: 10,
-                    zIndex: -1,
-                  }}
-                >
-                  <KeyboardAwareScrollView
-                    extraScrollHeight={100}
-                    enableOnAndroid={true}
-                    keyboardShouldPersistTaps="handled"
+              <CustomText style={styles.title}>Register</CustomText>
+            </View>
+
+            <View style={styles.container}>
+              <View>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      marginHorizontal: 10,
+                      // flex:1
+                      justifyContent:"space-between",
+
+                      // zIndex: -1,
+                    }}
                   >
-                    <View>
-                      <TextInput
-                        onChangeText={handleChange("username")}
-                        onBlur={handleBlur("username")}
-                        value={values.username}
-                        keyboardType="default"
-                        label="Username"
-                        style={styles.textInput}
-                        outlineColor={Colors.light_green}
-                        mode="outlined"
-                        theme={{ colors: { primary: Colors.green } }}
-                      />
-                      <TextInput
-                        onChangeText={handleChange("email")}
-                        onBlur={handleBlur("email")}
-                        value={values.email}
-                        keyboardType="email-address"
-                        label="Email"
-                        icon="email"
-                        style={styles.textInput}
-                        outlineColor={Colors.light_green}
-                        mode="outlined"
-                        theme={{ colors: { primary: Colors.green } }}
-                      />
-                      <TextInput
-                        onChangeText={handleChange("password")}
-                        onBlur={handleBlur("password")}
-                        value={values.password}
-                        keyboardType="default"
-                        label="Password"
-                        icon="lock"
-                        passIcon="eye"
-                        secureTextEntry={showPass ? false : true}
-                        style={styles.textInput}
-                        outlineColor={Colors.light_green}
-                        mode="outlined"
-                        theme={{ colors: { primary: Colors.green } }}
-                      />
-                      <TextInput
-                        onChangeText={handleChange("mobile")}
-                        onBlur={handleBlur("mobile")}
-                        value={values.mobile}
-                        keyboardType="default"
-                        label="Mobile Number"
-                        style={styles.textInput}
-                        outlineColor={Colors.light_green}
-                        mode="outlined"
-                        theme={{ colors: { primary: Colors.green } }}
-                        // icon="lock"
-                        // passIcon="eye"
-                        // secureTextEntry={showPass ? false : true}
-                      />
-                      <TextInput
-                        onChangeText={handleChange("deleveryAddress.address")}
-                        onBlur={handleBlur("deleveryAddress.address")}
-                        value={values.deleveryAddress.address}
-                        keyboardType="default"
-                        label="Address"
-                        style={styles.textInput}
-                        outlineColor={Colors.light_green}
-                        mode="outlined"
-                        theme={{ colors: { primary: Colors.green } }}
-                      />
-                      <TextInput
-                        onChangeText={handleChange("deleveryAddress.address1")}
-                        onBlur={handleBlur("deleveryAddress.address1")}
-                        value={values.deleveryAddress.address1}
-                        keyboardType="default"
-                        label="Address line 2"
-                        style={styles.textInput}
-                        outlineColor={Colors.light_green}
-                        mode="outlined"
-                        theme={{ colors: { primary: Colors.green } }}
-                      />
-                      <TextInput
-                        onChangeText={handleChange("deleveryAddress.landmark")}
-                        onBlur={handleBlur("deleveryAddress.landmark")}
-                        value={values.deleveryAddress.landmark}
-                        keyboardType="default"
-                        label="Landmark"
-                        style={styles.textInput}
-                        outlineColor={Colors.light_green}
-                        mode="outlined"
-                        theme={{ colors: { primary: Colors.green } }}
-                      />
-                      <TextInput
-                        onChangeText={handleChange("deleveryAddress.city")}
-                        onBlur={handleBlur("deleveryAddress.city")}
-                        value={values.deleveryAddress.city}
-                        keyboardType="default"
-                        label="City"
-                        style={styles.textInput}
-                        outlineColor={Colors.light_green}
-                        mode="outlined"
-                        theme={{ colors: { primary: Colors.green } }}
-                      />
-                      <TextInput
-                        onChangeText={handleChange("deleveryAddress.state")}
-                        onBlur={handleBlur("deleveryAddress.state")}
-                        value={values.deleveryAddress.state}
-                        keyboardType="default"
-                        label="State"
-                        style={styles.textInput}
-                        outlineColor={Colors.light_green}
-                        mode="outlined"
-                        theme={{ colors: { primary: Colors.green } }}
-                      />
-                    </View>
-                  </KeyboardAwareScrollView>
-                  <View style={styles.group}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate("Login");
-                      }}
-                    >
-                      <CustomText
-                        style={{
-                          ...styles.textSignSmall,
-                          // fontFamily: "Roboto-Medium",
+                    {/* <KeyboardAwareScrollView
+                      // extraHeight={500}
+                      // enableResetScrollToCoords={true}
+                      resetScrollToCoords={{x:40,y:100}}
+                      enableOnAndroid={true}
+                      keyboardShouldPersistTaps='handled'
+                    > */}
+                      {/* <View> */}
+                        <TextInput
+                          onChangeText={handleChange("username")}
+                          onBlur={handleBlur("username")}
+                          value={values.username}
+                          keyboardType='default'
+                          label='Username'
+                          style={styles.textInput}
+                          outlineColor={Colors.light_green}
+                          mode='outlined'
+                          theme={{ colors: { primary: Colors.green } }}
+                        />
+                        <TextInput
+                          onChangeText={handleChange("email")}
+                          onBlur={handleBlur("email")}
+                          value={values.email}
+                          keyboardType='email-address'
+                          label='Email'
+                          icon='email'
+                          style={styles.textInput}
+                          outlineColor={Colors.light_green}
+                          mode='outlined'
+                          theme={{ colors: { primary: Colors.green } }}
+                        />
+                        <TextInput
+                          onChangeText={handleChange("password")}
+                          onBlur={handleBlur("password")}
+                          value={values.password}
+                          keyboardType='default'
+                          label='Password'
+                          icon='lock'
+                          passIcon='eye'
+                          secureTextEntry={showPass ? false : true}
+                          style={styles.textInput}
+                          outlineColor={Colors.light_green}
+                          mode='outlined'
+                          theme={{ colors: { primary: Colors.green } }}
+                        />
+                        <TextInput
+                          onChangeText={handleChange("mobile")}
+                          onBlur={handleBlur("mobile")}
+                          value={values.mobile}
+                          keyboardType='default'
+                          label='Mobile Number'
+                          style={styles.textInput}
+                          outlineColor={Colors.light_green}
+                          mode='outlined'
+                          theme={{ colors: { primary: Colors.green } }}
+                          // icon="lock"
+                          // passIcon="eye"
+                          // secureTextEntry={showPass ? false : true}
+                        />
+                        <TextInput
+                          onChangeText={handleChange("deleveryAddress.address")}
+                          onBlur={handleBlur("deleveryAddress.address")}
+                          value={values.deleveryAddress.address}
+                          keyboardType='default'
+                          label='Address'
+                          style={styles.textInput}
+                          outlineColor={Colors.light_green}
+                          mode='outlined'
+                          theme={{ colors: { primary: Colors.green } }}
+                        />
+                        <TextInput
+                          onChangeText={handleChange(
+                            "deleveryAddress.address1"
+                          )}
+                          onBlur={handleBlur("deleveryAddress.address1")}
+                          value={values.deleveryAddress.address1}
+                          keyboardType='default'
+                          label='Address line 2'
+                          style={styles.textInput}
+                          outlineColor={Colors.light_green}
+                          mode='outlined'
+                          theme={{ colors: { primary: Colors.green } }}
+                        />
+                        <TextInput
+                          onChangeText={handleChange(
+                            "deleveryAddress.landmark"
+                          )}
+                          onBlur={handleBlur("deleveryAddress.landmark")}
+                          value={values.deleveryAddress.landmark}
+                          keyboardType='default'
+                          label='Landmark'
+                          style={styles.textInput}
+                          outlineColor={Colors.light_green}
+                          mode='outlined'
+                          theme={{ colors: { primary: Colors.green } }}
+                        />
+                        <TextInput
+                          onChangeText={handleChange("deleveryAddress.city")}
+                          onBlur={handleBlur("deleveryAddress.city")}
+                          value={values.deleveryAddress.city}
+                          keyboardType='default'
+                          label='City'
+                          style={styles.textInput}
+                          outlineColor={Colors.light_green}
+                          mode='outlined'
+                          theme={{ colors: { primary: Colors.green } }}
+                        />
+                        <TextInput
+                          onChangeText={handleChange("deleveryAddress.state")}
+                          onBlur={handleBlur("deleveryAddress.state")}
+                          value={values.deleveryAddress.state}
+                          keyboardType='default'
+                          label='State'
+                          style={styles.textInput}
+                          outlineColor={Colors.light_green}
+                          mode='outlined'
+                          theme={{ colors: { primary: Colors.green } }}
+                        />
+                      {/* </View> */}
+                    
+                    <View style={styles.group}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate("Login");
                         }}
                       >
-                        Login
-                      </CustomText>
-                    </TouchableOpacity>
-                  </View>
-                  <TouchableOpacity
-                    onPress={handleSubmit}
-                    style={{ marginVertical: 10, alignItems: "center" }}
-                  >
-                    <View style={styles.signIn}>
-                      {/* {auth.isLoading ? (
+                        <CustomText
+                          style={{
+                            ...styles.textSignSmall,
+                            // fontFamily: "Roboto-Medium",
+                          }}
+                        >
+                          Login
+                        </CustomText>
+                      </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity
+                      onPress={handleSubmit}
+                      style={{ marginVertical: 10, alignItems: "center" }}
+                    >
+                      <View style={styles.signIn}>
+                        {/* {auth.isLoading ? (
                     <ActivityIndicator size="small" color="#fff" />
                   ) : ( */}
-                      <CustomText style={styles.textSign}>Register</CustomText>
-                      {/* )} */}
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </TouchableWithoutFeedback>
-              {/* <View style={styles.center}>
+                        <CustomText style={styles.textSign}>
+                          Register
+                        </CustomText>
+                        {/* )} */}
+                      </View>
+                    </TouchableOpacity>
+                    {/* </KeyboardAwareScrollView> */}
+                  </View>
+                {/* <View style={styles.center}>
             <CustomText style={styles.loginOpt}>
               Hoặc đăng nhập bằng khuôn mặt/vân tay
             </CustomText>
@@ -269,8 +279,11 @@ const RegisterForm = (props) => {
               </TouchableOpacity>
             </View>
           </View> */}
+              </View>
             </View>
           </View>
+          </TouchableWithoutFeedback>
+
         </KeyboardAvoidingView>
       )}
     </Formik>
@@ -286,7 +299,10 @@ const styles = StyleSheet.create({
   header: {
     marginTop: height * 0.1,
     marginBottom: 10,
-    marginHorizontal: 20,
+    flex:1,
+    justifyContent:"space-between",
+    marginHorizontal: 10,
+    // position:"relative"
   },
   title: {
     color: Colors.light_green,
@@ -328,11 +344,6 @@ const styles = StyleSheet.create({
     borderStyle: "dashed",
     borderColor: Colors.grey,
   },
-  faceid: {
-    resizeMode: "contain",
-    height: 70,
-    width: 70,
-  },
   loginOpt: {
     color: Colors.lighter_green,
     // fontFamily: "Roboto-Medium",
@@ -344,8 +355,13 @@ const styles = StyleSheet.create({
     height: 44,
   },
   container: {
-    marginLeft: 20,
-    marginRight: 20,
+    // marginLeft: 20,
+    // marginRight: 20,
+    // flex: 1,
+    // position: "absolute",
+    // top: "20px",
+    // justifyContent: "space-around",
+
   },
 });
 export default RegisterForm;

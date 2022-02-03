@@ -73,6 +73,23 @@ export const Header = () => {
 
   const navigation = useNavigation();
 
+
+  const handleLogin = async () => {
+    navigation.navigate("Login");
+  };
+
+  const getToken = async () => {
+    let access_token = await AsyncStorage.getItem("token");
+    console.log({access_token});
+    setToken(access_token)
+  }
+
+  const [token,setToken] = useState(null)
+
+  useEffect( () => {
+    getToken()
+  },[])
+
   return (
     <>
       <SafeAreaView style={styles.header_safe_area}>
@@ -116,9 +133,12 @@ export const Header = () => {
             </View>
 
             <View style={{ justifyContent: "center", marginRight: 5 }}>
-              <TouchableOpacity onPress={() => dispatch(logout(navigation))}>
+            { token ? <TouchableOpacity onPress={() => dispatch(logout(navigation))}>
                 <Text style={{ color: Colors.green }}>Logout</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> :
+              <TouchableOpacity onPress={() => handleLogin()}>
+                <Text style={{ color: Colors.green }}>Login</Text>
+              </TouchableOpacity>}
             </View>
           </View>
           <RBSheet

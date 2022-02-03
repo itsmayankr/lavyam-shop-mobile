@@ -10,6 +10,7 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import { Provider as PaperProvider } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoginScreen from "./src/auth/LoginScreen";
+import  ForgotPasswordScreen from "./src/auth/ForgotPasswordScreen";
 import RegisterScreen from "./src/auth/RegisterScreen";
 
 import HomeStack from "./src/tabs/HomeStack";
@@ -28,6 +29,8 @@ import OrderStack from "./src/tabs/orderStack";
 // This must be below your `window.navigator` hack above
 import io from "socket.io-client";
 import { getNotifications } from "./src/redux/actions/notificationAction";
+import EnterOtpScreen from "./src/auth/EnterOtpScreen";
+import ResetPasswordScreen from "./src/auth/ResetPasswordScreen";
 
 const navOptionHandler = () => ({
   headerShown: false,
@@ -123,8 +126,8 @@ const AppNavigation = () => {
   }, [notification]);
   return (
     <NavigationContainer>
-      <StackApp.Navigator initialRouteName={"Loading"}>
-        <StackApp.Screen name="Loading" component={SwitchNavigator} />
+      <StackApp.Navigator initialRouteName={"HomeApp"}>
+        {/* <StackApp.Screen name="Loading" component={HomeApp} /> */}
         <StackApp.Screen
           name="HomeApp"
           component={TabNavigator}
@@ -133,6 +136,21 @@ const AppNavigation = () => {
         <StackApp.Screen
           name="Login"
           component={LoginScreen}
+          options={navOptionHandler}
+        />
+        <StackApp.Screen
+          name="ForgotPassword"
+          component={ForgotPasswordScreen}
+          options={navOptionHandler}
+        />
+        <StackApp.Screen
+          name="EnterOtp"
+          component={EnterOtpScreen}
+          options={navOptionHandler}
+          />
+        <StackApp.Screen
+          name="ResetPassword"
+          component={ResetPasswordScreen}
           options={navOptionHandler}
         />
         <StackApp.Screen
@@ -160,33 +178,33 @@ export default function App() {
   );
 }
 
-const SwitchNavigator = ({ navigation }) => {
-  const [token, setToken] = useState(null);
+// const SwitchNavigator = ({ navigation }) => {
+  // const [token, setToken] = useState(null);
 
-  useEffect(() => {
-    tokenData();
-  }, [token]);
+  // useEffect(() => {
+  //   tokenData();
+  // }, [token]);
 
-  const tokenData = async () => {
-    const newtoken = await AsyncStorage.getItem("token");
-    setToken(newtoken);
-  };
-  useEffect(() => {
-    console.log({ token });
-    navigation.navigate(token ? "HomeApp" : "Login");
-  }, [token]);
-  console.log(token);
-  return (
-    <View style={styles.container}>
-      <Text>Loading...</Text>
-      <ActivityIndicator size="large" color="#e9446a"></ActivityIndicator>
-    </View>
-  );
-};
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+  // const tokenData = async () => {
+  //   const newtoken = await AsyncStorage.getItem("token");
+  //   setToken(newtoken);
+  // };
+  // useEffect(() => {
+  //   console.log({ token });
+  //   navigation.navigate(token ? "HomeApp" : "Login");
+  // }, [token]);
+  // console.log(token);
+//   return (
+//     <View style={styles.container}>
+//       <Text>Loading...</Text>
+//       <ActivityIndicator size="large" color="#e9446a"></ActivityIndicator>
+//     </View>
+//   );
+// };
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+// });

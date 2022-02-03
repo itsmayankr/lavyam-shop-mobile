@@ -6,12 +6,9 @@ import {
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
-  ActivityIndicator,
   KeyboardAvoidingView,
   ScrollView,
   Platform,
-  Image,
-  Alert,
   Dimensions,
 } from "react-native";
 //Colors
@@ -19,19 +16,14 @@ import Colors from "../../utils/Colors";
 import CustomText from "../../components/UI/CustomText";
 import { Formik, Field } from "formik"; //Redux
 import { useDispatch, useSelector } from "react-redux";
-//Action
-// import { Login as LoginAction } from "../../../reducers";
 //PropTypes check
 import PropTypes from "prop-types";
-// import renderField from "./RenderField";
 //Authentiation Touch ID Face ID
 
 import { secretKey } from "../../utils/Config";
 
 import { TextInput } from "react-native-paper";
 //Colors
-
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { loginUser } from "../../redux/actions/auth";
 import { useNavigation } from "@react-navigation/native";
 
@@ -55,9 +47,7 @@ const validate = (values) => {
 
 const LoginForm = (props) => {
   const dispatch = useDispatch();
-  const { handleSubmit } = props;
   const [showPass, setShowPass] = useState(false);
-  const auth = useSelector((state) => state.auth);
   const unmounted = useRef(false);
   const navigation = useNavigation();
   useEffect(() => {
@@ -138,6 +128,20 @@ const LoginForm = (props) => {
                       Register
                     </CustomText>
                   </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      props.navigation.navigate("ForgotPassword");
+                    }}
+                  >
+                    <CustomText
+                      style={{
+                        ...styles.textSignSmall,
+                        // fontFamily: "Roboto-Medium",
+                      }}
+                    >
+                      Forgot Password?
+                    </CustomText>
+                  </TouchableOpacity>
                 </View>
                 <TouchableOpacity
                   onPress={handleSubmit}
@@ -159,7 +163,7 @@ const LoginForm = (props) => {
 const styles = StyleSheet.create({
   group: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     marginVertical: 10,
   },
   header: {

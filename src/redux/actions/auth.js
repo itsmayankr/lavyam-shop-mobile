@@ -1,6 +1,8 @@
 import axios from "../../config/axios";
 import jwt from "jwt-decode";
+import * as types from "../constant";
 // import { toast } from "react-
+import { ToastAndroid } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const loginUser = (loginData, navigate) => async (dispatch) => {
@@ -10,9 +12,10 @@ const loginUser = (loginData, navigate) => async (dispatch) => {
   let pincode = await AsyncStorage.getItem("pincode");
   let market = await AsyncStorage.getItem("market");
   let category = await AsyncStorage.getItem("category");
-  console.log({ pincode, market, category }, "action");
+
   try {
     const res = await axios.post("/user-login", loginData);
+    console.log("Login User");
     try {
       let tokenData = jwt(res.data.token);
       await AsyncStorage.setItem("token", res.data.token);
@@ -37,6 +40,64 @@ const loginUser = (loginData, navigate) => async (dispatch) => {
   }
 };
 
+const getOtp = (userData, navigation) => async (dispatch) => {
+  try {
+  let data = await axios.get(`/get-otp?email=${userData.email}`);
+    // message.success("Register Successfully");
+    console.log(data.data);
+    if(data.data){
+      dispatch({
+        type: types.GET_NUMBER,
+        payload: data.data.number,
+      });
+
+      ToastAndroid.showWithGravityAndOffset(
+        "OTP Sent",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        150
+      );
+      navigation.navigate("EnterOtp");
+    }
+    // if (err.response) return message.error(err.response.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const forgotPasswordAction = async (userData, navigation,type) => {
+  try {
+  let data = await axios.post(`/forgot-password`,userData);
+    // message.success("Register Successfully");
+    console.log({data:data.data});
+    if(type === "Reset"){
+      if(data.data.redirect){
+        navigation.navigate("ResetPassword");
+      }else {
+        ToastAndroid.showWithGravityAndOffset(
+          "Incorrect OTP",
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          150
+        );
+      }
+    }else {
+      ToastAndroid.showWithGravityAndOffset(
+        "Password Reset Successfully",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        150
+      );
+      navigation.navigate("Login");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const register = async (userData, navigation) => {
   try {
     await axios.post("/user-register", userData);
@@ -51,8 +112,8 @@ const register = async (userData, navigation) => {
 const logout = (navigation) => async (dispatch) => {
   await AsyncStorage.clear();
 
-  navigation.navigate("Login", { replace: true });
+  navigation.navigate("HomeApp", { replace: true });
   // dispatch({ type: "RESET" });
 };
 
-export { loginUser, register, logout };
+export { loginUser, register, logout, getOtp , forgotPasswordAction};

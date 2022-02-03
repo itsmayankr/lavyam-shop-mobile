@@ -1,16 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/Feather";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { Text, View, TouchableOpacity, AsyncStorage } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Button } from "react-native-paper";
 
 const CustomHeader = ({ isBack, title }) => {
   const navigation = useNavigation();
-  const handleLogout = async () => {
-    await AsyncStorage.removeItem("token");
-    navigation.navigate("Login");
-  };
+
   return (
     <View
       style={{
@@ -68,7 +65,7 @@ const CustomHeader = ({ isBack, title }) => {
           </TouchableOpacity>
         )}
       </View> */}
-      <Button onPress={handleLogout}>Logout</Button>
+     { token ? <Button onPress={handleLogout}>Logouggt</Button> : <Button onPress={handleLogin}>Login</Button> }
     </View>
   );
 };

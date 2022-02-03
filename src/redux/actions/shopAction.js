@@ -77,7 +77,7 @@ const getAllSeller = () => (dispatch) => {
   axios
     .get(`/all-sellers`)
     .then((response) => {
-      console.log(response.data, "seller:::::::::::::");
+      // console.log(response.data, "seller:::::::::::::");
       dispatch({
         type: types.GET_ALL_SELLER,
         payload: response.data,

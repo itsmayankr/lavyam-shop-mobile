@@ -12,6 +12,8 @@ import {
   Dimensions,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 //Colors
 import Colors from "../utils/Colors";
 import { useDispatch } from "react-redux";
@@ -22,6 +24,22 @@ import { logout } from "../redux/actions/auth";
 export const Header = ({ shopName }) => {
   const navigation = useNavigation();
 
+
+  const handleLogin = async () => {
+    navigation.navigate("Login");
+  };
+
+  const getToken = async () => {
+    let access_token = await AsyncStorage.getItem("token");
+    console.log({access_token});
+    setToken(access_token)
+  }
+
+  const [token,setToken] = useState(null)
+
+  useEffect( () => {
+    getToken()
+  },[])
   const dispatch = useDispatch();
   // console.log({ navigation: navigation.navigate });
   return (
@@ -50,9 +68,12 @@ export const Header = ({ shopName }) => {
             </Text>
           </View>
           <View style={{ justifyContent: "center" }}>
-            <TouchableOpacity onPress={() => dispatch(logout(navigation))}>
+            { token ? <TouchableOpacity onPress={() => dispatch(logout(navigation))}>
               <Text style={{ color: Colors.green }}>Logout</Text>
+            </TouchableOpacity> :  <TouchableOpacity onPress={() => handleLogin()}>
+              <Text style={{ color: Colors.green }}>Login</Text>
             </TouchableOpacity>
+            }
           </View>
         </View>
       </SafeAreaView>

@@ -22,6 +22,22 @@ import { logout } from "../../redux/actions/auth";
 export const Header = ({ shopName }) => {
   const navigation = useNavigation();
 
+  const handleLogin = async () => {
+    navigation.navigate("Login");
+  };
+
+  const getToken = async () => {
+    let access_token = await AsyncStorage.getItem("token");
+    console.log({access_token});
+    setToken(access_token)
+  }
+
+  const [token,setToken] = useState(null)
+
+  useEffect( () => {
+    getToken()
+  },[])
+
   const dispatch = useDispatch();
   // console.log({ navigation: navigation.navigate });
   return (
@@ -50,9 +66,12 @@ export const Header = ({ shopName }) => {
             </Text>
           </View>
           <View style={{ justifyContent: "center", marginRight: 10 }}>
-            <TouchableOpacity onPress={() => dispatch(logout(navigation))}>
+            {token ?<TouchableOpacity onPress={() => dispatch(logout(navigation))}>
               <Text style={{ color: Colors.green }}>Logout</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> :
+            <TouchableOpacity onPress={() => handleLogin()}>
+              <Text style={{ color: Colors.green }}>Login</Text>
+            </TouchableOpacity>}
           </View>
         </View>
       </SafeAreaView>

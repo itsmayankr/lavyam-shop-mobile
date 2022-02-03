@@ -7,7 +7,10 @@ import {
   ActivityIndicator,
   Text,
   Platform,
+  Alert,
 } from "react-native";
+import { ToastAndroid } from "react-native";
+
 //Color
 import Colors from "../../../utils/Colors";
 
@@ -24,24 +27,53 @@ import banners from "../../../db/Banners";
 
 import { constant } from "../../../utils/constant";
 import NoItemFound from "../../../auth/components/NoItemFound";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { getSellerByShopId } from "../../../redux/actions/shopAction";
 
 const ProductList = ({ item, cartData, seller }) => {
   // console.log(item, "::::dfgdfgfdgfdgdfg::");
   const cartIsLoading = useSelector((state) => state.cartScreen);
+  const navigation = useNavigation();
   // console.log({ item });
   const dispatch = useDispatch();
   useEffect(() => {
     // dispatch(getSellerByShopId(item.data[0].sellerId));
   }, []);
-  const handleAddToCart = (productId) => {
-    const data = {
+  const handleAddToCart = async (productId) => {
+    let access_token = await AsyncStorage.getItem("token");
+    console.log({access_token})
+    if(!access_token){
+      ToastAndroid.showWithGravityAndOffset(
+        "Please Login in order to add item to cart!",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        150
+      );
+      navigation.navigate("Login")
+    }else {
+      const data = {
       productId,
       quantity: 1,
     };
     dispatch(addToCart(data));
+    }
   };
-  console.log(constant);
+
+
+  const getToken = async () => {
+    let access_token = await AsyncStorage.getItem("token");
+    console.log({access_token});
+    setToken(access_token)
+  }
+
+  const [token,setToken] = useState(null)
+
+  useEffect( () => {
+    getToken()
+  },[])
+
 
   const handleCheckCart = (product_id) => {
     return cartData?.items?.find((cart) => cart.productId._id === product_id);
