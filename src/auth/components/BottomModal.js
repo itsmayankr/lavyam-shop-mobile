@@ -1,268 +1,144 @@
+
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  View, StyleSheet, TouchableOpacity
+} from "react-native";
+
+import { useDispatch, useSelector } from "react-redux";
+import { getCategorys, getMarkets, getPincodes } from "../../redux/actions/configScreenActions";
+import { getShops } from "../../redux/actions/shopAction";
+import SearchDropDown from './SearchDropdown'
 import CustomText from "../../components/UI/CustomText";
 import Colors from "../../utils/Colors";
 
-import { Picker } from "@react-native-picker/picker";
-import { useDispatch, useSelector } from "react-redux";
-import { getMarkets } from "../../redux/actions/configScreenActions";
-import { getShops } from "../../redux/actions/shopAction";
+export default function BottomModal({ refRBSheet, handleSubmitChildren }) {
 
-export default function BottomModal({
-  pincodeData,
-  categoryData,
-  refRBSheet,
-  handleSubmitChildren,
-}) {
-  const [selectedPincode, setSelectedPincode] = useState();
-  const [selectedMarket, setSelectedMarket] = useState();
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [localStorage, setLocalStorage] = useState({
-    pincode: "",
-    category: "",
-    market: "",
-  });
 
-  const marketsData = useSelector(
-    (state) => state?.configScreen?.markets?.markets
-  );
+  //Pincode
+  const [selectedPincode, setSelectedPincode] = useState("");
+  const [onPincodeChange, setOnPincodeChange] = useState("");
+  const [pincodeDataSource, setPincodeDataSource] = useState([]);
+
+  //Market
+  const [selectedMarket, setSelectedMarket] = useState("");
+  const [changeValueMarket, setChangeValueMarket] = useState("something");
+  const [onMarketChange, setOnMarketeChange] = useState("");
+  const [marketDataSource, setMarketDataSource] = useState([]);
+  const [editable, setEditable] = useState(false)
+
+  //Category
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [onCategoryChange, setOnCategoryChange] = useState("");
+  const [categoryDataSource, setCategoryDataSource] = useState([]);
+  const [clearInput, setClearInput] = useState(false)
+
   const dispatch = useDispatch();
-  const setLocalFunc = async (pin) => {
-    console.log("Involed Set");
-    await AsyncStorage.setItem("pincode", pin);
-    console.log(pin);
-    dispatch(getMarkets(null, pin));
-  };
+
+  const pinCode = useSelector(
+    (state) => state?.configScreen.pincodes
+  );
+
+  const market = useSelector(
+    (state) => state?.configScreen.markets
+  );
+  const category = useSelector(
+    (state) => state?.configScreen.categorys
+  );
 
   useEffect(() => {
-    localStorageValues();
-  }, []);
+    console.log("Pincode useEffect Called");
+    dispatch(getPincodes(null, onPincodeChange))
+    pinCode?.totalCount > 0 && setPincodeDataSource(pinCode.pinCode.map(ele => ({ label: ele.pinCode, value: ele.pinCode })))
+    setClearInput(true)
+  }, [onPincodeChange])
 
-  const localStorageValues = async () => {
-    let pincode = await AsyncStorage.getItem("pincode");
-    let market = await AsyncStorage.getItem("market");
-    let category = await AsyncStorage.getItem("category");
-    setLocalStorage({
-      pincode,
-      category,
-      market,
-    });
-  };
-  console.log({ localStorage });
+  useEffect(() => {
+    setChangeValueMarket("")
+  }, [onPincodeChange, selectedPincode])
+
+  useEffect(() => {
+    selectedPincode?.length > 0 ? setEditable(true) : setEditable(false)
+    selectedPincode && dispatch(getMarkets(null, selectedPincode, onMarketChange, false))
+    market.totalCount > 0 && setMarketDataSource(market?.markets.map(ele => ({ label: ele.marketName, value: ele.marketName })))
+
+  }, [selectedPincode, onMarketChange])
+
+  useEffect(() => {
+    dispatch(getCategorys(null, onCategoryChange))
+    pinCode?.totalCount > 0 && setCategoryDataSource(category.categorys.map(ele => ({ label: ele.categoryName, value: ele.categoryName })))
+  }, [onCategoryChange])
+
+
   const handleSubmit = async () => {
-    // console.log(selectedPincode, selectedMarket, selectedCategory);
-    try {
-      await AsyncStorage.setItem("pincode", selectedPincode);
-      await AsyncStorage.setItem("market", selectedMarket);
-
-      selectedCategory
-        ? await AsyncStorage.setItem("category", selectedCategory)
-        : await AsyncStorage.setItem("category", "");
-
-      dispatch(
-        getShops(null, selectedPincode, selectedMarket, selectedCategory)
-      );
-
-      handleSubmitChildren();
-      refRBSheet.current.close();
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    dispatch(getShops(null, selectedPincode, selectedMarket, selectedCategory, refRBSheet))
+    handleSubmitChildren();
+    // await AsyncStorage.setItem("pincode", selectedPincode);
+    // await AsyncStorage.setItem("market", selectedMarket);
+    // await AsyncStorage.setItem("category", selectedCategory);
+  }
 
   return (
-    <View
-      style={{
-        flex: 1,
-        // justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#E9EDF3",
-        marginBottom: 10,
-        position: "relative",
-      }}
-    >
-      <View style={{ height: "100%" }}>
-        <View style={styles.card}>
-          <Picker
-            selectedValue={localStorage.pincode || selectedPincode}
-            onValueChange={(itemValue, itemIndex) => {
-              setLocalFunc(itemValue);
-              console.log(itemValue, ":::AAA::::");
-              dispatch(getMarkets(null, itemValue));
-              setSelectedPincode(itemValue);
-            }}
-            style={{ height: 30 }}
+    <View style={styles.container}>
+      <SearchDropDown value={setSelectedPincode} placeholder={"Pincode"} keyboardType={"numeric"} dataSource={pincodeDataSource} onChangeValue={setOnPincodeChange} />
+      <SearchDropDown value={setSelectedMarket} placeholder={"Market"} editable={editable}
+        instant={"true"} dataSource={marketDataSource} onChangeValue={setOnMarketeChange} clearInput={clearInput} changeValueMarket={changeValueMarket} />
+      <SearchDropDown value={setSelectedCategory} placeholder={"Category"} dataSource={categoryDataSource} onChangeValue={setOnCategoryChange} />
+      {/* <Button onPress={handleSubmit}>Submit</Button> */}
+      <View>
+        <TouchableOpacity
+          // onPress={() => handleSubmit("123", "123")}
+          onPress={handleSubmit}
+          style={{
+            alignItems: "center",
+            marginTop: 40,
+            width: "100%",
+          }}
+        >
+          <View
+            style={styles.signIn}
           >
-            <Picker.Item
-              label={localStorage.pincode || "Select PIN Code"}
-              value={localStorage.pincode || selectedPincode}
-            />
-            {pincodeData?.map((ele, i) => (
-              <Picker.Item
-                style={styles.pickerItem}
-                key={i}
-                label={ele.pinCode}
-                value={ele.pinCode}
-              />
-            ))}
-          </Picker>
-        </View>
-
-        <View style={styles.cardMarket(selectedPincode, localStorage)}>
-          <Picker
-            selectedValue={selectedMarket}
-            enabled={localStorage.pincode || selectedPincode ? true : false}
-            onValueChange={(itemValue, itemIndex) => {
-              // fetchMarkets(itemValue);
-
-              setSelectedMarket(itemValue);
-            }}
-            style={{
-              height: 30,
-              color:
-                localStorage?.pincode?.pincode || selectedPincode
-                  ? Colors.black
-                  : Colors.grey,
-            }}
-          >
-            <Picker.Item
-              label={
-                localStorage.market
-                  ? localStorage.market
-                  : selectedPincode
-                  ? "Select Market"
-                  : "PIN Code Required"
-              }
-              value={localStorage.market || selectedPincode}
-            />
-            {marketsData &&
-              marketsData?.map((ele, i) => (
-                <Picker.Item
-                  style={styles.pickerItem}
-                  key={ele._id}
-                  label={
-                    ele.marketName.charAt(0).toUpperCase() +
-                    ele.marketName.slice(1)
-                  }
-                  value={ele.marketName}
-                />
-              ))}
-          </Picker>
-        </View>
-
-        <View style={styles.card}>
-          <Picker
-            selectedValue={selectedCategory}
-            onValueChange={(itemValue, itemIndex) =>
-              setSelectedCategory(itemValue)
-            }
-            style={{ height: 30 }}
-          >
-            <Picker.Item
-              label={localStorage.category || "Select Category"}
-              value={localStorage.category || null}
-            />
-            {categoryData?.map((ele, i) => (
-              <Picker.Item
-                style={styles.pickerItem}
-                key={ele._id}
-                label={
-                  ele.categoryName.charAt(0).toUpperCase() +
-                  ele.categoryName.slice(1)
-                }
-                value={ele.categoryName}
-              />
-            ))}
-          </Picker>
-        </View>
-        <View>
-          <TouchableOpacity
-            // onPress={() => handleSubmit("123", "123")}
-            onPress={
-              (selectedPincode || localStorage.pincode) &&
-              (selectedMarket || localStorage.market) &&
-              handleSubmit
-            }
-            style={{
-              alignItems: "center",
-              marginTop: 40,
-              width: "100%",
-            }}
-          >
-            <View
-              style={styles.signIn(
-                selectedPincode,
-                selectedMarket,
-                localStorage
-              )}
+            <CustomText
+              style={styles.textSign}
             >
-              <CustomText
-                style={styles.textSign(
-                  selectedPincode,
-                  selectedMarket,
-                  localStorage
-                )}
-              >
-                Submit
-              </CustomText>
-            </View>
-          </TouchableOpacity>
-        </View>
+              Submit
+            </CustomText>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  signIn: (selectedPincode, selectedMarket, localStorage) => ({
+  container: {
+    // justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '20%',
+    flex: 1
+  },
+  textInput: {
+    backgroundColor: '#BFBFBF',
+    marginVertical: 20,
+    width: '80%',
+    borderRadius: 5,
+    height: 50,
+    fontSize: 20,
+    fontWeight: 'bold',
+    paddingHorizontal: 10,
+  },
+  signIn: {
     width: "100%",
     height: 40,
-    justifyContent: "center",
+    paddingHorizontal: 20,
+    // justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,
     flexDirection: "row",
-    backgroundColor:
-      (localStorage?.pincode?.pincode || selectedPincode) && selectedMarket
-        ? Colors.lighter_green
-        : Colors.grey,
-  }),
-  textSign: (selectedPincode, selectedMarket, localStorage) => ({
-    fontSize: 15,
-    color:
-      (localStorage?.pincode?.pincode || selectedPincode) && selectedMarket
-        ? Colors.white
-        : Colors.black,
-    // fontFamily: "Roboto-Medium",
-  }),
-  card: {
-    borderWidth: 1,
-    width: 314,
-    borderColor: Colors.green,
-    borderRadius: 5,
-    backgroundColor: "#fff",
-    marginTop: 10,
-    paddingHorizontal: 4,
-    paddingVertical: 6,
-    marginTop: 30,
+    backgroundColor: Colors.lighter_green
   },
-  cardMarket: (selectedPincode, localStorage) => ({
-    borderWidth: 1,
-    width: 314,
-    borderColor:
-      localStorage?.pincode?.pincode || selectedPincode
-        ? Colors.green
-        : Colors.grey,
-    borderRadius: 5,
-    backgroundColor: "#fff",
-    marginTop: 10,
-    paddingHorizontal: 4,
-    paddingVertical: 6,
-    marginTop: 30,
-  }),
-  pickerItem: {
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
-    color: "red",
+  textSign: {
+    fontSize: 15,
+    textAlign: "center",
+    color: Colors.white
   },
 });

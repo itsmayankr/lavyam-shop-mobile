@@ -25,6 +25,7 @@ import { Portal, Provider } from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getAdCount } from "../../redux/actions/configScreenActions";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 //height
@@ -32,7 +33,12 @@ const { width, height } = Dimensions.get("window");
 
 const HomeScreen = (props) => {
   const { navigation } = props;
-  const dispatch = useDispatch();
+
+  const dispatch = useDispatch()
+  const data = useSelector(state => state.configScreen.adsUser)
+  useEffect(() => {
+    dispatch(getAdCount("user"))
+  }, [])
   //Header Animation
   let scrollY = new Animated.Value(0);
   // const user = useSelector((state) => state.auth.user);
@@ -42,24 +48,24 @@ const HomeScreen = (props) => {
   //   totalCount: 0,
   // });
   const isLoading = useSelector((state) => false);
-  const notification = useSelector((state) => []);
+
   //fetch Api
   const retrieveData = async () => {
     try {
-      let pin = await AsyncStorage.getItem("pincode");
-      let mark = await AsyncStorage.getItem("market");
-      let category = await AsyncStorage.getItem("category");
-
+      // let pin = await AsyncStorage.getItem("pincode");
+      // let mark = await AsyncStorage.getItem("market");
+      // let category = await AsyncStorage.getItem("category");
+      console.log({ pin, mark }, "::::::::::::ASD:::::::::::::::::")
       // await AsyncStorage.clear();
 
       if (pin !== null) {
         // We have data!!
-        dispatch(getShops(null, pin, mark, category));
-        setPinCode(pincode);
+        // dispatch(getShops(null, pin, mark, category));
+        // setPinCode(pincode);
       }
       if (mark !== null) {
         // We have data!!
-        setMarket(market);
+        // setMarket(mark);
       }
     } catch (error) {
       // Error retrieving data
@@ -84,7 +90,7 @@ const HomeScreen = (props) => {
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={() => (
               <View style={styles.banner}>
-                <Carousel />
+                <Carousel images={data} />
               </View>
             )}
             scrollEventThrottle={1}
@@ -96,11 +102,11 @@ const HomeScreen = (props) => {
               ],
               { useNativeDriver: true }
             )}
-            // data={categories}
-            // keyExtractor={(item) => item.name}
-            // renderItem={({ item }) => (
+          // data={categories}
+          // keyExtractor={(item) => item.name}
+          // renderItem={({ item }) => (
 
-            // )}
+          // )}
           />
           <View>
             <ShopSection data={shops} navigation={navigation} />

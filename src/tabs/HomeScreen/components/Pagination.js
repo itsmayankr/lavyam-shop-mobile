@@ -9,6 +9,7 @@ const { height, width } = Dimensions.get("window");
 const DOT_SIZE = 20;
 
 const Pagination = ({ scrollX, slides }) => {
+  console.log({ slides }, "asddasd")
   const inputRange = [0, width, width * 2, width * 3, width * 4];
   const translateX = scrollX.interpolate({
     inputRange,
@@ -35,7 +36,7 @@ const Pagination = ({ scrollX, slides }) => {
         />
         {slides.map((item) => {
           return (
-            <View key={item.id} style={styles.paginationDotContainer}>
+            <View key={item._id} style={styles.paginationDotContainer}>
               <View style={styles.paginationDot} />
             </View>
           );

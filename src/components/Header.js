@@ -31,15 +31,15 @@ export const Header = ({ shopName }) => {
 
   const getToken = async () => {
     let access_token = await AsyncStorage.getItem("token");
-    console.log({access_token});
+    console.log({ access_token });
     setToken(access_token)
   }
 
-  const [token,setToken] = useState(null)
+  const [token, setToken] = useState(null)
 
-  useEffect( () => {
+  useEffect(() => {
     getToken()
-  },[])
+  }, [])
   const dispatch = useDispatch();
   // console.log({ navigation: navigation.navigate });
   return (
@@ -67,14 +67,14 @@ export const Header = ({ shopName }) => {
               {shopName}
             </Text>
           </View>
-          <View style={{ justifyContent: "center" }}>
-            { token ? <TouchableOpacity onPress={() => dispatch(logout(navigation))}>
+          {/* <View style={{ justifyContent: "center" }}>
+            {token ? <TouchableOpacity onPress={() => dispatch(logout(navigation))}>
               <Text style={{ color: Colors.green }}>Logout</Text>
-            </TouchableOpacity> :  <TouchableOpacity onPress={() => handleLogin()}>
+            </TouchableOpacity> : <TouchableOpacity onPress={() => handleLogin()}>
               <Text style={{ color: Colors.green }}>Login</Text>
             </TouchableOpacity>
             }
-          </View>
+          </View> */}
         </View>
       </SafeAreaView>
     </>

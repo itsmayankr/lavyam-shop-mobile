@@ -2,7 +2,16 @@ import * as types from "../constant";
 import axios from "../../config/axios";
 // import { toast } from "react-toastify";
 
-const getShops = (page, pinCodeName, marketName, category) => (dispatch) => {
+const local = async (pinCodeName, marketName, category) => {
+  console.log({ pinCodeName, marketName, category }, "asdasdasdasd")
+  await AsyncStorage.setItem("pincode", pinCodeName);
+  await AsyncStorage.setItem("market", marketName);
+  await AsyncStorage.setItem("category", category);
+}
+
+const getShops = (page, pinCodeName, marketName, category, refRBSheet) => (dispatch) => {
+  console.log("Invoked Get Shop Action");
+  console.log({ pinCodeName, marketName, category }, "First")
   let p = page ? `page=${page}` : `page=${1}`;
   let pin = pinCodeName ? `&pinCodeName=${pinCodeName}` : "";
   let market = marketName ? `&marketName=${marketName}` : "";
@@ -10,10 +19,13 @@ const getShops = (page, pinCodeName, marketName, category) => (dispatch) => {
   axios
     .get(`/shopsearch?${p}${pin}${market}${categoryval}`)
     .then((response) => {
+
       dispatch({
         type: types.FETCH_SHOPS,
         payload: response.data,
       });
+      local(pinCodeName, marketName, category)
+      refRBSheet.current.close()
     })
     .catch((err) => {
       console.log(err);

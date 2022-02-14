@@ -42,10 +42,10 @@ const loginUser = (loginData, navigate) => async (dispatch) => {
 
 const getOtp = (userData, navigation) => async (dispatch) => {
   try {
-  let data = await axios.get(`/get-otp?email=${userData.email}`);
+    let data = await axios.get(`/get-otp?email=${userData.email}`);
     // message.success("Register Successfully");
     console.log(data.data);
-    if(data.data){
+    if (data.data) {
       dispatch({
         type: types.GET_NUMBER,
         payload: data.data.number,
@@ -66,15 +66,15 @@ const getOtp = (userData, navigation) => async (dispatch) => {
   }
 };
 
-const forgotPasswordAction = async (userData, navigation,type) => {
+const forgotPasswordAction = async (userData, navigation, type) => {
   try {
-  let data = await axios.post(`/forgot-password`,userData);
+    let data = await axios.post(`/forgot-password`, userData);
     // message.success("Register Successfully");
-    console.log({data:data.data});
-    if(type === "Reset"){
-      if(data.data.redirect){
+    console.log({ data: data.data });
+    if (type === "Reset") {
+      if (data.data.redirect) {
         navigation.navigate("ResetPassword");
-      }else {
+      } else {
         ToastAndroid.showWithGravityAndOffset(
           "Incorrect OTP",
           ToastAndroid.LONG,
@@ -83,7 +83,7 @@ const forgotPasswordAction = async (userData, navigation,type) => {
           150
         );
       }
-    }else {
+    } else {
       ToastAndroid.showWithGravityAndOffset(
         "Password Reset Successfully",
         ToastAndroid.LONG,
@@ -116,4 +116,4 @@ const logout = (navigation) => async (dispatch) => {
   // dispatch({ type: "RESET" });
 };
 
-export { loginUser, register, logout, getOtp , forgotPasswordAction};
+export { loginUser, register, logout, getOtp, forgotPasswordAction };

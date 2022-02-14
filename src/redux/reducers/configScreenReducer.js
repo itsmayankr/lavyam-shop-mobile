@@ -9,6 +9,7 @@ const initialState = {
   categorys: {
     totalCount: 0,
   },
+  adsUser: {}
 };
 
 const configScreen = (state = initialState, action) => {
@@ -21,6 +22,10 @@ const configScreen = (state = initialState, action) => {
 
     case types.FETCH_CATEGORYS:
       return { ...state, categorys: action.payload, isLoading: false };
+
+    case types.GET_AD_USER: {
+      return { ...state, adsUser: action.payload };
+    }
 
     default:
       return { ...state };

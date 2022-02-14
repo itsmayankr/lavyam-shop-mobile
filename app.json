@@ -2,10 +2,10 @@
   "expo": {
     "name": "Mart On",
     "slug": "mart",
-    "owner":"elitekods",
+    "owner": "elitekods",
     "privacy": "public",
     "description": "E-Commerce",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -16,12 +16,14 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "versionCode":"2",
+      "versionCode": "3",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#FFFFFF"

@@ -20,7 +20,6 @@ import {
   getCategorys,
   getPincodes,
 } from "../../../redux/actions/configScreenActions";
-import { Button } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { logout } from "../../../redux/actions/auth";
@@ -42,16 +41,9 @@ export const Header = () => {
   useEffect(() => {
     dispatch(getPincodes());
     dispatch(getCategorys());
-    handleBottomModal();
     localStorageValues();
   }, []);
 
-  const handleBottomModal = async () => {
-    let pin = await AsyncStorage.getItem("pincode");
-    let mark = await AsyncStorage.getItem("market");
-    (pin === null || mark === null) && refRBSheet.current.open();
-    !pin && !mark && setCloseOnPressBack(false);
-  };
 
   useEffect(() => {
     localStorageValues();
@@ -65,10 +57,11 @@ export const Header = () => {
     let pin = await AsyncStorage.getItem("pincode");
     let mark = await AsyncStorage.getItem("market");
     let category = await AsyncStorage.getItem("category");
-    pin && mark && setCloseOnDragDown(true);
-    pin && setPinCode(pin);
-    mark && setMarket(mark);
-    category && setCategory(category);
+    console.log({ pin, mark }, "asdasDasdasd")
+    setCloseOnDragDown(true);
+    setPinCode(pin);
+    setMarket(mark);
+    setCategory(category);
   };
 
   const navigation = useNavigation();
@@ -80,16 +73,16 @@ export const Header = () => {
 
   const getToken = async () => {
     let access_token = await AsyncStorage.getItem("token");
-    console.log({access_token});
+    console.log({ access_token });
     setToken(access_token)
   }
 
-  const [token,setToken] = useState(null)
+  const [token, setToken] = useState(null)
 
-  useEffect( () => {
+  useEffect(() => {
     getToken()
-  },[])
-
+  }, [])
+  console.log(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
   return (
     <>
       <SafeAreaView style={styles.header_safe_area}>
@@ -112,11 +105,11 @@ export const Header = () => {
                       width: width,
                     }}
                   >
-                    {pincode || "Select PIN Code"}
+                    {"Select PIN Code"}
                   </Text>
                 </View>
                 <View style={{ flexDirection: "row" }}>
-                  <Text
+                  {/* <Text
                     style={{
                       fontSize: 14,
                       fontWeight: "600",
@@ -127,18 +120,18 @@ export const Header = () => {
                     }}
                   >
                     {market || "Select market"}
-                  </Text>
+                  </Text> */}
                 </View>
               </TouchableOpacity>
             </View>
 
             <View style={{ justifyContent: "center", marginRight: 5 }}>
-            { token ? <TouchableOpacity onPress={() => dispatch(logout(navigation))}>
+              {token ? <TouchableOpacity onPress={() => dispatch(logout(navigation))}>
                 <Text style={{ color: Colors.green }}>Logout</Text>
               </TouchableOpacity> :
-              <TouchableOpacity onPress={() => handleLogin()}>
-                <Text style={{ color: Colors.green }}>Login</Text>
-              </TouchableOpacity>}
+                <TouchableOpacity onPress={() => handleLogin()}>
+                  <Text style={{ color: Colors.green }}>Login</Text>
+                </TouchableOpacity>}
             </View>
           </View>
           <RBSheet
@@ -150,7 +143,7 @@ export const Header = () => {
               container: {
                 borderTopLeftRadius: 10,
                 borderTopRightRadius: 10,
-                height: "50%",
+                height: "100%",
                 // position: "relative",
               },
               draggableIcon: {
