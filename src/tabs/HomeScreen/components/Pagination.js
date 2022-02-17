@@ -34,7 +34,7 @@ const Pagination = ({ scrollX, slides }) => {
             },
           ]}
         />
-        {slides.map((item) => {
+        {slides && slides.map((item) => {
           return (
             <View key={item._id} style={styles.paginationDotContainer}>
               <View style={styles.paginationDot} />
@@ -59,12 +59,14 @@ const styles = StyleSheet.create({
     height: DOT_SIZE,
     zIndex: 100,
     alignItems: "center",
+
   },
   paginationDot: {
     width: DOT_SIZE * 0.3,
     height: DOT_SIZE * 0.3,
     borderRadius: DOT_SIZE * 0.15,
     backgroundColor: "rgba(198, 198, 198, 0.5)",
+    marginRight: 16
   },
   paginationDotContainer: {
     width: DOT_SIZE,
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
     height: DOT_SIZE * 0.5,
     zIndex: 101,
     borderRadius: DOT_SIZE * 0.25,
-    backgroundColor: Colors.lighter_green,
+    backgroundColor: Colors.lighter_green
   },
 });
 

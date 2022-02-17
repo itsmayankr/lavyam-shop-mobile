@@ -12,3 +12,5 @@ export const GET_SELLER_BY_SHOP_ID = "GET_SELLER_BY_SHOP_ID";
 export const GET_ALL_SELLER = "GET_ALL_SELLER";
 export const GET_NUMBER = "GET_NUMBER";
 export const GET_AD_USER = "GET_AD_USER";
+export const GET_USER_PROFILE = "GET_USER_PROFILE";
+export const TOKEN = "TOKEN";

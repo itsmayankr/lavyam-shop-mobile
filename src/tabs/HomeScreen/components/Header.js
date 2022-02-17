@@ -12,6 +12,7 @@ import {
   Dimensions,
 } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
+import * as types from "../../../redux/constant";
 //Colors
 import Colors from "../../../utils/Colors";
 import BottomModal from "../../../auth/components/BottomModal";
@@ -37,17 +38,21 @@ export const Header = () => {
   const [closeOnPressBack, setCloseOnPressBack] = useState(true);
 
   const [isSubmitted, setIsSubmitted] = useState(false);
-
+  const tokenRedux = useSelector(state => state.authProfile.token)
   useEffect(() => {
     dispatch(getPincodes());
     dispatch(getCategorys());
     localStorageValues();
   }, []);
 
-
+  console.log({ tokenRedux });
   useEffect(() => {
     localStorageValues();
   }, [isSubmitted]);
+
+  useEffect(() => {
+    getToken();
+  }, []);
 
   const handleSubmitChildren = () => {
     setIsSubmitted(!isSubmitted);
@@ -73,6 +78,10 @@ export const Header = () => {
 
   const getToken = async () => {
     let access_token = await AsyncStorage.getItem("token");
+    dispatch({
+      type: types.TOKEN,
+      payload: access_token,
+    });
     console.log({ access_token });
     setToken(access_token)
   }
@@ -82,7 +91,13 @@ export const Header = () => {
   useEffect(() => {
     getToken()
   }, [])
-  console.log(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+
+  const handleLogout = () => {
+    setToken(null)
+    console.log("Clicked")
+    dispatch(logout(navigation))
+  }
+
   return (
     <>
       <SafeAreaView style={styles.header_safe_area}>
@@ -126,7 +141,7 @@ export const Header = () => {
             </View>
 
             <View style={{ justifyContent: "center", marginRight: 5 }}>
-              {token ? <TouchableOpacity onPress={() => dispatch(logout(navigation))}>
+              {tokenRedux ? <TouchableOpacity onPress={handleLogout}>
                 <Text style={{ color: Colors.green }}>Logout</Text>
               </TouchableOpacity> :
                 <TouchableOpacity onPress={() => handleLogin()}>

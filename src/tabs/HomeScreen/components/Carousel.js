@@ -24,11 +24,11 @@ export const Carousel = (images) => {
           { useNativeDriver: false } //
         )}
       >
-        {images && images.images?.data?.map((ele) => {
+        {images && images?.images?.data?.map((ele) => {
           return <Slide key={ele._id} localImageMain={ele.image.Location} />;
         })}
       </Animated.ScrollView>
-      <Pagination slides={banners} scrollX={scrollX} />
+      <Pagination slides={images && images?.images?.data} scrollX={scrollX} />
     </View>
   );
 };

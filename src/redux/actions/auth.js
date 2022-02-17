@@ -18,15 +18,20 @@ const loginUser = (loginData, navigate) => async (dispatch) => {
     console.log("Login User");
     try {
       let tokenData = jwt(res.data.token);
+      console.log({ tokenData })
+      // console.log({ tokenData, oken: res.data.token })
       await AsyncStorage.setItem("token", res.data.token);
-      let pincode = await axios.get(`/pincode/${tokenData.pincode}`);
-      await AsyncStorage.setItem("pincode", JSON.stringify(pincode.data));
+
+      navigate.navigate("HomeApp", { replace: true });
+      dispatch({
+        type: types.TOKEN,
+        payload: res.data.token,
+      });
     } catch (error) {
-      console.log(error);
+      console.log({ error });
     }
 
     // dispatch({ type: types.LOGIN_LOADER, payload: false });
-    navigate.navigate("HomeApp", { replace: true });
   } catch (e) {
     console.log(e);
     // dispatch({ type: types.LOGIN_LOADER, payload: false });
@@ -109,11 +114,41 @@ const register = async (userData, navigation) => {
   }
 };
 
+const getLocalStorage = async () => {
+  let access_token = await AsyncStorage.getItem("token");
+  return access_token
+}
+
+
+const getUserProfile = () => async (dispatch) => {
+  const token = await getLocalStorage()
+  axios
+    .get(`/user-profile`, {
+      headers: {
+        authorization: token
+      }
+    })
+    .then((response) => {
+      dispatch({
+        type: types.GET_USER_PROFILE,
+        payload: response.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+};
+
 const logout = (navigation) => async (dispatch) => {
   await AsyncStorage.clear();
 
-  navigation.navigate("HomeApp", { replace: true });
+  navigation.navigate("Login", { replace: true });
   // dispatch({ type: "RESET" });
+  dispatch({
+    type: types.TOKEN,
+    payload: null,
+  });
 };
 
-export { loginUser, register, logout, getOtp, forgotPasswordAction };
+export { loginUser, register, logout, getOtp, forgotPasswordAction, getUserProfile };

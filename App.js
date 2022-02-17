@@ -10,7 +10,7 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import { Provider as PaperProvider } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoginScreen from "./src/auth/LoginScreen";
-import  ForgotPasswordScreen from "./src/auth/ForgotPasswordScreen";
+import ForgotPasswordScreen from "./src/auth/ForgotPasswordScreen";
 import RegisterScreen from "./src/auth/RegisterScreen";
 
 import HomeStack from "./src/tabs/HomeStack";
@@ -31,6 +31,7 @@ import io from "socket.io-client";
 import { getNotifications } from "./src/redux/actions/notificationAction";
 import EnterOtpScreen from "./src/auth/EnterOtpScreen";
 import ResetPasswordScreen from "./src/auth/ResetPasswordScreen";
+import ProfileScreen from "./src/tabs/Profile/Profile";
 
 const navOptionHandler = () => ({
   headerShown: false,
@@ -40,6 +41,9 @@ const Tab = createBottomTabNavigator();
 const NotificationStack = createStackNavigator();
 
 const TabNavigator = () => {
+
+  const tokenRedux = useSelector(state => state.authProfile.token)
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -83,6 +87,15 @@ const TabNavigator = () => {
                 color={color}
               />
             );
+          } else if (route.name === "Profile") {
+            iconName = focused ? "account-circle" : "account-circle";
+            return (
+              <MaterialCommunityIcons
+                name={iconName}
+                size={size}
+                color={color}
+              />
+            );
           }
 
           // You can return any component that you like here!
@@ -98,6 +111,7 @@ const TabNavigator = () => {
       <Tab.Screen name="Cart" component={SettingStack} />
       <Tab.Screen name="Your Orders" component={OrderStack} />
       <Tab.Screen name="Notification" component={NotificationScreen} />
+      {tokenRedux ? <Tab.Screen name="Profile" component={ProfileScreen} /> : null}
     </Tab.Navigator>
   );
 };
@@ -147,7 +161,7 @@ const AppNavigation = () => {
           name="EnterOtp"
           component={EnterOtpScreen}
           options={navOptionHandler}
-          />
+        />
         <StackApp.Screen
           name="ResetPassword"
           component={ResetPasswordScreen}

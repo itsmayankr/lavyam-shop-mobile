@@ -37,9 +37,6 @@ export const Header = ({ shopName }) => {
 
   const [token, setToken] = useState(null)
 
-  useEffect(() => {
-    getToken()
-  }, [])
   const dispatch = useDispatch();
   // console.log({ navigation: navigation.navigate });
   return (
