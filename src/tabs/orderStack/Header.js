@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 // import { getPincodes } from "../../redux/actions/configScreenActions";
 import { useNavigation } from "@react-navigation/native";
 import { logout } from "../../redux/actions/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const Header = ({ shopName }) => {
   const navigation = useNavigation();

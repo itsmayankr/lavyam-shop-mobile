@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 const { width } = Dimensions.get("window");
 
 export const Carousel = (images) => {
-  console.log(images.images, ":::::::::::::::::::asdasdasdasd:::::::::::::::::::::")
+
   const scrollX = useRef(new Animated.Value(0)).current;
   return (
     <View style={styles.container}>

@@ -36,6 +36,7 @@ const orderNow = (data, navigation) => async (dispatch) => {
   } catch (err) {
     console.log(err);
   }
+  console.log({ access_token })
   axios
     .post(
       `/order`,

@@ -54,15 +54,14 @@ const OrderTypeNotification = ({ item, type }) => {
         </TouchableOpacity>
         {showText ? (
           <View>
-            {item.cart.items.map((product) => {
+            {item.cart.items.map((product, i) => {
               return (
-                <View>
+                <View key={i}>
                   {product?.productId.productName && (
                     <CustomText style={styles.boxSubText} key={product._id}>
-                      {`${
-                        product?.productId?.productName[0]?.toUpperCase() +
+                      {`${product?.productId?.productName[0]?.toUpperCase() +
                         product?.productId?.productName?.substring(1)
-                      } x ${product?.quantity}`}
+                        } x ${product?.quantity}`}
                     </CustomText>
                   )}
                 </View>

@@ -1,12 +1,14 @@
 import * as types from "../constant";
 import axios from "../../config/axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // import { toast } from "react-toastify";
 
 const local = async (pinCodeName, marketName, category) => {
-  console.log({ pinCodeName, marketName, category }, "asdasdasdasd")
-  await AsyncStorage.setItem("pincode", pinCodeName);
-  await AsyncStorage.setItem("market", marketName);
-  await AsyncStorage.setItem("category", category);
+  console.log({ pinCodeName, marketName, category }, "asdasdasdasd Shop Action local")
+  pinCodeName && await AsyncStorage.setItem("pincode", pinCodeName);
+  marketName && await AsyncStorage.setItem("market", marketName);
+  category && await AsyncStorage.setItem("category", category);
+  return
 }
 
 const getShops = (page, pinCodeName, marketName, category, refRBSheet) => (dispatch) => {
@@ -18,14 +20,13 @@ const getShops = (page, pinCodeName, marketName, category, refRBSheet) => (dispa
   let categoryval = category ? `&category=${category}` : "";
   axios
     .get(`/shopsearch?${p}${pin}${market}${categoryval}`)
-    .then((response) => {
-
+    .then(async (response) => {
       dispatch({
         type: types.FETCH_SHOPS,
         payload: response.data,
       });
-      local(pinCodeName, marketName, category)
-      refRBSheet.current.close()
+      await local(pinCodeName, marketName, category)
+      refRBSheet && refRBSheet.current.close()
     })
     .catch((err) => {
       console.log(err);

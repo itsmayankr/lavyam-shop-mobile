@@ -24,13 +24,13 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { logout } from "../../../redux/actions/auth";
+import { getShops } from "../../../redux/actions/shopAction";
 
 const { width } = Dimensions.get("window");
 export const Header = () => {
   const refRBSheet = useRef();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.configScreen);
-
   const [pincode, setPinCode] = useState("");
   const [market, setMarket] = useState("");
   const [category, setCategory] = useState("");
@@ -45,10 +45,9 @@ export const Header = () => {
     localStorageValues();
   }, []);
 
-  console.log({ tokenRedux });
-  useEffect(() => {
-    localStorageValues();
-  }, [isSubmitted]);
+  // useEffect(() => {
+  //   localStorageValues();
+  // }, [isSubmitted]);
 
   useEffect(() => {
     getToken();
@@ -62,11 +61,24 @@ export const Header = () => {
     let pin = await AsyncStorage.getItem("pincode");
     let mark = await AsyncStorage.getItem("market");
     let category = await AsyncStorage.getItem("category");
-    console.log({ pin, mark }, "asdasDasdasd")
+    // console.log({ pin, mark }, "localStorageValues Header")
+    await AsyncStorage.getAllKeys(async (err, keys) => {
+      await AsyncStorage.multiGet(keys, (err, stores) => {
+        let data = stores.map((result, i, store) => {
+          // get at each store's key/value so you can work with it
+          let key = store[i][0];
+          let value = store[i][1];
+          console.log({ [key]: value })
+          return result
+        });
+        console.log({ data })
+      });
+    });
     setCloseOnDragDown(true);
     setPinCode(pin);
     setMarket(mark);
     setCategory(category);
+    (pin && mark) && dispatch(getShops(null, pin, mark, category))
   };
 
   const navigation = useNavigation();
