@@ -17,7 +17,7 @@ import Colors from "../../utils/Colors";
 //Animation
 import Animated from "react-native-reanimated";
 //Components
-import { Carousel, Header, ShopSection } from "./components";
+import { Header, ShopSection } from "./components";
 import Skeleton from "../../components/Loaders/SkeletonLoading";
 import { getAllSeller, getShops } from "../../redux/actions/shopAction";
 //FloatButton
@@ -26,6 +26,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getAdCount } from "../../redux/actions/configScreenActions";
+import { getOrder } from "../../redux/actions/orderAction";
+import MyCarousel from "./components/Carousel";
 
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 //height
@@ -39,6 +41,7 @@ const HomeScreen = (props) => {
   useEffect(() => {
     dispatch(getAdCount("user"))
   }, [])
+  console.log({ data });
   //Header Animation
   let scrollY = new Animated.Value(0);
   // const user = useSelector((state) => state.auth.user);
@@ -85,7 +88,8 @@ const HomeScreen = (props) => {
         // <View style={styles.container}>
         <View style={styles.container}>
           <Header />
-          <AnimatedFlatList
+          <MyCarousel images={data} />
+          {/* <AnimatedFlatList
             contentContainerStyle={styles.list}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={() => (
@@ -107,7 +111,7 @@ const HomeScreen = (props) => {
           // renderItem={({ item }) => (
 
           // )}
-          />
+          /> */}
           <View>
             <ShopSection data={shops} navigation={navigation} />
           </View>

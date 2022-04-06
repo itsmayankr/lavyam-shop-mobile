@@ -63,7 +63,7 @@ const orderNow = (data, navigation) => async (dispatch) => {
       // ]);
       dispatch(getCart());
       dispatch(getOrder());
-      dispatch(navigation.navigate("Your Orders"));
+      dispatch(navigation.navigate("Orders"));
     })
     .catch((err) => {
       console.log(err);

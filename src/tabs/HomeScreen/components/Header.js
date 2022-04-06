@@ -39,6 +39,11 @@ export const Header = () => {
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const tokenRedux = useSelector(state => state.authProfile.token)
+  const configScreen = useSelector(
+    (state) => state?.configScreen
+  );
+
+
   useEffect(() => {
     dispatch(getPincodes());
     dispatch(getCategorys());
@@ -53,7 +58,10 @@ export const Header = () => {
     getToken();
   }, []);
 
-  const handleSubmitChildren = () => {
+  const handleSubmitChildren = (pincode, market, category) => {
+    setPinCode(pincode);
+    setMarket(market);
+    setCategory(category);
     setIsSubmitted(!isSubmitted);
   };
 
@@ -61,7 +69,7 @@ export const Header = () => {
     let pin = await AsyncStorage.getItem("pincode");
     let mark = await AsyncStorage.getItem("market");
     let category = await AsyncStorage.getItem("category");
-    // console.log({ pin, mark }, "localStorageValues Header")
+    console.log({ pin, mark }, "localStorageValues Header")
     await AsyncStorage.getAllKeys(async (err, keys) => {
       await AsyncStorage.multiGet(keys, (err, stores) => {
         let data = stores.map((result, i, store) => {
@@ -83,7 +91,6 @@ export const Header = () => {
 
   const navigation = useNavigation();
 
-
   const handleLogin = async () => {
     navigation.navigate("Login");
   };
@@ -102,6 +109,7 @@ export const Header = () => {
 
   useEffect(() => {
     getToken()
+
   }, [])
 
   const handleLogout = () => {
@@ -132,11 +140,11 @@ export const Header = () => {
                       width: width,
                     }}
                   >
-                    {"Select PIN Code"}
+                    {pincode || "Select PIN Code"}
                   </Text>
                 </View>
                 <View style={{ flexDirection: "row" }}>
-                  {/* <Text
+                  <Text
                     style={{
                       fontSize: 14,
                       fontWeight: "600",
@@ -147,7 +155,7 @@ export const Header = () => {
                     }}
                   >
                     {market || "Select market"}
-                  </Text> */}
+                  </Text>
                 </View>
               </TouchableOpacity>
             </View>

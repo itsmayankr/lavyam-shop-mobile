@@ -42,8 +42,8 @@ const ProductList = ({ item, cartData, seller }) => {
   }, []);
   const handleAddToCart = async (productId) => {
     let access_token = await AsyncStorage.getItem("token");
-    console.log({access_token})
-    if(!access_token){
+    console.log({ access_token })
+    if (!access_token) {
       ToastAndroid.showWithGravityAndOffset(
         "Please Login in order to add item to cart!",
         ToastAndroid.LONG,
@@ -52,27 +52,27 @@ const ProductList = ({ item, cartData, seller }) => {
         150
       );
       navigation.navigate("Login")
-    }else {
+    } else {
       const data = {
-      productId,
-      quantity: 1,
-    };
-    dispatch(addToCart(data));
+        productId,
+        quantity: 1,
+      };
+      dispatch(addToCart(data));
     }
   };
 
 
   const getToken = async () => {
     let access_token = await AsyncStorage.getItem("token");
-    console.log({access_token});
+    console.log({ access_token });
     setToken(access_token)
   }
 
-  const [token,setToken] = useState(null)
+  const [token, setToken] = useState(null)
 
-  useEffect( () => {
+  useEffect(() => {
     getToken()
-  },[])
+  }, [])
 
 
   const handleCheckCart = (product_id) => {
@@ -81,12 +81,6 @@ const ProductList = ({ item, cartData, seller }) => {
   // console.log(item.data, "ASDASDASDS");
   return (
     <View>
-      <View style={{ marginTop: 20 }}>
-        <Slide
-          imageUrl={seller?.thumbnailImage?.Location}
-          localImage={constant.defaultBanner}
-        />
-      </View>
       {item.data?.length > 0 ? (
         item.data.map((item, i) => (
           <View key={item._id + i} style={styles.container}>
@@ -158,12 +152,13 @@ const ProductList = ({ item, cartData, seller }) => {
                   </View>
                 ) : (
                   <View>
-                    <TouchableOpacity
-                      onPress={() => handleAddToCart(item._id)}
-                      style={[styles.btn, styles.notAdded]}
-                    >
-                      <CustomText style={styles.detailBtn}>Add</CustomText>
-                    </TouchableOpacity>
+                    {item.quantity > 0 ?
+                      <TouchableOpacity
+                        onPress={() => handleAddToCart(item._id)}
+                        style={[styles.btn, styles.notAdded]}
+                      >
+                        <CustomText style={styles.detailBtn}>Add</CustomText>
+                      </TouchableOpacity> : <CustomText style={styles.outOfStock}>Item out of stock</CustomText>}
                   </View>
                 )}
               </View>
@@ -300,6 +295,11 @@ const styles = StyleSheet.create({
     color: Colors.white,
     textAlign: "center",
   },
+  outOfStock: {
+    color: Colors.red,
+    textAlign: "left",
+    marginTop: 5
+  }
 });
 
 export default ProductList;

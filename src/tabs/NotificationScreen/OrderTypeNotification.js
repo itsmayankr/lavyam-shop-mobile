@@ -15,7 +15,7 @@ const OrderTypeNotification = ({ item, type }) => {
   const [showText, setShowText] = useState(false);
   //   const [lastItem] = item?.cart?.items.slice(-1);
   //   console.log(lastItem, "lastItem");
-
+  console.log({ item: item.seller.shopName }, "::::::::::::::::::::::::::::::ASDSASDASDASDASDSAD::::::::::::::::::::::::::::")
   const handleText = () => {
     setShowText(!showText);
   };
@@ -29,10 +29,14 @@ const OrderTypeNotification = ({ item, type }) => {
               {/* {item?.seller?.shopName} */}
               {type}
             </CustomText>
+            <CustomText style={styles.boxTextShopName}>
+              {/* {item?.seller?.shopName} */}
+              {item?.seller?.shopName}
+            </CustomText>
           </View>
-          <View style={{ flex: 1, alignItems: "flex-end", padding: 2 }}>
+          {/* <View style={{ flex: 1, alignItems: "flex-end", padding: 2 }}>
             <CustomText style={styles.boxSubText}>#{item?.orderId}</CustomText>
-          </View>
+          </View> */}
         </View>
         <View style={{ flexDirection: "row" }}>
           <CustomText style={styles.boxSubText}>
@@ -127,6 +131,10 @@ const styles = StyleSheet.create({
   boxText: {
     fontSize: 14,
     fontWeight: "700",
+  },
+  boxTextShopName: {
+    fontSize: 12,
+    // fontWeight: "700",
   },
   boxSubText: {
     fontSize: 12,

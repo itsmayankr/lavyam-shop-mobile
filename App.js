@@ -8,7 +8,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { Provider as PaperProvider } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import LoginScreen from "./src/auth/LoginScreen";
 import ForgotPasswordScreen from "./src/auth/ForgotPasswordScreen";
 import RegisterScreen from "./src/auth/RegisterScreen";
@@ -69,7 +69,7 @@ const TabNavigator = () => {
                 color={color}
               />
             );
-          } else if (route.name === "Your Orders") {
+          } else if (route.name === "Orders") {
             iconName = focused ? "truck-check" : "truck-check-outline";
             return (
               <MaterialCommunityIcons
@@ -109,7 +109,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen name="MartOn" component={HomeStack} />
       <Tab.Screen name="Cart" component={SettingStack} />
-      <Tab.Screen name="Your Orders" component={OrderStack} />
+      <Tab.Screen name="Orders" component={OrderStack} />
       <Tab.Screen name="Notification" component={NotificationScreen} />
       {tokenRedux ? <Tab.Screen name="Profile" component={ProfileScreen} /> : null}
     </Tab.Navigator>

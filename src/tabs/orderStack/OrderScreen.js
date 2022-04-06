@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ScrollView, RefreshControl } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 
 import { useDispatch, useSelector } from "react-redux";
+import axios from "../../config/axios";
 import { getOrder, orderNow } from "../../redux/actions/orderAction";
 
 import { Header } from "./Header";
 import HorizontalItem from "./HorizontalItem";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -14,13 +16,41 @@ const wait = (timeout) => {
 const OrderScreen = () => {
   // const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [orders, setOrders] = useState([])
+  // const orders = useSelector((state) => state.orders.orders);
+
+  const fetchOrders = async () => {
+    let access_token;
+    try {
+      access_token = await AsyncStorage.getItem("token");
+    } catch (err) {
+      console.log(err);
+    }
+    axios
+      .get(`/order`, {
+        headers: {
+          authorization: access_token,
+        },
+      })
+      .then((response) => {
+        console.log(response.data)
+        setOrders(response.data)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    dispatch(getOrder());
-  }, []);
+    // console.log("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+    // dispatch(getOrder());
+    if (isFocused) {
+      fetchOrders()
+    }
+  }, [isFocused])
 
-  const orders = useSelector((state) => state.orders.orders);
-  // console.log(orders);
+  console.log(orders);
 
   // const handleOrder = () => {
   //   const data = {
@@ -33,7 +63,8 @@ const OrderScreen = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    dispatch(getOrder());
+    // dispatch(getOrder());
+    fetchOrders()
     wait(1000).then(() => setRefreshing(false));
   }, []);
 

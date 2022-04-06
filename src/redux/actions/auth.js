@@ -23,6 +23,13 @@ const loginUser = (loginData, navigate) => async (dispatch) => {
       await AsyncStorage.setItem("token", res.data.token);
 
       navigate.navigate("HomeApp", { replace: true });
+      ToastAndroid.showWithGravityAndOffset(
+        "Login successfully",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        150
+      );
       dispatch({
         type: types.TOKEN,
         payload: res.data.token,
@@ -129,6 +136,15 @@ const getUserProfile = () => async (dispatch) => {
       }
     })
     .then((response) => {
+
+      ToastAndroid.showWithGravityAndOffset(
+        "Registred successfully",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        150
+      );
+
       dispatch({
         type: types.GET_USER_PROFILE,
         payload: response.data,
@@ -145,6 +161,17 @@ const logout = (navigation) => async (dispatch) => {
 
   navigation.navigate("Login", { replace: true });
   // dispatch({ type: "RESET" });
+  ToastAndroid.showWithGravityAndOffset(
+    "Logged out",
+    ToastAndroid.LONG,
+    ToastAndroid.BOTTOM,
+    25,
+    150
+  );
+  dispatch({
+    type: types.FETCH_ORDERS,
+    payload: [],
+  });
   dispatch({
     type: types.TOKEN,
     payload: null,

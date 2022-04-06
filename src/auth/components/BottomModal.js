@@ -71,7 +71,7 @@ export default function BottomModal({ refRBSheet, handleSubmitChildren }) {
 
   const handleSubmit = async () => {
     dispatch(getShops(null, selectedPincode, selectedMarket, selectedCategory, refRBSheet))
-    handleSubmitChildren();
+    handleSubmitChildren(selectedPincode, selectedMarket, selectedCategory);
     // await AsyncStorage.setItem("pincode", selectedPincode);
     // await AsyncStorage.setItem("market", selectedMarket);
     // await AsyncStorage.setItem("category", selectedCategory);

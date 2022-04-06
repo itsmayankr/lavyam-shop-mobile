@@ -13,7 +13,7 @@ const local = async (pinCodeName, marketName, category) => {
 
 const getShops = (page, pinCodeName, marketName, category, refRBSheet) => (dispatch) => {
   console.log("Invoked Get Shop Action");
-  console.log({ pinCodeName, marketName, category }, "First")
+
   let p = page ? `page=${page}` : `page=${1}`;
   let pin = pinCodeName ? `&pinCodeName=${pinCodeName}` : "";
   let market = marketName ? `&marketName=${marketName}` : "";

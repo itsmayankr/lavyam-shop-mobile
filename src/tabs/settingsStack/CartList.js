@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   Button,
+  ToastAndroid,
 } from "react-native";
 //Color
 import Colors from "../../utils/Colors";
@@ -26,12 +27,22 @@ import { constant } from "../../utils/constant";
 const CartList = ({ item }) => {
   const dispatch = useDispatch();
 
-  const handleAddItemToCart = (productId, quantity) => {
+  const handleAddItemToCart = (productId, quantity, item) => {
     const data = {
       productId,
       quantity,
     };
-    dispatch(addToCart(data));
+    if (item?.quantity < item?.productId?.quantity) {
+      dispatch(addToCart(data));
+    } else {
+      ToastAndroid.showWithGravityAndOffset(
+        "Product maximum limit reached",
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM,
+        25,
+        150
+      );
+    }
   };
 
   const handleRemoveItemToCart = (productId, quantity) => {
@@ -108,7 +119,8 @@ const CartList = ({ item }) => {
                 onPress={() =>
                   handleRemoveItemToCart(
                     item?.productId?._id,
-                    item?.quantity - 1
+                    item?.quantity - 1,
+                    item
                   )
                 }
                 style={styles.boxMin}
@@ -128,7 +140,7 @@ const CartList = ({ item }) => {
                 style={styles.boxMin}
                 hitSlop={{ top: 30, bottom: 30, left: 30, right: 30 }}
                 onPress={() =>
-                  handleAddItemToCart(item?.productId?._id, item?.quantity + 1)
+                  handleAddItemToCart(item?.productId?._id, item?.quantity + 1, item)
                 }
               >
                 <View>

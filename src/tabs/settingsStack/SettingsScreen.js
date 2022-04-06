@@ -33,10 +33,12 @@ const SettingsScreen = () => {
     dispatch(getCart());
   }, []);
   const cart = useSelector((state) => state.cartScreen.cart.data);
-
   const handleOrder = () => {
+
     dispatch(orderNow(cart?._id, navigation));
-    console.log(cart._id);
+
+    // console.log({ pro: cart?.quantity, current: cart?.productId?.quantity }, "::::::::::ASDASDASDAS::::::::::");
+    // console.log(cart.productId.quantity);
   };
 
   const totalData = () => {
@@ -46,12 +48,12 @@ const SettingsScreen = () => {
     };
     cart?.items.map((ele) => {
       total.totalCount += ele?.quantity;
-      total.totalAmount += ele?.total * ele?.quantity;
+      total.totalAmount += ele?.total
     });
     return total;
   };
 
-  console.log(cart);
+  // console.log({ cart }, "::::::::::::::::::::::::::::::LLLLLLLLLLLLLLLLLLLLLLLLL::::::::::::::::::::::::::::::::::");
   return (
     <View style={styles.container}>
       <Header shopName="Cart" />

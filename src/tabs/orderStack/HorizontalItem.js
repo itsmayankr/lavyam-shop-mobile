@@ -10,6 +10,7 @@ import NumberFormat from "../../components/UI/NumberFormat";
 import PropTypes from "prop-types";
 import { Text } from "react-native-paper";
 import Collapsible from "react-native-collapsible";
+import moment from "moment";
 
 const HorizontalItem = ({ item }) => {
   const [showText, setShowText] = useState(false);
@@ -29,16 +30,22 @@ const HorizontalItem = ({ item }) => {
             <CustomText style={styles.boxText}>
               {item?.seller?.shopName}
             </CustomText>
+            <CustomText style={styles.boxStatusText}>
+              {/* {item?.createdAt} */}
+              {moment(item.createdAt).format("DD MMM YYYY, h:mm a")}
+            </CustomText>
           </View>
           <View style={{ flex: 1, alignItems: "flex-end", padding: 2 }}>
-            {item?.Delivered ? (
-              <CustomText style={styles.boxStatusText}>Delivered</CustomText>
-            ) : (
-              <Text style={styles.boxStatusText}>
-                {item?.orderStatus[0].toUpperCase() +
-                  item?.orderStatus.substring(1)}
-              </Text>
-            )}
+            {/* {item?.Delivered ? (
+              <CustomText style={[styles.boxStatusText, { color: Colors.green }]}>Delivered</CustomText>
+            ) : ( */}
+            <Text style={[styles.boxStatusText, {
+              color: item?.orderStatus === "pending" ? "#AAABB0" : item?.orderStatus === "dispatched" ? "blue" : item?.orderStatus === "Accepted" ? "orange" : item?.orderStatus === "declined" ? "red" : Colors.green
+            }]}>
+              {item?.orderStatus[0].toUpperCase() +
+                item?.orderStatus.substring(1)}
+            </Text>
+            {/* )} */}
           </View>
         </View>
         {/* <CustomText style={styles.boxSubText}>

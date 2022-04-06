@@ -52,8 +52,8 @@ export const ShopList = (props) => {
       >
         <TouchableOpacity onPress={toDetail}>
           {sellersAll &&
-          sellersAll.find((ele) => ele.shopId === item._id)?.thumbnailImage
-            ?.Location ? (
+            sellersAll.find((ele) => ele.shopId === item._id)?.thumbnailImage
+              ?.Location ? (
             <Image
               source={{
                 uri: sellersAll.find((ele) => ele.shopId === item._id)
