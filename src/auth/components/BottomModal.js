@@ -10,6 +10,8 @@ import { getShops } from "../../redux/actions/shopAction";
 import SearchDropDown from './SearchDropdown'
 import CustomText from "../../components/UI/CustomText";
 import Colors from "../../utils/Colors";
+import SelectDropdown from 'react-native-select-dropdown'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function BottomModal({ refRBSheet, handleSubmitChildren }) {
 
@@ -18,6 +20,10 @@ export default function BottomModal({ refRBSheet, handleSubmitChildren }) {
   const [selectedPincode, setSelectedPincode] = useState("");
   const [onPincodeChange, setOnPincodeChange] = useState("");
   const [pincodeDataSource, setPincodeDataSource] = useState([]);
+
+  const [pin, setPinCode] = useState('');
+  const [mark, setMarket] = useState("");
+  const [cat, setCategory] = useState("");
 
   //Market
   const [selectedMarket, setSelectedMarket] = useState("");
@@ -58,16 +64,25 @@ export default function BottomModal({ refRBSheet, handleSubmitChildren }) {
 
   useEffect(() => {
     selectedPincode?.length > 0 ? setEditable(true) : setEditable(false)
-    selectedPincode && dispatch(getMarkets(null, selectedPincode, onMarketChange, false))
-    market.totalCount > 0 && setMarketDataSource(market?.markets.map(ele => ({ label: ele.marketName, value: ele.marketName })))
+    selectedPincode && dispatch(getMarkets(null, selectedPincode, false))
+    market.totalCount > 0 && setMarketDataSource(market?.markets.map(ele => ele.marketName))
 
   }, [selectedPincode, onMarketChange])
 
   useEffect(() => {
-    dispatch(getCategorys(null, onCategoryChange))
-    pinCode?.totalCount > 0 && setCategoryDataSource(category.categorys.map(ele => ({ label: ele.categoryName, value: ele.categoryName })))
-  }, [onCategoryChange])
+    dispatch(getCategorys(null))
+    // pinCode?.totalCount > 0 && setCategoryDataSource(category.categorys.map(ele => ({ label: ele.categoryName, value: ele.categoryName })))
+    getConfigData()
+  }, [])
 
+  const getConfigData = async () => {
+    let pin = await AsyncStorage.getItem("pincode");
+    let mark = await AsyncStorage.getItem("market");
+    let category = await AsyncStorage.getItem("category");
+    setPinCode(pin);
+    setMarket(mark);
+    setCategory(category);
+  }
 
   const handleSubmit = async () => {
     dispatch(getShops(null, selectedPincode, selectedMarket, selectedCategory, refRBSheet))
@@ -77,12 +92,93 @@ export default function BottomModal({ refRBSheet, handleSubmitChildren }) {
     // await AsyncStorage.setItem("category", selectedCategory);
   }
 
+  console.log({ marketDataSource })
+  console.log({ market: market?.markets, total: market.totalCount })
+  console.log({ pin, mark, cat }, "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
   return (
     <View style={styles.container}>
       <SearchDropDown value={setSelectedPincode} placeholder={"Pincode"} keyboardType={"numeric"} dataSource={pincodeDataSource} onChangeValue={setOnPincodeChange} />
-      <SearchDropDown value={setSelectedMarket} placeholder={"Market"} editable={editable}
-        instant={"true"} dataSource={marketDataSource} onChangeValue={setOnMarketeChange} clearInput={clearInput} changeValueMarket={changeValueMarket} />
-      <SearchDropDown value={setSelectedCategory} placeholder={"Category"} dataSource={categoryDataSource} onChangeValue={setOnCategoryChange} />
+      {/* <SearchDropDown value={setSelectedMarket} placeholder={"Market"} editable={editable}
+        instant={"true"} dataSource={marketDataSource} onChangeValue={setOnMarketeChange} clearInput={clearInput} changeValueMarket={changeValueMarket} /> */}
+      <SelectDropdown
+        buttonStyle={{
+          backgroundColor: '#fff',
+          borderWidth: 1,
+          borderColor: Colors.green,
+          marginTop: 20,
+          minWidth: "80%",
+          // marginHorizontal:20,
+          borderRadius: 5,
+          height: 50,
+
+          // fontWeight: 'bold',
+          paddingHorizontal: 10,
+        }}
+        disabled={selectedPincode ? false : true}
+        defaultValue={mark ? mark : ""}
+        buttonTextStyle={{ color: Colors.green, fontSize: 16, textAlign: "left" }}
+        data={market.totalCount > 0 && market?.markets.map(ele => ele.marketName)}
+        onSelect={(selectedItem, index) => {
+          setSelectedMarket(selectedItem)
+        }}
+        buttonTextAfterSelection={(selectedItem, index) => {
+          // text represented after item is selected
+          // if data array is an array of objects then return selectedItem.property to render after item is selected
+          return selectedItem
+        }}
+        rowTextForSelection={(item, index) => {
+          // text represented for each item in dropdown
+          // if data array is an array of objects then return item.property to represent item in dropdown
+          return item
+        }}
+      />
+      {/* <SearchDropDown value={setSelectedCategory} placeholder={"Category"} dataSource={categoryDataSource} onChangeValue={setOnCategoryChange} /> */}
+      <SelectDropdown
+        buttonStyle={{
+          backgroundColor: '#fff',
+          borderWidth: 1,
+          borderColor: Colors.green,
+          marginTop: 20,
+          minWidth: "80%",
+          // marginHorizontal:20,
+          borderRadius: 5,
+          height: 50,
+
+          // fontWeight: 'bold',
+          paddingHorizontal: 10,
+        }}
+        dropdownStyle={{
+          flexDirection: "column",
+          marginTop: 1,
+          backgroundColor: 'white',
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+          borderBottomLeftRadius: 5,
+          borderBottomRightRadius: 5
+        }}
+        defaultValue={cat}
+        buttonTextStyle={{ color: Colors.green, fontSize: 16, textAlign: "left" }}
+        data={category.totalCount > 0 && category.categorys.map(ele => ele.categoryName)}
+        onSelect={(selectedItem, index) => {
+          setSelectedCategory(selectedItem)
+        }}
+        buttonTextAfterSelection={(selectedItem, index) => {
+          // text represented after item is selected
+          // if data array is an array of objects then return selectedItem.property to render after item is selected
+          return selectedItem
+        }}
+        rowTextForSelection={(item, index) => {
+          // text represented for each item in dropdown
+          // if data array is an array of objects then return item.property to represent item in dropdown
+          return item
+        }}
+      />
       {/* <Button onPress={handleSubmit}>Submit</Button> */}
       <View>
         <TouchableOpacity

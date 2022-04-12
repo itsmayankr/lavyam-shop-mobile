@@ -30,6 +30,7 @@ const getMarkets = (page, search, market, search_all) => (dispatch) => {
   axios
     .get(`/market?${p}${s}${m}${searchState}`)
     .then((response) => {
+      console.log({ data: response.data }, ":::::::::::::::::ASDASDSADASDASDASDAFFDGDFGDFHAD:::::::::::::::::::::")
       dispatch({
         type: types.FETCH_MARKETS,
         payload: response.data,
@@ -45,7 +46,7 @@ const getCategorys = (page, search) => (dispatch) => {
   let s = search ? `&search=${search}` : "";
 
   axios
-    .get(`/category?${p}${s}`)
+    .get(`/category?${p}`)
     .then((response) => {
       dispatch({
         type: types.FETCH_CATEGORYS,
