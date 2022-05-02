@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Linking } from "react-native";
 //Color
 import Colors from "../../utils/Colors";
 //Text
@@ -45,7 +45,14 @@ const HorizontalItem = ({ item }) => {
               {item?.orderStatus[0].toUpperCase() +
                 item?.orderStatus.substring(1)}
             </Text>
-            {/* )} */}
+            {(item?.orderStatus === "Delivered" && item?.invoice) && <Text style={[styles.boxStatusText, {
+              color: Colors.green,
+              marginTop: 10
+            }]}
+              onPress={() => { Linking.openURL(`${item?.invoice?.Location}`) }}
+            >
+              View Invoice
+            </Text>}
           </View>
         </View>
         {/* <CustomText style={styles.boxSubText}>
