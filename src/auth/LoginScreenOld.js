@@ -11,6 +11,7 @@ import {
 // import { useNavigation } from "@react-navigation/native";
 // const navigation = useNavigation();
 import { Button } from "react-native-paper";
+import Colors from "../utils/Colors";
 
 const LoginScreen = ({ navigation }) => {
   return (
@@ -48,7 +49,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   AndroidSafeArea: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: Colors.green,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
 });

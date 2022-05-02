@@ -84,6 +84,7 @@ const styles = StyleSheet.create({
   header_safe_area: {
     zIndex: 1000,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    backgroundColor: Colors.lighter_green
   },
   header: {
     backgroundColor: Colors.white,
@@ -93,7 +94,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderBottomColor: "#f5f5f5",
     borderBottomWidth: 2,
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
+    paddingHorizontal: 10
     // marginBottom: ,
   },
 });

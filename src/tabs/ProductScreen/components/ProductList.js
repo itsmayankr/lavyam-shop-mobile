@@ -44,13 +44,12 @@ const ProductList = ({ item, cartData, seller }) => {
     let access_token = await AsyncStorage.getItem("token");
     console.log({ access_token })
     if (!access_token) {
-      ToastAndroid.showWithGravityAndOffset(
-        "Please Login in order to add item to cart!",
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        150
-      );
+      showMessage({
+        message: "Please Login to add item to cart!",
+        type: "info",
+        icon: "info",
+        floating: true
+      });
       navigation.navigate("Login")
     } else {
       const data = {

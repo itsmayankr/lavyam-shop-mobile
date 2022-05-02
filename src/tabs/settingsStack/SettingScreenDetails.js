@@ -8,6 +8,7 @@ import {
   Platform,
 } from "react-native";
 import CustomHeader from "../../CustomHeader";
+import Colors from "../../utils/Colors";
 
 const SettingScreenDetails = () => {
   return (
@@ -33,5 +34,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    backgroundColor: Colors.lighter_green
   },
 });

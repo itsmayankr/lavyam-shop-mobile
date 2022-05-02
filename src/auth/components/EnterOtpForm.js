@@ -10,12 +10,13 @@ import {
   ScrollView,
   Platform,
   Dimensions,
+  ImageBackground,
 } from "react-native";
 //Colors
 import Colors from "../../utils/Colors";
 import CustomText from "../../components/UI/CustomText";
 import { Formik } from "formik"; //Redux
-import { useDispatch ,useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { TextInput } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -30,9 +31,9 @@ const EnterOtpForm = (props) => {
   const navigation = useNavigation();
 
 
-const Number = useSelector(
-  (state) => state.otpNumber.number
-);
+  const Number = useSelector(
+    (state) => state.otpNumber.number
+  );
 
 
   useEffect(() => {
@@ -41,29 +42,37 @@ const Number = useSelector(
     };
   }, []);
 
+  const { width } = Dimensions.get("window");
+
   return (
     <Formik
       initialValues={{ otp: "" }}
       onSubmit={(values) => {
         console.log(values);
         // navigation.navigate("ResetPassword")
-        dispatch(forgotPasswordAction(values, navigation,"Reset"));
+        dispatch(forgotPasswordAction(values, navigation, "Reset"));
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <KeyboardAvoidingView
           behavior={Platform.OS == "ios" ? "position" : "height"}
+          style={{ flex: 1 }}
         >
+          <ImageBackground
+            style={{ flex: 1, position: "absolute", height: "100%", width }}
+            source={require("../../assets/Images/flower3.jpg")}
+            blurRadius={10}
+          ></ImageBackground>
           <View style={styles.header}>
             <View>
               <CustomText style={styles.title}>Enter OTP</CustomText>
             </View>
             <View>
-              <CustomText  style={{
-                        ...styles.textSignSmall,
-                        // fontFamily: "Roboto-Medium",
-                      }}
-                      >An OTP has been sent to +91 ******{Number.slice(6,10)}</CustomText>
+              <CustomText style={{
+                ...styles.textSignSmall,
+                // fontFamily: "Roboto-Medium",
+              }}
+              >An OTP has been sent to +91 ******{Number.slice(6, 10)}</CustomText>
             </View>
           </View>
           <ScrollView>
@@ -96,7 +105,7 @@ const Number = useSelector(
                 <View style={styles.group}>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Login");
+                      navigation.navigate("Login");
                     }}
                   >
                     <CustomText
@@ -191,7 +200,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     marginBottom: 10,
     height: 44,
-    letterSpacing:5
+    letterSpacing: 5
   },
 });
 export default EnterOtpForm;

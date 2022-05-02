@@ -61,7 +61,11 @@ const LoginForm = (props) => {
       initialValues={{ email: "", password: "" }}
       onSubmit={(values) => {
         console.log(values);
-        dispatch(loginUser(values, navigation));
+        let obj = {
+          email: values.email.toLocaleLowerCase(), password: values.password
+        }
+        dispatch(loginUser(obj, navigation));
+
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -88,8 +92,8 @@ const LoginForm = (props) => {
                   <TextInput
                     onChangeText={handleChange("email")}
                     onBlur={handleBlur("email")}
-                    value={values.email}
-                    keyboardType="email-address"
+                    value={values.email.toLocaleLowerCase()}
+                    keyboardType="visible-password"
                     label="Email"
                     icon="email"
                     style={styles.textInput}

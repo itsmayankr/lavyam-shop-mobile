@@ -4,6 +4,7 @@ import * as types from "../constant";
 // import { toast } from "react-
 import { ToastAndroid } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { showMessage } from "react-native-flash-message";
 
 const loginUser = (loginData, navigate) => async (dispatch) => {
   //   dispatch({ type: types.LOGIN_LOADER, payload: true });
@@ -23,13 +24,12 @@ const loginUser = (loginData, navigate) => async (dispatch) => {
       await AsyncStorage.setItem("token", res.data.token);
 
       navigate.navigate("HomeApp", { replace: true });
-      ToastAndroid.showWithGravityAndOffset(
-        "Login successfully",
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        150
-      );
+      showMessage({
+        message: "Login successfully",
+        type: "success",
+        icon: "success",
+        floating: true
+      });
       dispatch({
         type: types.TOKEN,
         payload: res.data.token,
@@ -43,11 +43,15 @@ const loginUser = (loginData, navigate) => async (dispatch) => {
     console.log(e);
     // dispatch({ type: types.LOGIN_LOADER, payload: false });
     if (e.response) {
-      return (
-        // message.error(e.response.data)
-        console.log(e.response.data.error)
-        // e.response.data.error && toast.success(`${e.response.data.error}`)
-      );
+      showMessage({
+        message: e.response.data,
+        type: "danger",
+        icon: "danger",
+        floating: true
+      });
+      console.log(e.response.data)
+      // e.response.data.error && toast.success(`${e.response.data.error}`)
+
     }
   }
 };
@@ -63,13 +67,12 @@ const getOtp = (userData, navigation) => async (dispatch) => {
         payload: data.data.number,
       });
 
-      ToastAndroid.showWithGravityAndOffset(
-        "OTP Sent",
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        150
-      );
+      showMessage({
+        message: "OTP sent",
+        type: "success",
+        icon: "success",
+        floating: true
+      });
       navigation.navigate("EnterOtp");
     }
     // if (err.response) return message.error(err.response.data);
@@ -87,22 +90,20 @@ const forgotPasswordAction = async (userData, navigation, type) => {
       if (data.data.redirect) {
         navigation.navigate("ResetPassword");
       } else {
-        ToastAndroid.showWithGravityAndOffset(
-          "Incorrect OTP",
-          ToastAndroid.LONG,
-          ToastAndroid.BOTTOM,
-          25,
-          150
-        );
+        showMessage({
+          message: "Incorrect OTP",
+          type: "danger",
+          icon: "danger",
+          floating: true
+        });
       }
     } else {
-      ToastAndroid.showWithGravityAndOffset(
-        "Password Reset Successfully",
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        150
-      );
+      showMessage({
+        message: "Password Reset Successfully",
+        type: "success",
+        icon: "success",
+        floating: true
+      });
       navigation.navigate("Login");
     }
   } catch (err) {
@@ -114,10 +115,24 @@ const register = async (userData, navigation) => {
   try {
     await axios.post("/user-register", userData);
     // message.success("Register Successfully");
+    showMessage({
+      message: "User register successfully",
+      type: "success",
+      icon: "success",
+      floating: true
+    });
     navigation.navigate("Login");
     // if (err.response) return message.error(err.response.data);
   } catch (err) {
-    console.log(err);
+    console.log(err.response.data)
+    if (err.response) {
+      showMessage({
+        message: err?.response?.data?.error?._message || err?.response?.data?.error || "something when wrong!!",
+        type: "danger",
+        icon: "danger",
+        floating: true
+      });
+    }
   }
 };
 
@@ -137,13 +152,12 @@ const getUserProfile = () => async (dispatch) => {
     })
     .then((response) => {
 
-      ToastAndroid.showWithGravityAndOffset(
-        "Registred successfully",
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        150
-      );
+      showMessage({
+        message: "User Registerd Successfully",
+        type: "success",
+        icon: "success",
+        floating: true
+      });
 
       dispatch({
         type: types.GET_USER_PROFILE,
@@ -161,16 +175,15 @@ const logout = (navigation) => async (dispatch) => {
 
   navigation.navigate("Login", { replace: true });
   // dispatch({ type: "RESET" });
-  ToastAndroid.showWithGravityAndOffset(
-    "Logged out",
-    ToastAndroid.LONG,
-    ToastAndroid.BOTTOM,
-    25,
-    150
-  );
+  showMessage({
+    message: "Logged Out",
+    type: "success",
+    icon: "success",
+    floating: true
+  });
   dispatch({
     type: types.FETCH_ORDERS,
-    payload: [],
+    payload: null,
   });
   dispatch({
     type: types.TOKEN,

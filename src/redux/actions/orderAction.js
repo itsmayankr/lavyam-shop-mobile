@@ -12,6 +12,7 @@ const getOrder = () => async (dispatch) => {
   } catch (err) {
     console.log(err);
   }
+  console.log({ access_token })
   axios
     .get(`/order`, {
       headers: {
@@ -51,13 +52,12 @@ const orderNow = (data, navigation) => async (dispatch) => {
       }
     )
     .then((response) => {
-      ToastAndroid.showWithGravityAndOffset(
-        "Order Recived",
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        150
-      );
+      showMessage({
+        message: "Order Recived",
+        type: "success",
+        icon: "success",
+        floating: true
+      });
       // Alert.alert("Order Placed Successfully", "Order Recived", [
       //   { text: "OK", onPress: () => console.log("OK Pressed") },
       // ]);

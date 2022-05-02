@@ -82,7 +82,10 @@ const RegisterForm = (props) => {
         gst_number: ""
       }}
       onSubmit={(values) => {
-        dispatch(register(values, navigation));
+        let obj = {
+          ...values, email: values.email.toLocaleLowerCase()
+        }
+        dispatch(register(obj, navigation));
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -131,8 +134,8 @@ const RegisterForm = (props) => {
                     <TextInput
                       onChangeText={handleChange("email")}
                       onBlur={handleBlur("email")}
-                      value={values.email}
-                      keyboardType='email-address'
+                      value={values.email.toLocaleLowerCase()}
+                      keyboardType="visible-password"
                       label='Email'
                       icon='email'
                       style={styles.textInput}
@@ -158,7 +161,7 @@ const RegisterForm = (props) => {
                       onChangeText={handleChange("mobile")}
                       onBlur={handleBlur("mobile")}
                       value={values.mobile}
-                      keyboardType='default'
+                      keyboardType='number-pad'
                       label='Mobile Number'
                       style={styles.textInput}
                       outlineColor={Colors.light_green}

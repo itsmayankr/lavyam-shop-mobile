@@ -35,13 +35,12 @@ const CartList = ({ item }) => {
     if (item?.quantity < item?.productId?.quantity) {
       dispatch(addToCart(data));
     } else {
-      ToastAndroid.showWithGravityAndOffset(
-        "Product maximum limit reached",
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM,
-        25,
-        150
-      );
+      showMessage({
+        message: "Product maximum limit reached",
+        type: "warning",
+        icon: "warning",
+        floating: true
+      });
     }
   };
 

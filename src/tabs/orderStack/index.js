@@ -9,11 +9,20 @@ const navOptionHandler = () => ({
   headerShown: false,
 });
 
+const fetchOrder = async () => {
+  let access_token;
+  try {
+    access_token = await AsyncStorage.getItem("token");
+  } catch (err) {
+    console.log(err)
+  }
+  access_token && dispatch(getOrder());
+}
 const OrderStack = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getOrder());
+    fetchOrder()
   }, []);
 
   return (

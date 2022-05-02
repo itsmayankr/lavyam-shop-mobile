@@ -1,6 +1,8 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, ImageBackground, Dimensions } from "react-native";
+import { View, StyleSheet, ImageBackground, Dimensions, StatusBar } from "react-native";
+import { SafeAreaView } from "react-navigation";
+import Colors from "../utils/Colors";
 
 import LoginForm from "./components/LoginForm";
 
@@ -20,18 +22,25 @@ const LoginScreen = ({ navigation }) => {
   // };
   // console.log(token);
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        style={{ flex: 1, position: "absolute", height: "100%", width }}
-        source={require("../assets/Images/flower3.jpg")}
-        blurRadius={10}
-      ></ImageBackground>
-      <LoginForm navigation={navigation} />
-    </View>
+    <SafeAreaView style={styles.AndroidSafeArea} >
+      <View style={styles.container}>
+        <ImageBackground
+          style={{ flex: 1, position: "absolute", height: "100%", width }}
+          source={require("../assets/Images/flower3.jpg")}
+          blurRadius={10}
+        ></ImageBackground>
+        <LoginForm navigation={navigation} />
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  AndroidSafeArea: {
+    flex: 1,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    backgroundColor: Colors.lighter_green
+  },
   container: {
     flex: 1,
   },

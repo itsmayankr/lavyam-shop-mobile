@@ -25,6 +25,8 @@ import Colors from "../../utils/Colors";
 import CustomText from "../../components/UI/CustomText";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import RedirectLogin from "../../auth/components/RedirectLogin";
+import NoItemFound from "../../auth/components/NoItemFound";
 
 const SettingsScreen = () => {
   const navigation = useNavigation();
@@ -52,16 +54,16 @@ const SettingsScreen = () => {
     });
     return total;
   };
-
+  const tokenRedux = useSelector(state => state.authProfile.token)
   // console.log({ cart }, "::::::::::::::::::::::::::::::LLLLLLLLLLLLLLLLLLLLLLLLL::::::::::::::::::::::::::::::::::");
   return (
     <View style={styles.container}>
       <Header shopName="Cart" />
-      <ScrollView style={{ paddingHorizontal: 20 }}>
+      {!tokenRedux ? (<RedirectLogin />) : <ScrollView style={{ paddingHorizontal: 20 }}>
         {cart?.items?.map((item) => (
           <CartList key={item._id} item={item} />
         ))}
-      </ScrollView>
+      </ScrollView>}
       {cart?.items?.length > 0 ? (
         <TouchableOpacity onPress={() => handleOrder()}>
           <View
@@ -88,7 +90,10 @@ const SettingsScreen = () => {
             </View>
           </View>
         </TouchableOpacity>
-      ) : null}
+      ) :
+        (<Text style={{ flex: 3, justifyContent: "center", alignSelf: "center" }}> <NoItemFound name="Items" /> </Text>)
+      }
+
     </View>
   );
 };
@@ -96,7 +101,7 @@ const SettingsScreen = () => {
 export default SettingsScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
+  container: { flex: 2, backgroundColor: "#fff" },
   title: {
     color: Colors.white,
     fontSize: 15,

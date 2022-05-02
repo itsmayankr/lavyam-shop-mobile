@@ -15,7 +15,7 @@ import RegisterScreen from "./src/auth/RegisterScreen";
 
 import HomeStack from "./src/tabs/HomeStack";
 import SettingStack from "./src/tabs/settingsStack";
-
+import FlashMessage from "react-native-flash-message";
 import NotificationScreen from "./src/tabs/NotificationScreen/NotificationScreen";
 
 import store from "./src/redux/store/store";
@@ -188,6 +188,7 @@ export default function App() {
       <Provider store={store()}>
         <AppNavigation />
       </Provider>
+      <FlashMessage position="top" statusBarHeight={50} />
     </PaperProvider>
   );
 }

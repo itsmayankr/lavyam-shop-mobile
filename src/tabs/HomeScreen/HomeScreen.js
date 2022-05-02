@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   StyleSheet,
   Dimensions,
-  Platform,
   FlatList,
-  Text,
-  ImageBackground,
-  Image,
 } from "react-native";
 //Redux
 import { useSelector, useDispatch, connect } from "react-redux";
@@ -21,15 +17,12 @@ import { Header, ShopSection } from "./components";
 import Skeleton from "../../components/Loaders/SkeletonLoading";
 import { getAllSeller, getShops } from "../../redux/actions/shopAction";
 //FloatButton
-import { Portal, Provider } from "react-native-paper";
-import { ScrollView } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Provider } from "react-native-paper";
 import { getAdCount } from "../../redux/actions/configScreenActions";
-import { getOrder } from "../../redux/actions/orderAction";
-import MyCarousel from "./components/Carousel";
 
-const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
+import MyCarousel from "./components/Carousel";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 //height
 const { width, height } = Dimensions.get("window");
 
@@ -42,8 +35,6 @@ const HomeScreen = (props) => {
     dispatch(getAdCount("user"))
   }, [])
   console.log({ data });
-  //Header Animation
-  let scrollY = new Animated.Value(0);
   // const user = useSelector((state) => state.auth.user);
   // const shops = useSelector((state) => state.store.products);
   const shops = useSelector((state) => state.shops.shops);
@@ -81,15 +72,17 @@ const HomeScreen = (props) => {
   }, []);
 
   return (
-    <Provider>
-      {isLoading ? (
-        <Skeleton />
-      ) : (
-        // <View style={styles.container}>
-        <View style={styles.container}>
-          <Header />
-          <MyCarousel images={data} />
-          {/* <AnimatedFlatList
+    <SafeAreaView style={styles.AndroidSafeArea}>
+      <Provider>
+        {isLoading ? (
+          <Skeleton />
+        ) : (
+          // <View style={styles.container}>
+
+          <View style={styles.container}>
+            <Header />
+            <MyCarousel images={data} />
+            {/* <AnimatedFlatList
             contentContainerStyle={styles.list}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={() => (
@@ -112,21 +105,28 @@ const HomeScreen = (props) => {
 
           // )}
           /> */}
-          <View>
-            <ShopSection data={shops} navigation={navigation} />
+            <View>
+              <ShopSection data={shops} navigation={navigation} />
+            </View>
           </View>
-        </View>
-      )}
-    </Provider>
+        )}
+      </Provider>
+    </SafeAreaView>
   );
 };
 
 export default connect(null, { getShops, getAllSeller })(HomeScreen);
 
 const styles = StyleSheet.create({
+  AndroidSafeArea: {
+    flex: 1,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    backgroundColor: Colors.lighter_green
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.white,
+    paddingTop: 10
   },
   list: {
     width: "100%",

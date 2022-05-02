@@ -10,6 +10,7 @@ import {
   ScrollView,
   Platform,
   Dimensions,
+  ImageBackground,
 } from "react-native";
 //Colors
 import Colors from "../../utils/Colors";
@@ -51,42 +52,48 @@ const ForgotPassword = (props) => {
     };
   }, []);
 
-  const [count,setCount]  = useState(3)
-  const [disabled,setDisabled]  = useState(true)
+  const [count, setCount] = useState(3)
+  const [disabled, setDisabled] = useState(true)
   const [intervalId, setIntervalId] = useState(0);
 
 
   const handleClick = () => {
-    if(intervalId) {
+    if (intervalId) {
       clearInterval(intervalId);
       setIntervalId(0);
       return;
     }
-  
+
     const newIntervalId = setInterval(() => {
       // setCount(prevCount => prevCount - 1);
-      let countId = count -1
+      let countId = count - 1
       setCount(countId >= 0 ? countId : 0)
     }, 1000);
     setIntervalId(newIntervalId);
   }
 
-  
-  
+  const { width } = Dimensions.get("window");
+
   return (
     <Formik
       initialValues={{ email: "" }}
       onSubmit={(values) => {
         console.log(values);
-        dispatch(getOtp(values, navigation));
+        dispatch(getOtp({ email: values.email.toLocaleLowerCase() }, navigation));
         // handleClick()
-                // navigation.navigate("EnterOtp")
+        // navigation.navigate("EnterOtp")
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
         <KeyboardAvoidingView
           behavior={Platform.OS == "ios" ? "position" : "height"}
+          style={{ flex: 1 }}
         >
+          <ImageBackground
+            style={{ flex: 1, position: "absolute", height: "100%", width }}
+            source={require("../../assets/Images/flower3.jpg")}
+            blurRadius={10}
+          ></ImageBackground>
           <View style={styles.header}>
             <View>
               <CustomText style={styles.title}>Forgot Password</CustomText>
@@ -107,8 +114,8 @@ const ForgotPassword = (props) => {
                   <TextInput
                     onChangeText={handleChange("email")}
                     onBlur={handleBlur("email")}
-                    value={values.email}
-                    keyboardType="email-address"
+                    value={values.email.toLocaleLowerCase()}
+                    keyboardType="visible-password"
                     label="Email"
                     icon="email"
                     style={styles.textInput}

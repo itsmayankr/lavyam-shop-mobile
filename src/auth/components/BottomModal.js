@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import {
-  View, StyleSheet, TouchableOpacity
+  View, StyleSheet, TouchableOpacity, ImageBackground, Dimensions
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -50,7 +50,7 @@ export default function BottomModal({ refRBSheet, handleSubmitChildren }) {
   const category = useSelector(
     (state) => state?.configScreen.categorys
   );
-
+  const { width } = Dimensions.get("window");
   useEffect(() => {
     console.log("Pincode useEffect Called");
     dispatch(getPincodes(null, onPincodeChange))
@@ -97,88 +97,97 @@ export default function BottomModal({ refRBSheet, handleSubmitChildren }) {
   console.log({ pin, mark, cat }, "LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
   return (
     <View style={styles.container}>
-      <SearchDropDown value={setSelectedPincode} placeholder={"Pincode"} keyboardType={"numeric"} dataSource={pincodeDataSource} onChangeValue={setOnPincodeChange} />
+      <ImageBackground
+        style={{ flex: 1, position: "absolute", height: "100%", width }}
+        source={require("../../assets/Images/flower3.jpg")}
+        blurRadius={10}
+      ></ImageBackground>
+      <SearchDropDown value={setSelectedPincode} placeholder={"Select PIN Code"} keyboardType={"numeric"} dataSource={pincodeDataSource} onChangeValue={setOnPincodeChange} />
       {/* <SearchDropDown value={setSelectedMarket} placeholder={"Market"} editable={editable}
         instant={"true"} dataSource={marketDataSource} onChangeValue={setOnMarketeChange} clearInput={clearInput} changeValueMarket={changeValueMarket} /> */}
-      <SelectDropdown
-        buttonStyle={{
-          backgroundColor: '#fff',
-          borderWidth: 1,
-          borderColor: Colors.green,
-          marginTop: 20,
-          minWidth: "80%",
-          // marginHorizontal:20,
-          borderRadius: 5,
-          height: 50,
-
-          // fontWeight: 'bold',
-          paddingHorizontal: 10,
-        }}
-        disabled={selectedPincode ? false : true}
-        defaultValue={mark ? mark : ""}
-        buttonTextStyle={{ color: Colors.green, fontSize: 16, textAlign: "left" }}
-        data={market.totalCount > 0 && market?.markets.map(ele => ele.marketName)}
-        onSelect={(selectedItem, index) => {
-          setSelectedMarket(selectedItem)
-        }}
-        buttonTextAfterSelection={(selectedItem, index) => {
-          // text represented after item is selected
-          // if data array is an array of objects then return selectedItem.property to render after item is selected
-          return selectedItem
-        }}
-        rowTextForSelection={(item, index) => {
-          // text represented for each item in dropdown
-          // if data array is an array of objects then return item.property to represent item in dropdown
-          return item
-        }}
-      />
+      <View style={{ paddingHorizontal: 40 }}>
+        <SelectDropdown
+          buttonStyle={{
+            backgroundColor: '#fff',
+            borderWidth: 1,
+            borderColor: Colors.green,
+            marginTop: 20,
+            minWidth: "100%",
+            borderRadius: 5,
+            height: 50,
+            // fontWeight: 'bold',
+            // paddingHorizontal: 10,
+          }}
+          defaultButtonText="Select Market"
+          disabled={selectedPincode ? false : true}
+          defaultValue={mark ? mark : "Select Market"}
+          buttonTextStyle={{ color: Colors.green, fontSize: 16, textAlign: "left" }}
+          data={market.totalCount > 0 && market?.markets.map(ele => ele.marketName)}
+          onSelect={(selectedItem, index) => {
+            setSelectedMarket(selectedItem)
+          }}
+          buttonTextAfterSelection={(selectedItem, index) => {
+            // text represented after item is selected
+            // if data array is an array of objects then return selectedItem.property to render after item is selected
+            return selectedItem
+          }}
+          rowTextForSelection={(item, index) => {
+            // text represented for each item in dropdown
+            // if data array is an array of objects then return item.property to represent item in dropdown
+            return item
+          }}
+        />
+      </View>
       {/* <SearchDropDown value={setSelectedCategory} placeholder={"Category"} dataSource={categoryDataSource} onChangeValue={setOnCategoryChange} /> */}
-      <SelectDropdown
-        buttonStyle={{
-          backgroundColor: '#fff',
-          borderWidth: 1,
-          borderColor: Colors.green,
-          marginTop: 20,
-          minWidth: "80%",
-          // marginHorizontal:20,
-          borderRadius: 5,
-          height: 50,
+      <View style={{ paddingHorizontal: 40 }}>
+        <SelectDropdown
+          buttonStyle={{
+            backgroundColor: '#fff',
+            borderWidth: 1,
+            borderColor: Colors.green,
+            marginTop: 20,
+            minWidth: "100%",
+            // marginHorizontal:20,
+            borderRadius: 5,
+            height: 50,
 
-          // fontWeight: 'bold',
-          paddingHorizontal: 10,
-        }}
-        dropdownStyle={{
-          flexDirection: "column",
-          marginTop: 1,
-          backgroundColor: 'white',
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-          borderBottomLeftRadius: 5,
-          borderBottomRightRadius: 5
-        }}
-        defaultValue={cat}
-        buttonTextStyle={{ color: Colors.green, fontSize: 16, textAlign: "left" }}
-        data={category.totalCount > 0 && category.categorys.map(ele => ele.categoryName)}
-        onSelect={(selectedItem, index) => {
-          setSelectedCategory(selectedItem)
-        }}
-        buttonTextAfterSelection={(selectedItem, index) => {
-          // text represented after item is selected
-          // if data array is an array of objects then return selectedItem.property to render after item is selected
-          return selectedItem
-        }}
-        rowTextForSelection={(item, index) => {
-          // text represented for each item in dropdown
-          // if data array is an array of objects then return item.property to represent item in dropdown
-          return item
-        }}
-      />
+            // fontWeight: 'bold',
+            // paddingHorizontal: 10,
+          }}
+          defaultButtonText="Select Category"
+          dropdownStyle={{
+            flexDirection: "column",
+            marginTop: 1,
+            backgroundColor: 'white',
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+            borderBottomLeftRadius: 5,
+            borderBottomRightRadius: 5
+          }}
+          defaultValue={cat ? cat : "Select Category"}
+          buttonTextStyle={{ color: Colors.green, fontSize: 16, textAlign: "left" }}
+          data={category.totalCount > 0 && category.categorys.map(ele => ele.categoryName)}
+          onSelect={(selectedItem, index) => {
+            setSelectedCategory(selectedItem)
+          }}
+          buttonTextAfterSelection={(selectedItem, index) => {
+            // text represented after item is selected
+            // if data array is an array of objects then return selectedItem.property to render after item is selected
+            return selectedItem
+          }}
+          rowTextForSelection={(item, index) => {
+            // text represented for each item in dropdown
+            // if data array is an array of objects then return item.property to represent item in dropdown
+            return item
+          }}
+        />
+      </View>
       {/* <Button onPress={handleSubmit}>Submit</Button> */}
       <View>
         <TouchableOpacity

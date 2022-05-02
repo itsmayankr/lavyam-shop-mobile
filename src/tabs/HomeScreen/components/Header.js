@@ -120,82 +120,82 @@ export const Header = () => {
 
   return (
     <>
-      <SafeAreaView style={styles.header_safe_area}>
-        <View style={styles.header}>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            <View style={{ width: "30%" }}>
-              <TouchableOpacity onPress={() => refRBSheet.current.open()}>
-                <View style={{ flexDirection: "row" }}>
-                  <Entypo
-                    name="location-pin"
-                    size={24}
-                    color={Colors.light_green}
-                  />
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: "bold",
-                      width: width,
-                    }}
-                  >
-                    {pincode || "Select PIN Code"}
-                  </Text>
-                </View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      fontWeight: "600",
-                      width: width,
-                      marginLeft: 10,
-                      textTransform: "capitalize",
-                      color: Colors.light_green,
-                    }}
-                  >
-                    {market || "Select market"}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-
-            <View style={{ justifyContent: "center", marginRight: 5 }}>
-              {tokenRedux ? <TouchableOpacity onPress={handleLogout}>
-                <Text style={{ color: Colors.green }}>Logout</Text>
-              </TouchableOpacity> :
-                <TouchableOpacity onPress={() => handleLogin()}>
-                  <Text style={{ color: Colors.green }}>Login</Text>
-                </TouchableOpacity>}
-            </View>
+      {/* <SafeAreaView style={styles.header_safe_area}> */}
+      <View style={styles.header}>
+        <View
+          style={{ flexDirection: "row", justifyContent: "space-between" }}
+        >
+          <View style={{ width: "30%" }}>
+            <TouchableOpacity onPress={() => refRBSheet.current.open()}>
+              <View style={{ flexDirection: "row" }}>
+                <Entypo
+                  name="location-pin"
+                  size={24}
+                  color={Colors.light_green}
+                />
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    width: width,
+                  }}
+                >
+                  {pincode || "Select PIN Code"}
+                </Text>
+              </View>
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontWeight: "600",
+                    width: width,
+                    marginLeft: 10,
+                    textTransform: "capitalize",
+                    color: Colors.light_green,
+                  }}
+                >
+                  {market || "Select market"}
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
-          <RBSheet
-            ref={refRBSheet}
-            closeOnDragDown={closeOnDragDown}
-            closeOnPressBack={closeOnPressBack}
-            closeOnPressMask={false}
-            customStyles={{
-              container: {
-                borderTopLeftRadius: 10,
-                borderTopRightRadius: 10,
-                height: "100%",
-                // position: "relative",
-              },
-              draggableIcon: {
-                backgroundColor: Colors.green,
-              },
-            }}
-          >
-            <BottomModal
-              pincodeData={data?.pincodes?.pinCode}
-              marketsData={data?.markets?.markets}
-              categoryData={data?.categorys?.categorys}
-              refRBSheet={refRBSheet}
-              handleSubmitChildren={handleSubmitChildren}
-            />
-          </RBSheet>
+
+          <View style={{ justifyContent: "center", marginRight: 5 }}>
+            {tokenRedux ? <TouchableOpacity onPress={handleLogout}>
+              <Text style={{ color: Colors.green }}>Logout</Text>
+            </TouchableOpacity> :
+              <TouchableOpacity onPress={() => handleLogin()}>
+                <Text style={{ color: Colors.green }}>Login</Text>
+              </TouchableOpacity>}
+          </View>
         </View>
-      </SafeAreaView>
+        <RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={closeOnDragDown}
+          closeOnPressBack={closeOnPressBack}
+          closeOnPressMask={false}
+          customStyles={{
+            container: {
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              height: "100%",
+              // position: "relative",
+            },
+            draggableIcon: {
+              backgroundColor: Colors.green,
+            },
+          }}
+        >
+          <BottomModal
+            pincodeData={data?.pincodes?.pinCode}
+            marketsData={data?.markets?.markets}
+            categoryData={data?.categorys?.categorys}
+            refRBSheet={refRBSheet}
+            handleSubmitChildren={handleSubmitChildren}
+          />
+        </RBSheet>
+      </View>
+      {/* </SafeAreaView> */}
     </>
   );
 };
@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
   header_safe_area: {
     zIndex: 1000,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    backgroundColor: Colors.lighter_green
   },
   header: {
     backgroundColor: Colors.white,
@@ -211,7 +212,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderBottomColor: "#f5f5f5",
     borderBottomWidth: 2,
-    marginHorizontal: 10,
+    paddingHorizontal: 10,
     // marginBottom: ,
   },
 });

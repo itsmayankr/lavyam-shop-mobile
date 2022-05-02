@@ -22,7 +22,7 @@ export default function SearchDropDown({ value, placeholder, keyboardType, dataS
     }, [dataSource])
 
     useEffect(() => {
-        if (placeholder === "Pincode") {
+        if (placeholder === "Select PIN Code") {
             console.log("Pincode onChnage Invoked")
             // setChangeValuecust("asd")
             textRef?.current?.clear()
@@ -77,7 +77,7 @@ export default function SearchDropDown({ value, placeholder, keyboardType, dataS
 
     return (
         <View style={{ paddingHorizontal: 40 }} >
-            <View >
+            <View>
                 <TextInput
                     style={styles.textInput}
                     placeholder={placeholder}
@@ -182,6 +182,6 @@ const styles = StyleSheet.create({
         height: 50,
         fontSize: 16,
         // fontWeight: 'bold',
-        paddingHorizontal: 10,
+        paddingHorizontal: 17,
     },
 });

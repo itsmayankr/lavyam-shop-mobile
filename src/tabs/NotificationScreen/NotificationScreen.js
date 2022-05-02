@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, RefreshControl } from "react-native";
+import { View, StyleSheet, RefreshControl, Text } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getNotificationsNew } from "../../redux/actions/notificationAction";
 import io from "socket.io-client";
 import { Header } from ".././../components/Header";
 import OrderTypeNotification from "./OrderTypeNotification";
 import { ScrollView } from "react-native-gesture-handler";
+import RedirectLogin from "../../auth/components/RedirectLogin";
+import NoItemFound from "../../auth/components/NoItemFound";
 // import { getNotifications } from "./src/redux/actions/notificationAction";
 
 let socket = io("http://192.168.228.255:9001/apis/v1", {
@@ -50,11 +52,11 @@ const NotificationScreen = ({ navigation }) => {
     dispatch(getNotificationsNew());
     wait(1000).then(() => setRefreshing(false));
   }, []);
-
+  const tokenRedux = useSelector(state => state.authProfile.token)
   return (
     <View style={styles.container}>
       <Header shopName="Notifications" />
-      <ScrollView
+      {!tokenRedux ? (<RedirectLogin />) : <ScrollView
         style={{
           flex: 1,
           marginBottom: 2,
@@ -63,7 +65,7 @@ const NotificationScreen = ({ navigation }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {listData.map((ele, i) => {
+        {listData.length > 0 ? listData.map((ele, i) => {
           return (
             <View key={i}>
               {ele?.type === "order" ? (
@@ -71,8 +73,8 @@ const NotificationScreen = ({ navigation }) => {
               ) : null}
             </View>
           );
-        })}
-      </ScrollView>
+        }) : (<Text style={{ flex: 1, alignSelf: "center", marginTop: 170 }}> <NoItemFound name="Notification" /> </Text>)}
+      </ScrollView>}
     </View>
   );
 };
