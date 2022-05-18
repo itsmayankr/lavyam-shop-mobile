@@ -52,11 +52,11 @@ const ResetPasswordForm = (props) => {
 
   return (
     <Formik
-      initialValues={{ password: "", matchPassword:"" }}
+      initialValues={{ password: "", matchPassword: "" }}
       onSubmit={(values) => {
         console.log(values);
         // navigation.navigate("EnterOtp")
-        dispatch(forgotPasswordAction(values, navigation,"Login"));
+        dispatch(forgotPasswordAction(values, navigation, "Login"));
       }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -90,7 +90,7 @@ const ResetPasswordForm = (props) => {
                     style={styles.textInput}
                     outlineColor={Colors.light_green}
                     mode="outlined"
-                    theme={{ colors: { primary: Colors.green } }}
+                    theme={{ colors: { text: "black", primary: Colors.green } }}
                   />
                 </View>
                 <View>
@@ -104,7 +104,7 @@ const ResetPasswordForm = (props) => {
                     style={styles.textInput}
                     outlineColor={Colors.light_green}
                     mode="outlined"
-                    theme={{ colors: { primary: Colors.green } }}
+                    theme={{ colors: { text: "black", primary: Colors.green } }}
                   />
                 </View>
                 <View style={styles.group}>

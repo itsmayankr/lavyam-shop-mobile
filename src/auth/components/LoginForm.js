@@ -96,12 +96,12 @@ const LoginForm = (props) => {
                     value={values.email.toLocaleLowerCase()}
                     keyboardType="visible-password"
                     label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>Email</Text>}
-
+                    theme={{ colors: { text: "black", primary: Colors.green } }}
                     icon="email"
                     style={styles.textInput}
                     outlineColor={Colors.light_green}
                     mode="outlined"
-                    theme={{ colors: { primary: Colors.green } }}
+
                   />
 
                   <TextInput
@@ -116,7 +116,7 @@ const LoginForm = (props) => {
                     style={styles.textInput}
                     outlineColor={Colors.light_green}
                     mode="outlined"
-                    theme={{ colors: { primary: Colors.green } }}
+                    theme={{ colors: { text: "black", primary: Colors.green } }}
                   />
                 </View>
                 <View style={styles.group}>

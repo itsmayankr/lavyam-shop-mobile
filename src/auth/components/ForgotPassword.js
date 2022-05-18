@@ -122,7 +122,7 @@ const ForgotPassword = (props) => {
                     style={styles.textInput}
                     outlineColor={Colors.light_green}
                     mode="outlined"
-                    theme={{ colors: { primary: Colors.green } }}
+                    theme={{ colors: { text: "black", primary: Colors.green } }}
                   />
                 </View>
                 <View style={styles.group}>

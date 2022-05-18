@@ -131,7 +131,7 @@ const RegisterForm = (props) => {
                       outlineColor={Colors.green}
                       mode='outlined'
                       label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>Username</Text>}
-                      theme={{ colors: { primary: Colors.green } }}
+                      theme={{ colors: { text: "black", primary: Colors.green } }}
                     />
                     <TextInput
                       onChangeText={handleChange("email")}
@@ -143,7 +143,7 @@ const RegisterForm = (props) => {
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
-                      theme={{ colors: { primary: Colors.green } }}
+                      theme={{ colors: { text: "black", primary: Colors.green } }}
                     />
                     <TextInput
                       onChangeText={handleChange("password")}
@@ -157,7 +157,7 @@ const RegisterForm = (props) => {
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
-                      theme={{ colors: { primary: Colors.green } }}
+                      theme={{ colors: { text: "black", primary: Colors.green } }}
                     />
                     <TextInput
                       onChangeText={handleChange("mobile")}
@@ -168,7 +168,7 @@ const RegisterForm = (props) => {
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
-                      theme={{ colors: { primary: Colors.green } }}
+                      theme={{ colors: { text: "black", primary: Colors.green } }}
                     // icon="lock"
                     // passIcon="eye"
                     // secureTextEntry={showPass ? false : true}
@@ -182,7 +182,7 @@ const RegisterForm = (props) => {
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
-                      theme={{ colors: { primary: Colors.green } }}
+                      theme={{ colors: { text: "black", primary: Colors.green } }}
                     />
                     <TextInput
                       onChangeText={handleChange(
@@ -195,7 +195,7 @@ const RegisterForm = (props) => {
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
-                      theme={{ colors: { primary: Colors.green } }}
+                      theme={{ colors: { text: "black", primary: Colors.green } }}
                     />
                     <TextInput
                       onChangeText={handleChange(
@@ -208,7 +208,7 @@ const RegisterForm = (props) => {
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
-                      theme={{ colors: { primary: Colors.green } }}
+                      theme={{ colors: { text: "black", primary: Colors.green } }}
                     />
                     <TextInput
                       onChangeText={handleChange("deleveryAddress.city")}
@@ -219,7 +219,7 @@ const RegisterForm = (props) => {
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
-                      theme={{ colors: { primary: Colors.green } }}
+                      theme={{ colors: { text: "black", primary: Colors.green } }}
                     />
                     <TextInput
                       onChangeText={handleChange("deleveryAddress.state")}
@@ -230,7 +230,7 @@ const RegisterForm = (props) => {
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
-                      theme={{ colors: { primary: Colors.green } }}
+                      theme={{ colors: { text: "black", primary: Colors.green } }}
                     />
 
                     <TextInput
@@ -243,7 +243,7 @@ const RegisterForm = (props) => {
 
                       outlineColor={Colors.light_green}
                       mode='outlined'
-                      theme={{ colors: { primary: Colors.green } }}
+                      theme={{ colors: { text: "black", primary: Colors.green } }}
                     />
                     {/* </View> */}
 
