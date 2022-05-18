@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, RefreshControl, Text } from "react-native";
+import { View, StyleSheet, RefreshControl, Text, SafeAreaView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { getNotificationsNew } from "../../redux/actions/notificationAction";
 import io from "socket.io-client";
@@ -55,6 +55,7 @@ const NotificationScreen = ({ navigation }) => {
   const tokenRedux = useSelector(state => state.authProfile.token)
   return (
     <View style={styles.container}>
+
       <Header shopName="Notifications" />
       {!tokenRedux ? (<RedirectLogin />) : <ScrollView
         style={{
@@ -75,6 +76,7 @@ const NotificationScreen = ({ navigation }) => {
           );
         }) : (<Text style={{ flex: 1, alignSelf: "center", marginTop: 170 }}> <NoItemFound name="Notification" /> </Text>)}
       </ScrollView>}
+
     </View>
   );
 };

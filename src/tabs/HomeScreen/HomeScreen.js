@@ -34,7 +34,7 @@ const HomeScreen = (props) => {
   useEffect(() => {
     dispatch(getAdCount("user"))
   }, [])
-  console.log({ data });
+  console.log(data.data, "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
   // const user = useSelector((state) => state.auth.user);
   // const shops = useSelector((state) => state.store.products);
   const shops = useSelector((state) => state.shops.shops);
@@ -72,17 +72,17 @@ const HomeScreen = (props) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.AndroidSafeArea}>
-      <Provider>
-        {isLoading ? (
-          <Skeleton />
-        ) : (
-          // <View style={styles.container}>
 
-          <View style={styles.container}>
-            <Header />
-            <MyCarousel images={data} />
-            {/* <AnimatedFlatList
+    <Provider>
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        // <View style={styles.container}>
+
+        <View style={styles.container}>
+          <Header />
+          {data?.data?.length > 0 ? <MyCarousel images={data} /> : null}
+          {/* <AnimatedFlatList
             contentContainerStyle={styles.list}
             showsVerticalScrollIndicator={false}
             ListHeaderComponent={() => (
@@ -105,13 +105,13 @@ const HomeScreen = (props) => {
 
           // )}
           /> */}
-            <View>
-              <ShopSection data={shops} navigation={navigation} />
-            </View>
+          <View>
+            <ShopSection data={shops} navigation={navigation} />
           </View>
-        )}
-      </Provider>
-    </SafeAreaView>
+        </View>
+      )}
+    </Provider>
+
   );
 };
 
@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
   AndroidSafeArea: {
     flex: 1,
     // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    backgroundColor: Colors.lighter_green
+    backgroundColor: Colors.lighter_green,
+    height: 0
   },
   container: {
     flex: 1,

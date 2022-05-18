@@ -101,7 +101,7 @@ const SettingsScreen = () => {
 export default SettingsScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 2, backgroundColor: "#fff" },
+  container: { flex: 1, backgroundColor: "#fff" },
   title: {
     color: Colors.white,
     fontSize: 15,

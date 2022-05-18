@@ -11,6 +11,7 @@ import {
   Platform,
   Dimensions,
   ImageBackground,
+  Text,
 } from "react-native";
 //Colors
 import Colors from "../../utils/Colors";
@@ -116,7 +117,7 @@ const ForgotPassword = (props) => {
                     onBlur={handleBlur("email")}
                     value={values.email.toLocaleLowerCase()}
                     keyboardType="visible-password"
-                    label="Email"
+                    label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>Email</Text>}
                     icon="email"
                     style={styles.textInput}
                     outlineColor={Colors.light_green}

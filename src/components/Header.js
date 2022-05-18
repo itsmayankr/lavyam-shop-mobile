@@ -82,7 +82,6 @@ const styles = StyleSheet.create({
   header_safe_area: {
     zIndex: 1000,
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    backgroundColor: Colors.lighter_green
   },
   header: {
     backgroundColor: Colors.white,

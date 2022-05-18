@@ -11,6 +11,7 @@ import {
   Platform,
   Dimensions,
   ImageBackground,
+  Text,
 } from "react-native";
 //Colors
 import Colors from "../../utils/Colors";
@@ -93,7 +94,7 @@ const EnterOtpForm = (props) => {
                     value={values.otp}
                     maxLength={6}
                     keyboardType="number-pad"
-                    label="OTP"
+                    label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>OTP</Text>}
                     // icon="email"
                     letterSpacing={15}
                     style={styles.textInput}

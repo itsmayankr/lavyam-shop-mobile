@@ -9,6 +9,7 @@ import {
   Platform,
   KeyboardAvoidingView,
   Dimensions,
+  Text,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -125,10 +126,11 @@ const RegisterForm = (props) => {
                       onBlur={handleBlur("username")}
                       value={values.username}
                       keyboardType='default'
-                      label='Username'
+                      // label='Username'
                       style={styles.textInput}
-                      outlineColor={Colors.light_green}
+                      outlineColor={Colors.green}
                       mode='outlined'
+                      label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>Username</Text>}
                       theme={{ colors: { primary: Colors.green } }}
                     />
                     <TextInput
@@ -136,7 +138,7 @@ const RegisterForm = (props) => {
                       onBlur={handleBlur("email")}
                       value={values.email.toLocaleLowerCase()}
                       keyboardType="visible-password"
-                      label='Email'
+                      label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>Email</Text>}
                       icon='email'
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
@@ -148,7 +150,7 @@ const RegisterForm = (props) => {
                       onBlur={handleBlur("password")}
                       value={values.password}
                       keyboardType='default'
-                      label='Password'
+                      label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>Password</Text>}
                       icon='lock'
                       passIcon='eye'
                       secureTextEntry={showPass ? false : true}
@@ -162,7 +164,7 @@ const RegisterForm = (props) => {
                       onBlur={handleBlur("mobile")}
                       value={values.mobile}
                       keyboardType='number-pad'
-                      label='Mobile Number'
+                      label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>Mobile Number</Text>}
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
@@ -176,7 +178,7 @@ const RegisterForm = (props) => {
                       onBlur={handleBlur("deleveryAddress.address")}
                       value={values.deleveryAddress.address}
                       keyboardType='default'
-                      label='Address'
+                      label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>Address</Text>}
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
@@ -189,7 +191,7 @@ const RegisterForm = (props) => {
                       onBlur={handleBlur("deleveryAddress.address1")}
                       value={values.deleveryAddress.address1}
                       keyboardType='default'
-                      label='Address line 2'
+                      label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>Address line 2</Text>}
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
@@ -202,7 +204,7 @@ const RegisterForm = (props) => {
                       onBlur={handleBlur("deleveryAddress.landmark")}
                       value={values.deleveryAddress.landmark}
                       keyboardType='default'
-                      label='Landmark'
+                      label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>Landmark</Text>}
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
@@ -213,7 +215,7 @@ const RegisterForm = (props) => {
                       onBlur={handleBlur("deleveryAddress.city")}
                       value={values.deleveryAddress.city}
                       keyboardType='default'
-                      label='City'
+                      label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>City</Text>}
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
@@ -224,7 +226,7 @@ const RegisterForm = (props) => {
                       onBlur={handleBlur("deleveryAddress.state")}
                       value={values.deleveryAddress.state}
                       keyboardType='default'
-                      label='State'
+                      label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>State</Text>}
                       style={styles.textInput}
                       outlineColor={Colors.light_green}
                       mode='outlined'
@@ -236,8 +238,9 @@ const RegisterForm = (props) => {
                       onBlur={handleBlur("gst_number")}
                       value={values.gst_number}
                       keyboardType='default'
-                      label='GST Number'
+                      label={<Text style={{ color: Colors.green, backgroundColor: "#fff", opacity: 1 }}>GST Number</Text>}
                       style={styles.textInput}
+
                       outlineColor={Colors.light_green}
                       mode='outlined'
                       theme={{ colors: { primary: Colors.green } }}
@@ -369,6 +372,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     marginBottom: 10,
     height: 44,
+    color: "black"
   },
   container: {
     // marginLeft: 20,
